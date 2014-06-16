@@ -1,5 +1,157 @@
-.b-chat {
+@import "compass/css3";
+
+// theme
+$cl_background:     #f7f7f7; // light gray
+$cl_chrome:         #5396E4;
+$cl_separator:      #ededed;
+$cl_text_dark:      #4a4a4a;
+$cl_text_light:     #9b9b9b;
+$cl_text_white:     #ffffff;
+
+$pane_width:        320px;
+$pane_height:       475px;
+$header_height:     30px;
+$msgline_height:    32px;
+$avatar_size:       47px;
+$timestamp_width:   32px;
+
+// fonts
+
+@font-face {
+    font-family: "PTSans";
+    font-style: normal;
+    font-weight: normal;
+    src: url("/fonts/PTS55F-webfont.eot?#iefix") format("embedded-opentype"), url("/fonts/PTS55F-webfont.woff") format("woff"), url("/fonts/PTS55F-webfont.ttf") format("truetype"), url("/fonts/PTS55F-webfont.svg#pt_sansregular") format("svg");
 }
 
-.b-chat__message {
+// reset
+* {
+    @include box-sizing(border-box);
 }
+
+html,body,form {
+    margin:0px;
+    padding:0px;
+}
+
+.b-chat {
+    position: relative;
+    width: $pane_width;
+    height: $pane_height;
+    background-color: $cl_background; 
+    font-family: PTSans;
+    font-size: 14px;
+    cursor: default;
+}
+    .b-chat__header {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        height: $header_height;
+
+        text-align: center;
+        background-color: $cl_chrome;
+        color: $cl_text_white;
+        font-size: 120%;
+    }
+        .b-chat__header__menu {
+            position: absolute;
+            text-decoration: none;
+            width: 18px;
+            height: 18px;
+            top: 6px;
+            left: 9px;
+            // TODO
+            background: red;
+        }
+        .b-chat__header__title {
+            margin-top: 3px;
+            display: inline-block;
+            line-height: $header_height;
+            &:after {
+            }
+        }
+
+    .b-chat__messages {
+        position: absolute;
+        top: $header_height;
+        left: 0px;
+        right: 0px;
+        bottom: $msgline_height;
+    }
+
+        .b-chat__item {
+            position: relative;
+            margin: 9px 9px 0px;
+        }
+
+            .b-chat__item__avatar {
+                position: absolute;
+                top: 0px;
+                left: 7px;
+                width: $avatar_size;
+                height: $avatar_size;
+                overflow: hidden;
+                img {
+                    width: $avatar_size;
+                    height: $avatar_size;
+                }
+            }
+
+            .b-chat__item__content {
+                top: 0px;
+                margin-left: $avatar_size + 7px;
+                margin-right: $timestamp_width + 7px; 
+                cursor: text;
+            }
+
+                .b-chat__item__content__text {
+                    color: $cl_text_dark; 
+                }
+
+                .b-chat__item__content__from {
+                    color: $cl_text_light;
+                }
+
+            .b-chat__item__ts {
+                position: absolute;
+                top: 0px;
+                right: 7px;
+                width: $timestamp_width;
+                color: $cl_text_light;
+            }
+            
+
+    .b-chat__msgline {
+        position: absolute;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        height: $msgline_height;
+        border-top: solid 1px $cl_separator;
+    }
+        .b-chat__msgline__input {
+            border: none;
+            position: absolute;
+            padding: 7px;
+            height: 100%;
+            width: 80%;
+        }
+
+        .b-chat__msgline__btn {
+            border: none;
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            width: 30%;
+            height: 100%;
+            padding: 7px;
+            font-weight: bold;
+            color: $cl_text_light;
+            background: inherit;
+            cursor: pointer;
+            &:focus {
+                border: none
+            }
+        }

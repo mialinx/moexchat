@@ -16,8 +16,6 @@
 
 <body ng-controller="ChatCtrl">
 
-    <h1>{{ debug }}</h1>
-
     <div class="b-chat">
 
         <div class="b-chat__header">
@@ -26,20 +24,23 @@
         </div>
 
         <div class="b-chat__messages">
-            <div class="b-chat__messages__item" ng-repeat="message in messages">
+            <div class="b-chat__item" ng-repeat="message in messages">
                 <div class="b-chat__item__avatar">
-                    <img ng-src="{{ message.avatar_url }}" title="{{ message.nickname }}" alt="{{ message.nickname }}">
+                    <img ng-src="{{ message.avatar_url }}" title="{{ message.nickname }}" alt="{{ message.nickname }}"/>
                 </div>
                 <div class="b-chat__item__content">
                     <div class="b-chat__item__content__text">{{ message.text }}</div>
                     <div class="b-chat__item__content__from">{{ message.client_type }}</div>
                 </div>
+                <div class="b-chat__item__ts">
+                   Щазз 
+                </div>
             </div>
         </div>
 
-        <div class="b-chat__newmessage">
-            <input type="text" autocomplete="off" ng-model="newMessage">
-            <button ng-click="sendMessage()">отправить</button>
+        <div class="b-chat__msgline">
+            <input class="b-chat__msgline__input" type="text" autocomplete="off" ng-model="newMessage" placeholder="Ваше сообщение...">
+            <button class="b-chat__msgline__btn" ng-click="sendMessage()">Отправить</button>
         </div>
 
     </div>

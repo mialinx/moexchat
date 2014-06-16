@@ -1,0 +1,119 @@
+@font-face {
+  font-family: "PTSans";
+  font-style: normal;
+  font-weight: normal;
+  src: url("/fonts/PTS55F-webfont.eot?#iefix") format("embedded-opentype"), url("/fonts/PTS55F-webfont.woff") format("woff"), url("/fonts/PTS55F-webfont.ttf") format("truetype"), url("/fonts/PTS55F-webfont.svg#pt_sansregular") format("svg"); }
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+html, body, form {
+  margin: 0px;
+  padding: 0px; }
+
+.b-chat {
+  position: relative;
+  width: 320px;
+  height: 475px;
+  background-color: #f7f7f7;
+  font-family: PTSans;
+  font-size: 14px;
+  cursor: default; }
+
+.b-chat__header {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  height: 30px;
+  text-align: center;
+  background-color: #5396e4;
+  color: white;
+  font-size: 120%; }
+
+.b-chat__header__menu {
+  position: absolute;
+  text-decoration: none;
+  width: 18px;
+  height: 18px;
+  top: 6px;
+  left: 9px;
+  background: red; }
+
+.b-chat__header__title {
+  margin-top: 3px;
+  display: inline-block;
+  line-height: 30px; }
+
+.b-chat__messages {
+  position: absolute;
+  top: 30px;
+  left: 0px;
+  right: 0px;
+  bottom: 32px; }
+
+.b-chat__item {
+  position: relative;
+  margin: 9px 9px 0px; }
+
+.b-chat__item__avatar {
+  position: absolute;
+  top: 0px;
+  left: 7px;
+  width: 47px;
+  height: 47px;
+  overflow: hidden; }
+  .b-chat__item__avatar img {
+    width: 47px;
+    height: 47px; }
+
+.b-chat__item__content {
+  top: 0px;
+  margin-left: 54px;
+  margin-right: 39px;
+  cursor: text; }
+
+.b-chat__item__content__text {
+  color: #4a4a4a; }
+
+.b-chat__item__content__from {
+  color: #9b9b9b; }
+
+.b-chat__item__ts {
+  position: absolute;
+  top: 0px;
+  right: 7px;
+  width: 32px;
+  color: #9b9b9b; }
+
+.b-chat__msgline {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  height: 32px;
+  border-top: solid 1px #ededed; }
+
+.b-chat__msgline__input {
+  border: none;
+  position: absolute;
+  padding: 7px;
+  height: 100%;
+  width: 80%; }
+
+.b-chat__msgline__btn {
+  border: none;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 30%;
+  height: 100%;
+  padding: 7px;
+  font-weight: bold;
+  color: #9b9b9b;
+  background: inherit;
+  cursor: pointer; }
+  .b-chat__msgline__btn:focus {
+    border: none; }

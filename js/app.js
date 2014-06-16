@@ -88,7 +88,7 @@ getmoexApp.controller('ChatCtrl', function ($scope, Pusher, Backend) {
     $scope.sendMessage = sendMessage;
     Pusher.channel.bind('client-message-test', function(data) {
         appendMessage(data);
-        $scope.apply();
+        $scope.$apply();
     });
 });
 
