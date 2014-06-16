@@ -29,7 +29,7 @@ html, body, form {
   right: 0px;
   height: 30px;
   text-align: center;
-  background-color: #5396e4;
+  background-color: #468ee5;
   color: white;
   font-size: 120%; }
 
@@ -56,12 +56,13 @@ html, body, form {
 
 .b-chat__item {
   position: relative;
-  margin: 9px 9px 0px; }
+  margin: 9px 9px 0px;
+  min-height: 47px; }
 
 .b-chat__item__avatar {
   position: absolute;
   top: 0px;
-  left: 7px;
+  left: 0px;
   width: 47px;
   height: 47px;
   overflow: hidden; }
@@ -71,15 +72,40 @@ html, body, form {
 
 .b-chat__item__content {
   top: 0px;
-  margin-left: 54px;
-  margin-right: 39px;
   cursor: text; }
+  .b-chat__item_incoming .b-chat__item__content {
+    margin-left: 54px;
+    margin-right: 39px; }
+  .b-chat__item_outgoing .b-chat__item__content {
+    margin-left: 39px;
+    margin-right: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+    border-radius: 5px;
+    background-color: #468ee5;
+    padding: 7px; }
+    .b-chat__item_outgoing .b-chat__item__content:after {
+      display: block;
+      content: '';
+      position: absolute;
+      width: 0px;
+      height: 0px;
+      border: solid 5px;
+      border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) #468ee5;
+      right: -4px;
+      bottom: 14px; }
 
-.b-chat__item__content__text {
+.b-chat__item_incoming .b-chat__item__content__text {
   color: #4a4a4a; }
+.b-chat__item_outgoing .b-chat__item__content__text {
+  color: white; }
 
-.b-chat__item__content__from {
+.b-chat__item_incoming .b-chat__item__content__from {
   color: #9b9b9b; }
+.b-chat__item_outgoing .b-chat__item__content__from {
+  color: #8fbbef; }
 
 .b-chat__item__ts {
   position: absolute;

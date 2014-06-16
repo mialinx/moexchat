@@ -2,11 +2,12 @@
 
 // theme
 $cl_background:     #f7f7f7; // light gray
-$cl_chrome:         #5396E4;
+$cl_chrome:         #468ee5;
 $cl_separator:      #ededed;
 $cl_text_dark:      #4a4a4a;
 $cl_text_light:     #9b9b9b;
 $cl_text_white:     #ffffff;
+$cl_transp:         rgba(0,0,0,0);
 
 $pane_width:        320px;
 $pane_height:       475px;
@@ -14,6 +15,7 @@ $header_height:     30px;
 $msgline_height:    32px;
 $avatar_size:       47px;
 $timestamp_width:   32px;
+$angle_width:       5px;
 
 // fonts
 
@@ -84,12 +86,13 @@ html,body,form {
         .b-chat__item {
             position: relative;
             margin: 9px 9px 0px;
+            min-height: $avatar_size;
         }
 
             .b-chat__item__avatar {
                 position: absolute;
                 top: 0px;
-                left: 7px;
+                left: 0px;
                 width: $avatar_size;
                 height: $avatar_size;
                 overflow: hidden;
@@ -101,17 +104,47 @@ html,body,form {
 
             .b-chat__item__content {
                 top: 0px;
-                margin-left: $avatar_size + 7px;
-                margin-right: $timestamp_width + 7px; 
                 cursor: text;
+                .b-chat__item_incoming & {
+                    margin-left: $avatar_size + 7px;
+                    margin-right: $timestamp_width + 7px; 
+                }
+                .b-chat__item_outgoing & {
+                    margin-left: $timestamp_width + 7px;
+                    margin-right: $angle_width;
+                    @include border-radius(5px);
+                    background-color: $cl_chrome;
+                    padding: 7px;
+                    &:after {
+                        display: block;
+                        content: '';
+                        position: absolute;
+                        width: 0px;
+                        height: 0px;
+                        border: solid $angle_width;
+                        border-color: $cl_transp $cl_transp $cl_transp $cl_chrome;
+                        right: -$angle_width + 1px;
+                        bottom: 14px;
+                    }
+                }
             }
 
                 .b-chat__item__content__text {
-                    color: $cl_text_dark; 
+                    .b-chat__item_incoming & {
+                        color: $cl_text_dark; 
+                    }
+                    .b-chat__item_outgoing & {
+                        color: $cl_text_white;
+                    }
                 }
 
                 .b-chat__item__content__from {
-                    color: $cl_text_light;
+                    .b-chat__item_incoming & {
+                        color: $cl_text_light;
+                    }
+                    .b-chat__item_outgoing & {
+                        color: #8fbbef;
+                    }
                 }
 
             .b-chat__item__ts {
