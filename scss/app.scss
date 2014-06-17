@@ -8,6 +8,7 @@ $cl_text_dark:      #4a4a4a;
 $cl_text_light:     #9b9b9b;
 $cl_text_white:     #ffffff;
 $cl_transp:         rgba(0,0,0,0);
+$cl_shadow:         rgba(155,155,155,0.3);
 
 $pane_width:        320px;
 $pane_height:       475px;
@@ -36,7 +37,7 @@ html,body,form {
     padding:0px;
 }
 
-.b-chat {
+.b-app {
     position: relative;
     width: $pane_width;
     height: $pane_height;
@@ -45,7 +46,7 @@ html,body,form {
     font-size: 14px;
     cursor: default;
 }
-    .b-chat__header {
+    .b-app__header {
         position: absolute;
         top: 0px;
         left: 0px;
@@ -57,7 +58,7 @@ html,body,form {
         color: $cl_text_white;
         font-size: 120%;
     }
-        .b-chat__header__menu {
+        .b-app__header__menu {
             position: absolute;
             text-decoration: none;
             width: 18px;
@@ -67,7 +68,7 @@ html,body,form {
             // TODO
             background: red;
         }
-        .b-chat__header__title {
+        .b-app__header__title {
             margin-top: 3px;
             display: inline-block;
             line-height: $header_height;
@@ -75,9 +76,38 @@ html,body,form {
             }
         }
 
+.b-login {
+    position: absolute;
+    top: $header_height;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: 200;
+    background-color: $cl_shadow;
+}
+    .b-login__form {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -100px;
+        margin-top: -100px;
+        width: 200px;
+        height: 200px;
+        background: $cl_background;
+        @include border-radius(5px);
+    }
+
+.b-chat {
+    position: absolute;
+    top: $header_height;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: 100;
+}
     .b-chat__messages {
         position: absolute;
-        top: $header_height;
+        top: 0px;
         left: 0px;
         right: 0px;
         bottom: $msgline_height;

@@ -9,19 +9,29 @@
 
     <link rel="stylesheet" href="/css/app.css">
 
-    <script src="/js/angular-1.3.0.js"></script>
+    <script src="/js/angular.min.js"></script>
+    <script src="/js/angular-cookies.min.js"></script>
     <script src="/js/pusher-2.2.min.js"></script>
     <script src="/js/app.js"></script>
 </head>
 
-<body ng-controller="ChatCtrl">
+<body class="b-app" ng-controller="AppCtrl">
 
-    <div class="b-chat">
+    <div class="b-app__header">
+        <span class="b-app__header__menu"></span>
+        <span class="b-app__header__title">Чат MOEX</span>
+    </div>
 
-        <div class="b-chat__header">
-            <span class="b-chat__header__menu"></span>
-            <span class="b-chat__header__title">Чат MOEX</span>
+    <div class="b-login" ng-controller="LoginCtrl" ng-if="!token">
+
+        <div class="b-login__form">
+            <input class="b-login__form__nick" type="text" ng-model="nickname">
+            <button ng-click="doLogin()">Войти</button>
         </div>
+            
+    </div>
+
+    <div class="b-chat" ng-controller="ChatCtrl">
 
         <div class="b-chat__messages">
             <div ng-repeat="message in messages">
@@ -58,7 +68,7 @@
             </div>
         </div>
 
-        <div class="b-chat__msgline">
+        <div class="b-chat__msgline" ng-if="token">
             <input class="b-chat__msgline__input" type="text" autocomplete="off" ng-model="newMessage" placeholder="Ваше сообщение...">
             <button class="b-chat__msgline__btn" ng-click="sendMessage()">Отправить</button>
         </div>

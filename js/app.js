@@ -1,11 +1,12 @@
 var CONFIG = {
     pusherAppKey: 'b139f2a300b26850df94',
-    pusherOptions: {}
+    pusherOptions: {},
+    apiBase: 'http://auth.getmoex.ru/api'
 };
 
-var getmoexApp = angular.module('GetmoexApp', []);
+var app = angular.module('GetmoexApp', ['ngCookies']);
 
-getmoexApp.factory('Pusher', function () {
+app.factory('Pusher', function () {
     var pusher = new Pusher(CONFIG.pusherAppKey, CONFIG.pusherOptions);
     var channel = pusher.subscribe('moex-global');
     // channel.bind('client-message', function(data) {
@@ -17,7 +18,7 @@ getmoexApp.factory('Pusher', function () {
     };
 });
 
-getmoexApp.factory('Backend', function ($http, $q) {
+app.factory('Backend', function ($http, $q) {
     function test(data) {
         var d = $q.defer();
         setTimeout(function() { d.resolve(data) }, 300);
@@ -27,6 +28,17 @@ getmoexApp.factory('Backend', function ($http, $q) {
         return p;
     }
     return {
+
+        initializeSession: function (clientType, nick) {
+            return $http({ 
+                method: 'POST', 
+                url: CONFIG.apiBase + '/v1/initialize_session',
+                data: {
+                    client_type: clientType
+                }
+            });
+        }, 
+
 
         loadHistory: function (id) {
         },
@@ -40,7 +52,28 @@ getmoexApp.factory('Backend', function ($http, $q) {
     };
 });
 
-getmoexApp.controller('ChatCtrl', function ($scope, Pusher, Backend) {
+app.controller('AppCtrl', function ($scope, $cookies, Backend) {
+    $scope.token = $cookies.token;
+    $scope.nickname = $cookies.nickname;
+});
+
+app.controller('LoginCtrl', function ($scope, $location, $cookies, Backend) {
+    $scope.doLogin = function() {
+        var nickname = $scope.nickname;
+        var clientType = $location.search()['client_type'];
+        Backend.initializeSession(clientType, nickname)
+            .success(function(data) {
+                $scope.token = data.token;
+                $cookies.token = data.token;
+                $cookies.nickname = nickname;
+            })
+            .error(function() {
+                // TODO: error handling
+            });
+    };
+});
+
+app.controller('ChatCtrl', function ($scope, Pusher, Backend) {
 
     $scope.messages = [
         {
