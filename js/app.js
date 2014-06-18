@@ -82,7 +82,7 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend) {
             nickname:       'Pupkin',
             client_type:    'web',
             text:           'Hello there!',
-            avatar_url:     '/img/av1.png'
+            avatar_url:     '/images/av1.png'
         },
         {
             type:           'incoming',
@@ -90,7 +90,7 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend) {
             nickname:       'Bilbo',
             client_type:    'ios',
             text:           'howdy ?',
-            avatar_url:     '/img/av2.png'
+            avatar_url:     '/images/av2.png'
         }
     ];
 
@@ -111,7 +111,7 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend) {
                     user_id:        0,     // TODO: self user id
                     nickname:       'nuf', // TODO: self nickname
                     client_type:    'web',
-                    avatar_url:     '/img/av3.png',
+                    avatar_url:     '/images/av3.png',
                     timestamp:      new Date()
                 });
                 $scope.newMessage = '';

@@ -19,14 +19,22 @@
 
     <div class="b-app__header">
         <span class="b-app__header__menu"></span>
-        <span class="b-app__header__title">Чат MOEX</span>
+        <a class="b-app__header__title" href="http://www.getmoex.ru" targe="_blank">Чат MOEX</a>
     </div>
 
     <div class="b-login" ng-controller="LoginCtrl" ng-if="!token">
 
+
         <div class="b-login__form">
-            <input class="b-login__form__nick" type="text" ng-model="nickname">
-            <button ng-click="doLogin()">Войти</button>
+
+            <img src="/images/nobody.png" class="b-login__avatar">
+
+            <div class="b-login__form__text">Пожалуйста, представьтесь</div>
+            <input class="b-login__form__nick" type="text" ng-model="nickname" placeholder="Ваше имя">
+            <div class="b-login__form__btns">
+                <a class="b-login__form__cancel" href="#">Отмена</a>
+                <button class="b-login__form__dologin" ng-click="doLogin()">Отправить</button>
+            </div>
         </div>
             
     </div>

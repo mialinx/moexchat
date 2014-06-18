@@ -1,4 +1,5 @@
 @import "compass/css3";
+@import "../images/icon/*.png";
 
 // theme
 $cl_background:     #f7f7f7; // light gray
@@ -37,6 +38,14 @@ html,body,form {
     padding:0px;
 }
 
+a {
+    color: $cl_text_light;
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
 .b-app {
     position: relative;
     width: $pane_width;
@@ -61,18 +70,26 @@ html,body,form {
         .b-app__header__menu {
             position: absolute;
             text-decoration: none;
-            width: 18px;
-            height: 18px;
-            top: 6px;
+            width: 20px;
+            height: 20px;
+            top: 5px;
             left: 9px;
-            // TODO
-            background: red;
+            @include icon-sprite(menu);
         }
         .b-app__header__title {
-            margin-top: 3px;
             display: inline-block;
             line-height: $header_height;
+            color: inherit;
+            text-decoration: none;
+            cursor: pointer;
             &:after {
+                content: '';
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                margin-left: 0.5em;
+                margin-bottom: -4px;
+                @include icon-sprite(logo);
             }
         }
 
@@ -83,7 +100,7 @@ html,body,form {
     right: 0px;
     bottom: 0px;
     z-index: 200;
-    background-color: $cl_shadow;
+    background-color: $cl_background;
 }
     .b-login__form {
         position: absolute;
@@ -93,9 +110,29 @@ html,body,form {
         margin-top: -100px;
         width: 200px;
         height: 200px;
-        background: $cl_background;
-        @include border-radius(5px);
+        text-align: center;
     }
+        .b-login__form__text {
+            margin-top: 36px;
+        }
+        .b-login__form__nick {
+            margin-top: 14px;
+            width: 100%;
+            border: solid 1px $cl_separator;
+            @include border-radius(5px);
+            background: #fff;
+            padding: 7px;
+        }
+        .b-login__form__btns {
+            margin-top: 14px;
+            width: 100%;
+        }
+            .b-login__form__cancel {
+                float: left;
+            }
+            .b-login__form__dologin {
+                float: right;
+            }
 
 .b-chat {
     position: absolute;
