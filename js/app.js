@@ -30,6 +30,8 @@ app.factory('Backend', function ($http, $q) {
     return {
 
         initializeSession: function (clientType, nick) {
+            return test({ token: 'lolwhat' });
+
             return $http({ 
                 method: 'POST', 
                 url: CONFIG.apiBase + '/v1/initialize_session',
@@ -123,7 +125,7 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend) {
             });
     }
 
-    Pusher.channel.bind('client-message-test', function(msg) {
+    Pusher.channel.bind('client-message', function(msg) {
         msg.type = 'incoming';
         msg.timestamp = new Date(msg.timestamp * 1000);
         appendMessage(msg);

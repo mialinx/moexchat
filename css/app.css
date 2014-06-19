@@ -79,19 +79,22 @@ a {
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-left: -100px;
-  margin-top: -100px;
-  width: 200px;
-  height: 200px;
+  margin-left: -125px;
+  margin-top: -130px;
+  width: 250px;
+  height: 300px;
   text-align: center; }
 
 .b-login__form__text {
-  margin-top: 36px; }
+  margin-top: 36px;
+  color: #4a4a4a; }
 
 .b-login__form__nick {
   margin-top: 14px;
   width: 100%;
-  border: solid 1px #ededed;
+  height: 34px;
+  font-size: 120%;
+  border: solid 1px #d0d0d0;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
@@ -102,13 +105,27 @@ a {
 
 .b-login__form__btns {
   margin-top: 14px;
-  width: 100%; }
+  width: 100%;
+  line-height: 30px; }
 
 .b-login__form__cancel {
   float: left; }
 
 .b-login__form__dologin {
-  float: right; }
+  float: right;
+  border: none;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  background-color: #70c050;
+  color: white;
+  padding: 7px 14px;
+  font-weight: bold;
+  cursor: pointer; }
+  .b-login__form__dologin:hover {
+    background-color: #7fc763; }
 
 .b-chat {
   position: absolute;
