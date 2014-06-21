@@ -39,7 +39,7 @@
             
     </div>
 
-    <div class="b-chat" ng-controller="ChatCtrl">
+    <div class="b-chat" ng-controller="ChatCtrl" ng-if="token">
 
         <div class="b-chat__messages">
             <div ng-repeat="message in messages">
@@ -52,9 +52,7 @@
                         <div class="b-chat__item__content__text">{{ message.text }}</div>
                         <div class="b-chat__item__content__from">{{ message.client_type }}</div>
                     </div>
-                    <div class="b-chat__item__ts">
-                        {{ message.timestamp }}
-                    </div>
+                    <div class="b-chat__item__ts" ng-bind-html="message.timestamp | nicedate"></div>
                 </div>
 
                 <div ng-if="message.type == 'outgoing'" class="b-chat__item b-chat__item_outgoing">
@@ -62,9 +60,7 @@
                         <div class="b-chat__item__content__text">{{ message.text }}</div>
                         <div class="b-chat__item__content__from">{{ message.client_type }}</div>
                     </div>
-                    <div class="b-chat__item__ts">
-                        {{ message.timestamp }}
-                    </div>
+                    <div class="b-chat__item__ts" ng-bind-html="message.timestamp | nicedate"></div>
                 </div>
 
                 <div ng-if="message.type == 'info'" class="b-chat__item b-chat__item_info">
@@ -76,10 +72,10 @@
             </div>
         </div>
 
-        <div class="b-chat__msgline" ng-if="token">
+        <form class="b-chat__msgline">
             <input class="b-chat__msgline__input" type="text" autocomplete="off" ng-model="newMessage" placeholder="Ваше сообщение...">
-            <button class="b-chat__msgline__btn" ng-click="sendMessage()">Отправить</button>
-        </div>
+            <button class="b-chat__msgline__btn" ng-click="sendMessage()" ng-disabled="!newMessage.length">Отправить</button>
+        </form>
 
     </div>
 

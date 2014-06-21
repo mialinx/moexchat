@@ -18,7 +18,7 @@ $pane_height:       475px;
 $header_height:     30px;
 $msgline_height:    32px;
 $avatar_size:       47px;
-$timestamp_width:   32px;
+$timestamp_width:   45px;
 $angle_width:       5px;
 
 // fonts
@@ -56,7 +56,9 @@ a {
     font-family: PTSans;
     font-size: 14px;
     cursor: default;
+    border: solid 2px $cl_chrome;
 }
+
     .b-app__header {
         position: absolute;
         top: 0px;
@@ -70,6 +72,7 @@ a {
         font-size: 120%;
     }
         .b-app__header__menu {
+            display: none; //temp
             position: absolute;
             text-decoration: none;
             width: 20px;
@@ -82,7 +85,7 @@ a {
             display: inline-block;
             line-height: $header_height;
             color: inherit;
-            text-decoration: none;
+            text-decoration: none !important;
             cursor: pointer;
             &:after {
                 content: '';
@@ -138,7 +141,6 @@ a {
             }
             .b-login__form__dologin {
                 float: right;
-
                 border: none;
                 @include border-radius(5px);
                 background-color: $cl_accent;
@@ -149,7 +151,6 @@ a {
                 &:hover {
                     background-color: lighten($cl_accent, 5%);
                 }
-                
             }
 
 .b-chat {
@@ -190,6 +191,7 @@ a {
             .b-chat__item__content {
                 top: 0px;
                 cursor: text;
+                position: relative;
                 .b-chat__item_incoming & {
                     margin-left: $avatar_size + 7px;
                     margin-right: $timestamp_width + 7px; 
@@ -208,8 +210,8 @@ a {
                         height: 0px;
                         border: solid $angle_width;
                         border-color: $cl_transp $cl_transp $cl_transp $cl_chrome;
-                        right: -$angle_width + 1px;
-                        bottom: 14px;
+                        right: -$angle_width - $angle_width + 1px;
+                        bottom: 7px;
                     }
                 }
             }
@@ -238,6 +240,14 @@ a {
                 right: 7px;
                 width: $timestamp_width;
                 color: $cl_text_light;
+                white-space: nowrap;
+                .b-chat__item_incoming & {
+                    text-align: right;
+                }
+                .b-chat__item_outgoing & {
+                    right: auto;
+                    left: 7px;
+                }
             }
             
 
@@ -270,6 +280,13 @@ a {
             background: inherit;
             cursor: pointer;
             &:focus {
-                border: none
+                border: none;
+            }
+            &:hover {
+                background: $cl_sep_light;
+            }
+            &:disabled {
+                color: lighten($cl_text_light, 20);
+                background: inherit !important;
             }
         }
