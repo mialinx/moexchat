@@ -22,7 +22,7 @@
         <a class="b-app__header__title" href="http://www.getmoex.ru" targe="_blank">Чат MOEX</a>
     </div>
 
-    <div class="b-login" ng-controller="LoginCtrl" ng-if="!token">
+    <div class="b-login" ng-controller="LoginCtrl" ng-if="!user.isAuthorized">
 
 
         <div class="b-login__form">
@@ -39,7 +39,7 @@
             
     </div>
 
-    <div class="b-chat" ng-controller="ChatCtrl" ng-if="token">
+    <div class="b-chat" ng-controller="ChatCtrl" ng-if="user.isAuthorized">
 
         <div class="b-chat__messages">
             <div ng-repeat="message in messages">
@@ -48,19 +48,19 @@
                     <div class="b-chat__item__avatar">
                         <img ng-src="{{ message.avatar_url }}" title="{{ message.nickname }}" alt="{{ message.nickname }}"/>
                     </div>
+                    <div class="b-chat__item__ts" ng-bind-html="message.timestamp | nicedate"></div>
                     <div class="b-chat__item__content">
                         <div class="b-chat__item__content__text">{{ message.text }}</div>
                         <div class="b-chat__item__content__from">{{ message.client_type }}</div>
                     </div>
-                    <div class="b-chat__item__ts" ng-bind-html="message.timestamp | nicedate"></div>
                 </div>
 
                 <div ng-if="message.type == 'outgoing'" class="b-chat__item b-chat__item_outgoing">
+                    <div class="b-chat__item__ts" ng-bind-html="message.timestamp | nicedate"></div>
                     <div class="b-chat__item__content">
                         <div class="b-chat__item__content__text">{{ message.text }}</div>
                         <div class="b-chat__item__content__from">{{ message.client_type }}</div>
                     </div>
-                    <div class="b-chat__item__ts" ng-bind-html="message.timestamp | nicedate"></div>
                 </div>
 
                 <div ng-if="message.type == 'info'" class="b-chat__item b-chat__item_info">
@@ -72,9 +72,9 @@
             </div>
         </div>
 
-        <form class="b-chat__msgline">
+        <form class="b-chat__msgline" ng-submit="sendMessage()" >
             <input class="b-chat__msgline__input" type="text" autocomplete="off" ng-model="newMessage" placeholder="Ваше сообщение...">
-            <button class="b-chat__msgline__btn" ng-click="sendMessage()" ng-disabled="!newMessage.length">Отправить</button>
+            <button class="b-chat__msgline__btn" ng-disabled="!newMessage.length">Отправить</button>
         </form>
 
     </div>

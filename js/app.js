@@ -18,6 +18,10 @@ app.factory('Pusher', function () {
     };
 });
 
+app.factory('Global', function () {
+    return { };
+});
+
 app.factory('Backend', function ($http, $q) {
     function test(data) {
         var d = $q.defer();
@@ -29,7 +33,7 @@ app.factory('Backend', function ($http, $q) {
     }
     return {
 
-        initializeSession: function (clientType, nick) {
+        initializeSession: function (clientType) {
             return test({ token: 'lolwhat' });
 
             return $http({ 
@@ -150,18 +154,24 @@ app.filter('nicedate', function(Utils, $sce) {
     }
 });
 
-app.controller('AppCtrl', function ($scope, $cookies, Backend) {
-    $scope.token = $cookies.token;
-    $scope.nickname = $cookies.nickname;
+app.controller('AppCtrl', function ($scope, $location, $cookies, Backend, Global) {
+    Global.user = {
+        token: $cookies.token,
+        isAuthorized: ($cookies.token ? true : false),
+        nickname: $cookies.nickname,
+        clientType: $location.search()['client_type']
+    };
+    $scope.user = Global.user;
 });
 
-app.controller('LoginCtrl', function ($scope, $location, $cookies, Backend) {
+app.controller('LoginCtrl', function ($scope, $cookies, Backend, Global) {
     $scope.doLogin = function() {
         var nickname = $scope.nickname;
-        var clientType = $location.search()['client_type'];
-        Backend.initializeSession(clientType, nickname)
+        Backend.initializeSession(Global.user.clientType)
             .success(function(data) {
-                $scope.token = data.token;
+                Global.user.token = data.token;
+                Global.user.nickname = nickname;
+                Global.user.isAuthorized = true;
                 $cookies.token = data.token;
                 $cookies.nickname = nickname;
             })
@@ -171,7 +181,7 @@ app.controller('LoginCtrl', function ($scope, $location, $cookies, Backend) {
     };
 });
 
-app.controller('ChatCtrl', function ($scope, Pusher, Backend) {
+app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global) {
 
     $scope.messages = [
         {
@@ -216,8 +226,8 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend) {
                     self:           true,
                     text:           msg,
                     user_id:        0,     // TODO: self user id
-                    nickname:       'nuf', // TODO: self nickname
-                    client_type:    'web',
+                    nickname:       Global.user.nickname,
+                    client_type:    Global.user.clientType,
                     avatar_url:     '/images/av3.png',
                     timestamp:      new Date()
                 });
