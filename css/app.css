@@ -68,6 +68,25 @@ a {
     margin-bottom: -4px;
     background-position: 0 0; }
 
+.b-connection {
+  position: absolute;
+  top: 30px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  z-index: 200;
+  background-color: #f7f7f7; }
+
+.b-connection__spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -40px;
+  margin-top: -40px;
+  width: 80px;
+  height: 80px;
+  background: url(/images/spinner.gif); }
+
 .b-login {
   position: absolute;
   top: 30px;
@@ -142,7 +161,8 @@ a {
   top: 0px;
   left: 0px;
   right: 0px;
-  bottom: 32px; }
+  bottom: 32px;
+  overflow-y: scroll; }
 
 .b-chat__item {
   position: relative;
@@ -221,10 +241,11 @@ a {
 
 .b-chat__msgline__input {
   border: none;
+  outline: none;
   position: absolute;
   padding: 7px;
   height: 100%;
-  width: 80%; }
+  width: 70%; }
 
 .b-chat__msgline__btn {
   border: none;

@@ -1,4 +1,5 @@
 var CONFIG = {
+    messagesPerPage: 20,
     pusherAppKey: 'b139f2a300b26850df94',
     pusherOptions: {
          authTransport: 'jsonp',
@@ -9,9 +10,11 @@ var CONFIG = {
 
 var app = angular.module('GetmoexApp', ['ngCookies']);
 
-app.factory('Pusher', function () {
-    var pusher = new Pusher(CONFIG.pusherAppKey, CONFIG.pusherOptions);
-    var channel = pusher.subscribe('moex-global');
+app.factory('Pusher', function (Global) {
+    var pusherOptions = angular.extend({}, CONFIG.pusherOptions);
+    pusherOptions.authEndpoint = pusherOptions.authEndpoint + '/' + Global.user.session.token;
+    var pusher = new Pusher(CONFIG.pusherAppKey, pusherOptions);
+    var channel = pusher.subscribe(Global.user.session.channel_name);
     return {
         pusher: pusher,
         channel: channel
@@ -22,8 +25,29 @@ app.factory('Global', function () {
     return { };
 });
 
-app.factory('Backend', function ($http, $q) {
-    function test(data) {
+app.factory('Storage', function () {
+    var ls = window.localStorage;
+    return {
+        get: function (key) {
+            try {
+                return angular.fromJson(ls[key]);
+            }
+            catch (e) {
+                return null;
+            }
+        },
+        set: function (key, val) {
+            ls[key] = angular.toJson(val);
+        },
+        del: function (key) {
+            delete ls[key];
+        }
+    }
+});
+
+app.factory('Backend', function ($http, $q, Global) {
+
+    function fake(data) {
         var d = $q.defer();
         setTimeout(function() { d.resolve(data) }, 300);
         var p = d.promise;
@@ -31,30 +55,38 @@ app.factory('Backend', function ($http, $q) {
         p.error = function(cb) { p.then(null, cb); return p};
         return p;
     }
+
+    function callJSONP(method, data) {
+        var url = CONFIG.apiBase + '/v1/jsonp/' + method;
+        var first = true;
+        data['callback'] = 'JSON_CALLBACK';
+        for (var key in data) {
+            if (typeof data[key]  == "undefined") continue;
+            url += (first ? '?' : '&');
+            url += encodeURIComponent(key);
+            url += '=' + encodeURIComponent(data[key]);
+            first = false;
+        }
+        return $http.jsonp(url);
+    }
+
     return {
 
         initializeSession: function (clientType) {
-            return test({ token: 'lolwhat' });
-
-            return $http({ 
-                method: 'POST', 
-                url: CONFIG.apiBase + '/v1/initialize_session',
-                data: {
-                    client_type: clientType
-                }
-            });
+            return callJSONP('initialize_session', { 
+                client_type: clientType 
+            }); 
         }, 
 
-
-        loadHistory: function (id) {
-        },
-
-        sendMessage: function (text) {
-            return test({});
-        },
-
-        getSession: function () {
+        messagesFetch: function (lastMessageId) {
+            return callJSONP('messages/fetch', { 
+                channel: Global.user.session.channel_name,
+                per_page: CONFIG.messagesPerPage, 
+                last_message_id: lastMessageId,
+                token: Global.user.session.token
+            });
         }
+
     };
 });
 
@@ -135,8 +167,8 @@ app.filter('nicedate', function(Utils, $sce) {
         var wDayNames = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
         var mNames = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
         var now = new Date();
-        var time = (ts.getMinutes() > 9 ? ts.getMinutes() : '0' + ts.getMinutes()) + ':' + 
-                   (ts.getSeconds() > 9 ? ts.getSeconds() : '0' + ts.getSeconds());
+        var time = (ts.getHours() > 9 ? ts.getHours() : '0' + ts.getHours()) + ':' +
+                   (ts.getMinutes() > 9 ? ts.getMinutes() : '0' + ts.getMinutes());
         var res = '';
         if (ts.getYear() == now.getYear() && 
             ts.getMonth() == now.getMonth() &&
@@ -154,97 +186,65 @@ app.filter('nicedate', function(Utils, $sce) {
     }
 });
 
-app.controller('AppCtrl', function ($scope, $location, $cookies, Backend, Global) {
-    Global.user = {
-        token: $cookies.token,
-        isAuthorized: ($cookies.token ? true : false),
-        nickname: $cookies.nickname,
-        clientType: $location.search()['client_type']
-    };
-    $scope.user = Global.user;
+app.controller('AppCtrl', function ($scope, $location, Storage, Backend, Global) {
+
+    var user = {};
+    user.nickname = Storage.get('nickname');
+    user.session = Storage.get('session');
+
+    if (!user.session || !user.session.token 
+        || (user.session.expires && new Date() > new Date(user.session.expires_at || 0)))
+    {
+        var clientType = $location.search()['client_type'] || 'getmoex.ru';
+        Backend.initializeSession(clientType)
+            .success(function(session) {
+                if (session.result != "ok") return;
+                Storage.set('session', session);
+                user.session = session;
+            });
+    }
+
+    $scope.user = Global.user = user;
 });
 
-app.controller('LoginCtrl', function ($scope, $cookies, Backend, Global) {
-    $scope.doLogin = function() {
+app.controller('PresentCtrl', function ($scope, Storage, Global) {
+    $scope.setNickname = function() {
         var nickname = $scope.nickname;
-        Backend.initializeSession(Global.user.clientType)
-            .success(function(data) {
-                Global.user.token = data.token;
-                Global.user.nickname = nickname;
-                Global.user.isAuthorized = true;
-                $cookies.token = data.token;
-                $cookies.nickname = nickname;
-            })
-            .error(function() {
-                // TODO: error handling
-            });
+        Global.user.nickname = nickname;
+        Storage.set('nickname', nickname);
     };
 });
 
 app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global) {
 
-    $scope.messages = [
-        {
-            type:           'incoming',
-            user_id:        33,
-            nickname:       'Pupkin',
-            client_type:    'web',
-            text:           'Hello there!',
-            avatar_url:     '/images/av1.png',
-            timestamp:      new Date(2012, 12, 12, 12, 12)
-        },
-        {
-            type:           'incoming',
-            user_id:        44,
-            nickname:       'Bilbo',
-            client_type:    'ios',
-            text:           'howdy ?',
-            avatar_url:     '/images/av2.png',
-            timestamp:      new Date(2014, 2, 2, 15, 15)
-        }
-    ];
-
-    function appendMessage(msg) {
-        $scope.messages.push(msg);
-    }
+    Backend.messagesFetch()
+        .success(function(data) {
+            if (data.result != "ok") return;
+            var messages = data.messages || [];
+            messages.reverse();
+            $scope.messages = messages;
+        });
 
     $scope.sendMessage = function () {
-        var msg = $scope.newMessage;
-        $scope.messageSending = true;
-
-        // TODO: send directly to pusher
-        // Pusher.channel.trigger('client-message', {
-        //     message: msg,
-        //     anonymous_pic_url: '/images/av3.png',
-        //     token: $scope.token
-        // });
-
-        Backend.sendMessage(msg)
-            .success(function() {
-                appendMessage({
-                    type:           'outgoing',
-                    self:           true,
-                    text:           msg,
-                    user_id:        0,     // TODO: self user id
-                    nickname:       Global.user.nickname,
-                    client_type:    Global.user.clientType,
-                    avatar_url:     '/images/av3.png',
-                    timestamp:      new Date()
-                });
-                $scope.newMessage = '';
-                $scope.messageSending = false;
-            })
-            .error(function() {
-                // TODO: display error
-                $scope.messageSending = false;
-            });
-    }
+        var user = Global.user;
+        var message = {
+            text:               $scope.newMessage,
+            nickname:           user.nickname,
+            client_type:        user.session.client_type,
+            anonymous:          true,
+            anonymous_pic_url:  user.session.anonymous_pic_url,
+            timestamp:          new Date()
+        };
+        var pusherMessage = angular.extend({}, message, { token: user.session.token });
+        Pusher.channel.trigger('client-message', pusherMessage);
+        var scopeMessage = angular.extend({}, message, { my: true });
+        $scope.messages.push(scopeMessage);
+    };
 
     Pusher.channel.bind('client-message', function(msg) {
-        msg.type = 'incoming';
-        msg.timestamp = new Date(msg.timestamp * 1000);
-        appendMessage(msg);
+        $scope.messages.push(msg);
         $scope.$apply();
     });
+
 });
 
