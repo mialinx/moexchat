@@ -187,7 +187,7 @@ a {
         left: 0px;
         right: 0px;
         bottom: $msgline_height;
-        overflow-y: scroll;
+        overflow-y: auto;
     }
 
         .b-chat__item {

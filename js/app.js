@@ -8,7 +8,7 @@ var CONFIG = {
     apiBase: 'http://auth.getmoex.ru/api'
 };
 
-var app = angular.module('GetmoexApp', ['ngCookies']);
+var app = angular.module('GetmoexApp', []);
 
 app.factory('Pusher', function (Global) {
     var pusherOptions = angular.extend({}, CONFIG.pusherOptions);
