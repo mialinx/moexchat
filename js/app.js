@@ -186,6 +186,42 @@ app.filter('nicedate', function(Utils, $sce) {
     }
 });
 
+app.directive('scrollBar', function ($timeout) {
+    return function ($scope, element, attrs) {
+        var plHndl, plOffset;
+        var el = element[0];
+
+        el.scrollTop = Math.max(el.scrollHeight - el.clientHeight, 0);
+
+        if (attrs.updateOn) {
+            $scope.$watch(attrs.updateOn, function () {
+                setTimeout(function () {
+                    if (typeof plOffset == "number") {
+                        el.scrollTop = el.scrollHeight - plOffset;
+                        plOffset = undefined;
+                    }
+                    else {
+                        el.scrollTop = Math.max(el.scrollHeight - el.clientHeight, 0);
+                    }
+                });
+            });
+        }
+
+        if (attrs.progressiveLoad && attrs.progressiveLoadMargin) {
+            element.on('scroll', function () {
+                if (el.scrollTop < attrs.progressiveLoadMargin) {
+                    clearTimeout(plHndl);
+                    plHndl = setTimeout(function () {
+                        plOffset = el.scrollHeight - el.scrollTop;
+                        $scope[attrs.progressiveLoad]();
+                        $scope.apply();
+                    }, 250);
+                }
+            });
+        }
+    };
+});
+
 app.controller('AppCtrl', function ($scope, $location, Storage, Backend, Global) {
 
     var user = {};
@@ -217,13 +253,25 @@ app.controller('PresentCtrl', function ($scope, Storage, Global) {
 
 app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global) {
 
-    Backend.messagesFetch()
-        .success(function(data) {
-            if (data.result != "ok") return;
-            var messages = data.messages || [];
-            messages.reverse();
-            $scope.messages = messages;
-        });
+    $scope.messages = [];
+
+    $scope.loadHistory = function () {
+        var messages = $scope.messages;
+        var lastMsgId;
+        for (var i = 0; i < messages.length; i++) {
+            lastMsgId = messages[i]._id;
+            if (lastMsgId) break;
+        }
+        Backend.messagesFetch(lastMsgId)
+            .success(function (data) {
+                if (data.result != "ok") return;
+                var page = data.messages || [];
+                page.reverse();
+                messages.unshift.apply(messages, page);
+            });
+    };
+
+    $scope.loadHistory();
 
     $scope.sendMessage = function () {
         var user = Global.user;
@@ -239,6 +287,7 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global) {
         Pusher.channel.trigger('client-message', pusherMessage);
         var scopeMessage = angular.extend({}, message, { my: true });
         $scope.messages.push(scopeMessage);
+        $scope.newMessage = '';
     };
 
     Pusher.channel.bind('client-message', function(msg) {
