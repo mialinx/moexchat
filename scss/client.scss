@@ -1,0 +1,36 @@
+
+#getmoex_chat_btn {
+    display: block;
+    position: fixed;
+    bottom: 0;
+    right: 200px;
+    width: 100px;
+    height: 50px;
+    background: red;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 0px;
+    padding: 0px;
+}
+
+#getmoex_chat {
+    display: none;
+    position: fixed;
+    bottom: 0px;
+    right: 100px;
+    border: none;
+    width: 320px;
+    height: 475px;
+    margin: 0px;
+    padding: 0px;
+}
+
+#getmoex_chat_close {
+    display: none;
+    position: fixed;
+    bottom: 450px;
+    right: 65px;
+    cursor: pointer;
+    margin: 0px;
+    padding: 0px;
+}

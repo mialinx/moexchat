@@ -162,8 +162,12 @@ a {
   top: 0px;
   left: 0px;
   right: 0px;
-  bottom: 32px;
-  overflow-y: auto; }
+  bottom: 32px; }
+
+.b-chat__messages__scrollable {
+  overflow-y: auto;
+  height: 100%;
+  width: 100%; }
 
 .b-chat__item {
   position: relative;
