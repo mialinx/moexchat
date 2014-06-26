@@ -22,7 +22,7 @@
     </div>
 
     <div class="b-connection" ng-if="!user.session.token">
-        <div class="b-connection__spinner"></div>
+        <div class="b-spinner"></div>
     </div>
 
     <div class="b-login" ng-controller="PresentCtrl" ng-if="user.session.token && !user.nickname">
@@ -45,6 +45,9 @@
 
         <div class="b-chat__messages" scroll-bar update-on="messages.length" 
                 progressive-load="loadHistory" progressive-load-margin="50">
+
+            <div class="b-spinner" ng-show="messagesLoading"></div>
+
             <div ng-repeat="message in messages">
 
                 <div ng-if="!message.my" class="b-chat__item b-chat__item_incoming">

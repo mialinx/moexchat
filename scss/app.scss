@@ -1,6 +1,5 @@
 @import "compass/css3";
 @import "../images/icon/*.png";
-@import "baron";
 
 // theme
 $cl_background:     #f7f7f7; // light gray
@@ -108,16 +107,18 @@ a {
     z-index: 200;
     background-color: $cl_background;
 }
-    .b-connection__spinner {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin-left: -40px;
-        margin-top: -40px;
-        width: 80px;
-        height: 80px;
-        background: url(/images/spinner.gif);
-    }
+
+.b-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -40px;
+    margin-top: -40px;
+    width: 80px;
+    height: 80px;
+    background: url(/images/spinner.gif);
+    z-index: 100;
+}
 
 .b-login {
     position: absolute;

@@ -214,7 +214,7 @@ app.directive('scrollBar', function ($timeout) {
                     plHndl = setTimeout(function () {
                         plOffset = el.scrollHeight - el.scrollTop;
                         $scope[attrs.progressiveLoad]();
-                        $scope.apply();
+                        $scope.$apply();
                     }, 250);
                 }
             });
@@ -262,12 +262,16 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global) {
             lastMsgId = messages[i]._id;
             if (lastMsgId) break;
         }
+        $scope.messagesLoading = true;
         Backend.messagesFetch(lastMsgId)
             .success(function (data) {
                 if (data.result != "ok") return;
                 var page = data.messages || [];
                 page.reverse();
                 messages.unshift.apply(messages, page);
+            })
+            .then(function () {
+                $scope.messagesLoading = false;
             });
     };
 

@@ -1,59 +1,269 @@
-/*
-Syntax error: File to import not found or unreadable: baron.
-              Load paths:
-                /home/nuf/dev/moexchat
-                /home/nuf/dev/moexchat/sass
-                /var/lib/gems/1.9.1/gems/compass-0.12.6/frameworks/blueprint/stylesheets
-                /var/lib/gems/1.9.1/gems/compass-0.12.6/frameworks/compass/stylesheets
-                Compass::SpriteImporter
-                /home/nuf/dev/moexchat/scss
-        on line 3 of scss/app.scss
+.icon-sprite, .b-app__header__menu, .b-app__header__title:after {
+  background: url('/images/../images/icon-sf8105af48f.png') no-repeat; }
 
-1: @import "compass/css3";
-2: @import "../images/icon/*.png";
-3: @import "baron";
-4: 
-5: // theme
-6: $cl_background:     #f7f7f7; // light gray
-7: $cl_chrome:         #468ee5;
-8: $cl_sep_light:      #ededed;
+@font-face {
+  font-family: "PTSans";
+  font-style: normal;
+  font-weight: normal;
+  src: url("/fonts/PTS55F-webfont.eot?#iefix") format("embedded-opentype"), url("/fonts/PTS55F-webfont.woff") format("woff"), url("/fonts/PTS55F-webfont.ttf") format("truetype"), url("/fonts/PTS55F-webfont.svg#pt_sansregular") format("svg"); }
 
-Backtrace:
-scss/app.scss:3
-/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/import_node.rb:67:in `rescue in import'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/import_node.rb:45:in `import'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/import_node.rb:28:in `imported_file'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/import_node.rb:37:in `css_import?'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/perform.rb:217:in `visit_import'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/base.rb:37:in `visit'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/perform.rb:100:in `visit'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/base.rb:53:in `block in visit_children'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/base.rb:53:in `map'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/base.rb:53:in `visit_children'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/perform.rb:109:in `block in visit_children'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/perform.rb:121:in `with_environment'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/perform.rb:108:in `visit_children'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/base.rb:37:in `block in visit'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/perform.rb:128:in `visit_root'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/base.rb:37:in `visit'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/perform.rb:100:in `visit'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/perform.rb:7:in `visit'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/root_node.rb:20:in `render'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/engine.rb:315:in `_render'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/engine.rb:262:in `render'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/plugin/compiler.rb:362:in `update_stylesheet'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/plugin/compiler.rb:203:in `block in update_stylesheets'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/plugin/compiler.rb:201:in `each'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/plugin/compiler.rb:201:in `update_stylesheets'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/plugin/compiler.rb:283:in `block in watch'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/vendor/listen/lib/listen/multi_listener.rb:108:in `call'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/vendor/listen/lib/listen/multi_listener.rb:108:in `on_change'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/vendor/listen/lib/listen/multi_listener.rb:117:in `block in initialize_adapter'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/vendor/listen/lib/listen/adapters/polling.rb:56:in `call'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/vendor/listen/lib/listen/adapters/polling.rb:56:in `poll'
-/var/lib/gems/1.9.1/gems/sass-3.2.19/vendor/listen/lib/listen/adapters/polling.rb:32:in `block in start'
-*/
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Syntax error: File to import not found or unreadable: baron.\A               Load paths:\A                 /home/nuf/dev/moexchat\A                 /home/nuf/dev/moexchat/sass\A                 /var/lib/gems/1.9.1/gems/compass-0.12.6/frameworks/blueprint/stylesheets\A                 /var/lib/gems/1.9.1/gems/compass-0.12.6/frameworks/compass/stylesheets\A                 Compass::SpriteImporter\A                 /home/nuf/dev/moexchat/scss\A         on line 3 of scss/app.scss\A \A 1: @import \"compass/css3\";\A 2: @import \"../images/icon/*.png\";\A 3: @import \"baron\";\A 4: \A 5: // theme\A 6: $cl_background:     #f7f7f7; // light gray\A 7: $cl_chrome:         #468ee5;\A 8: $cl_sep_light:      #ededed;"; }
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+html, body, form {
+  margin: 0px;
+  padding: 0px; }
+
+a {
+  color: #9b9b9b;
+  text-decoration: none; }
+  a:hover {
+    text-decoration: underline; }
+
+.b-app {
+  position: relative;
+  width: 320px;
+  height: 475px;
+  background-color: #f7f7f7;
+  font-family: PTSans;
+  font-size: 14px;
+  cursor: default;
+  border: solid 2px #468ee5; }
+
+.b-app__header {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  height: 30px;
+  text-align: center;
+  background-color: #468ee5;
+  color: white;
+  font-size: 120%; }
+
+.b-app__header__menu {
+  display: none;
+  position: absolute;
+  text-decoration: none;
+  width: 20px;
+  height: 20px;
+  top: 5px;
+  left: 9px;
+  background-position: 0 -57px; }
+
+.b-app__header__title {
+  display: inline-block;
+  line-height: 30px;
+  color: inherit;
+  text-decoration: none !important;
+  cursor: pointer; }
+  .b-app__header__title:after {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-left: 0.5em;
+    margin-bottom: -4px;
+    background-position: 0 0; }
+
+.b-connection {
+  position: absolute;
+  top: 30px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  z-index: 200;
+  background-color: #f7f7f7; }
+
+.b-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -40px;
+  margin-top: -40px;
+  width: 80px;
+  height: 80px;
+  background: url(/images/spinner.gif);
+  z-index: 100; }
+
+.b-login {
+  position: absolute;
+  top: 30px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  z-index: 200;
+  background-color: #f7f7f7; }
+
+.b-login__form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -125px;
+  margin-top: -130px;
+  width: 250px;
+  height: 300px;
+  text-align: center; }
+
+.b-login__form__text {
+  margin-top: 36px;
+  color: #4a4a4a; }
+
+.b-login__form__nick {
+  margin-top: 14px;
+  width: 100%;
+  height: 34px;
+  font-size: 120%;
+  border: solid 1px #d0d0d0;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  background: #fff;
+  padding: 7px; }
+
+.b-login__form__btns {
+  margin-top: 14px;
+  width: 100%;
+  line-height: 30px; }
+
+.b-login__form__cancel {
+  float: left; }
+
+.b-login__form__dologin {
+  float: right;
+  border: none;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  background-color: #70c050;
+  color: white;
+  padding: 7px 14px;
+  font-weight: bold;
+  cursor: pointer; }
+  .b-login__form__dologin:hover {
+    background-color: #7fc763; }
+
+.b-chat {
+  position: absolute;
+  top: 30px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  z-index: 100; }
+
+.b-chat__messages {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 32px;
+  overflow-y: auto; }
+
+.b-chat__item {
+  position: relative;
+  margin: 9px 9px 0px;
+  min-height: 47px; }
+
+.b-chat__item__avatar {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 47px;
+  height: 47px;
+  overflow: hidden; }
+  .b-chat__item__avatar img {
+    width: 47px;
+    height: 47px; }
+
+.b-chat__item__content {
+  top: 0px;
+  cursor: text;
+  position: relative; }
+  .b-chat__item_incoming .b-chat__item__content {
+    margin-left: 54px;
+    margin-right: 52px; }
+  .b-chat__item_outgoing .b-chat__item__content {
+    margin-left: 52px;
+    margin-right: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+    border-radius: 5px;
+    background-color: #468ee5;
+    padding: 7px; }
+    .b-chat__item_outgoing .b-chat__item__content:after {
+      display: block;
+      content: '';
+      position: absolute;
+      width: 0px;
+      height: 0px;
+      border: solid 5px;
+      border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) #468ee5;
+      right: -9px;
+      bottom: 7px; }
+
+.b-chat__item_incoming .b-chat__item__content__text {
+  color: #4a4a4a; }
+.b-chat__item_outgoing .b-chat__item__content__text {
+  color: white; }
+
+.b-chat__item_incoming .b-chat__item__content__from {
+  color: #9b9b9b; }
+.b-chat__item_outgoing .b-chat__item__content__from {
+  color: #8fbbef; }
+
+.b-chat__item__ts {
+  position: absolute;
+  top: 0px;
+  right: 7px;
+  width: 45px;
+  color: #9b9b9b;
+  white-space: nowrap; }
+  .b-chat__item_incoming .b-chat__item__ts {
+    text-align: right; }
+  .b-chat__item_outgoing .b-chat__item__ts {
+    right: auto;
+    left: 7px; }
+
+.b-chat__msgline {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  height: 32px;
+  border-top: solid 1px #ededed; }
+
+.b-chat__msgline__input {
+  border: none;
+  outline: none;
+  position: absolute;
+  padding: 7px;
+  height: 100%;
+  width: 70%; }
+
+.b-chat__msgline__btn {
+  border: none;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 30%;
+  height: 100%;
+  padding: 7px;
+  font-weight: bold;
+  color: #9b9b9b;
+  background: inherit;
+  cursor: pointer; }
+  .b-chat__msgline__btn:focus {
+    border: none; }
+  .b-chat__msgline__btn:hover {
+    background: #ededed; }
+  .b-chat__msgline__btn:disabled {
+    color: #cecece;
+    background: inherit !important; }
