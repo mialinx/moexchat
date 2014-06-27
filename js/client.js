@@ -28,7 +28,7 @@
     }
 
     var clientHTML = 
-        '<a href="#" id="getmoex_chat_btn">Чат GETMOEX</a>' + 
+        '<a href="#" id="getmoex_chat_btn">Чат MOEX</a>' + 
         '<iframe src="" id="getmoex_chat" style="display: none"></iframe>' + 
         '<img src="http://static.getmoex.ru/images/icon/close.png" id="getmoex_chat_close" style="display: none"/>' +
         '<link rel="stylesheet" href="http://static.getmoex.ru/css/client.css">';
