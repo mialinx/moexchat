@@ -1,7 +1,7 @@
 (function() {
 
     var scriptTags = document.getElementsByTagName('script');
-    var chatBaseUrl = scriptTags[scriptTags.length - 1].src.replace('/js/client.js.*', '');
+    var chatBaseUrl = scriptTags[scriptTags.length - 1].src.replace(/\/js\/client.js.*/, '/');
 
     function gebi (id) {
         return document.getElementById(id);
