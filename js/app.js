@@ -182,7 +182,7 @@ app.filter('nicedate', function(Utils, $sce) {
             res = wDayNames[ts.getDay()] + '<br>' + time;
         }
         else {
-            res = (ts.getDate() + 0) + ' ' + mNames[ts.getMonth()] + '<br>' + time;
+            res = (ts.getDate() + 0) + ' ' + mNames[ts.getMonth()-1] + '<br>' + time;
         }
         return $sce.trustAsHtml(res);
     }
