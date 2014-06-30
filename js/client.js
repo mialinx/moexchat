@@ -1,5 +1,8 @@
 (function() {
-        
+
+    var scriptTags = document.getElementsByTagName('script');
+    var chatBaseUrl = scriptTags[scriptTags.length - 1].src.replace('/js/client.js.*', '');
+
     function gebi (id) {
         return document.getElementById(id);
     }
@@ -30,8 +33,8 @@
     var clientHTML = 
         '<a href="#" id="getmoex_chat_btn">Чат MOEX</a>' + 
         '<iframe src="" id="getmoex_chat" style="display: none"></iframe>' + 
-        '<img src="http://static.getmoex.ru/images/icon/close.png" id="getmoex_chat_close" style="display: none"/>' +
-        '<link rel="stylesheet" href="http://static.getmoex.ru/css/client.css">';
+        '<img src="' + chatBaseUrl + 'images/icon/close.png" id="getmoex_chat_close" style="display: none"/>' +
+        '<link rel="stylesheet" href="' + chatBaseUrl + 'css/client.css">';
 
     // run!
     addOnLoadListener(document, function () {
@@ -49,7 +52,7 @@
             closeBtn.style.display = 'block';
             chatBtn.style.display = 'none';
             if (!loaded) {
-                chat.src = 'http://static.getmoex.ru/chat.html' +
+                chat.src = chatBaseUrl + 'chat.html' +
                            '#/?client_type=' + encodeURIComponent(window.GETMOEX_CLIENT || document.location.hostname);
                 loaded = true;
             }
