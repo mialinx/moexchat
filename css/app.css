@@ -81,11 +81,11 @@ a {
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-left: -40px;
-  margin-top: -40px;
-  width: 80px;
-  height: 80px;
-  background: url(/images/spinner.gif);
+  margin-left: -32px;
+  margin-top: -32px;
+  width: 64px;
+  height: 64px;
+  background: url(/images/spinner2.gif);
   z-index: 100; }
 
 .b-login {
