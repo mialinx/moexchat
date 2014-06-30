@@ -1,32 +1,18 @@
 @import "compass/css3";
-@import "../images/icon/*.png";
 @import "vars";
 
 #getmoex_chat_btn {
     display: block;
     position: fixed;
-    bottom: 0;
     right: $chat_right;
-    width: auto;
-    height: $header_height;
-    line-height: $header_height;
-    background: $cl_chrome;
-    border: solid 1px darken($cl_chrome, 10%);
-    border-width: 1px 1px 0px 1px;
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 16px;
+    bottom: 0;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    width: 141px;
+    height: 31px;
     margin: 0px;
-    padding: 0px 20px;
-    &:after {
-        content: '';
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        margin-left: 0.5em;
-        margin-bottom: -4px;
-        @include icon-sprite(logo);
-    }
+    padding: 0px;
 }
 
 #getmoex_chat {
