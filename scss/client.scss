@@ -1,7 +1,7 @@
 @import "compass/css3";
 @import "vars";
 
-#getmoex_chat_btn {
+#getmoex_chat_launcher {
     display: block;
     position: fixed;
     right: $chat_right;
@@ -9,30 +9,48 @@
     cursor: pointer;
     border: none;
     outline: none;
-    width: 141px;
-    height: 31px;
+    @include single-box-shadow(rgba(0, 0, 0, 0.3), 0px, 0px, 3px, 2px);
+    width: $pane_width;
+    height: $header_height;
     margin: 0px;
     padding: 0px;
+    &.active {
+        display: none;
+    }
 }
 
 #getmoex_chat {
-    display: none;
+    display: block !important;
     position: fixed;
-    bottom: 0px;
-    right: 100px;
+    bottom: -$pane_height;
+    right: $chat_right;
     border: none;
     width: $pane_width;
     height: $pane_height;
     margin: 0px;
     padding: 0px;
+    background-color: $cl_background; 
+    @include transition-property(bottom);
+    @include transition-duration(0.3s);
+    &.active {
+        @include single-box-shadow(rgba(0, 0, 0, 0.3), 0px, 0px, 3px, 2px);
+        bottom: 0px;
+    }
 }
 
 #getmoex_chat_close {
-    display: none;
+    display: block !important;
     position: fixed;
-    bottom: $pane_height - 25px;
-    right: 65px;
+    bottom: -25px; 
+    right: $chat_right - 35px;
     cursor: pointer;
     margin: 0px;
     padding: 0px;
+    @include transition-property(bottom);
+    @include transition-duration(0.3s);
+    @include opacity(0);
+    &.active {
+        bottom: $pane_height - 25px;
+        @include opacity(1);
+    }
 }

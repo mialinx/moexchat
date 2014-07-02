@@ -7,6 +7,14 @@
         return document.getElementById(id);
     }
 
+    function addClass(obj, name) {
+        obj.className = obj.className + ' ' + name;
+    }
+
+    function removeClass(obj, name) {
+        obj.className = obj.className.replace(new RegExp('\\b' + name + '\\b', 'g'), '');
+    }
+
     function addOnLoadListener (el, callback) {
         if (!(el && callback)) {
             return;
@@ -31,7 +39,7 @@
     }
 
     var clientHTML = 
-        '<img src="' + chatBaseUrl + 'images/launcher.png" id="getmoex_chat_btn">' + 
+        '<img src="' + chatBaseUrl + 'images/launcher.png" id="getmoex_chat_launcher">' + 
         '<iframe src="" id="getmoex_chat" style="display: none"></iframe>' + 
         '<img src="' + chatBaseUrl + 'images/icon/close.png" id="getmoex_chat_close" style="display: none"/>' +
         '<link rel="stylesheet" href="' + chatBaseUrl + 'css/client.css">';
@@ -42,15 +50,15 @@
         d.innerHTML = clientHTML;
         document.body.appendChild(d);
 
-        var chatBtn = gebi('getmoex_chat_btn');
+        var chatBtn = gebi('getmoex_chat_launcher');
         var closeBtn = gebi('getmoex_chat_close');
         var chat = gebi('getmoex_chat');
         var loaded = false;
 
         addListener(chatBtn, 'click', function () {
-            chat.style.display = 'block';
-            closeBtn.style.display = 'block';
-            chatBtn.style.display = 'none';
+            addClass(chat, 'active');
+            addClass(closeBtn, 'active');
+            addClass(chatBtn, 'active');
             if (!loaded) {
                 chat.src = chatBaseUrl + 'chat.html' +
                            '#/?client_type=' + encodeURIComponent(window.GETMOEX_CLIENT || document.location.hostname);
@@ -59,9 +67,9 @@
         });
 
         addListener(closeBtn, 'click', function () {
-            chat.style.display = 'none';
-            closeBtn.style.display = 'none';
-            chatBtn.style.display = 'block';
+            removeClass(chat, 'active');
+            removeClass(closeBtn, 'active');
+            removeClass(chatBtn, 'active');
         });
 
     });

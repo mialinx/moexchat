@@ -1,15 +1,7 @@
 @import "compass/css3";
 @import "../images/icon/*.png";
 @import "vars";
-
-// fonts
-
-@font-face {
-    font-family: "PTSans";
-    font-style: normal;
-    font-weight: normal;
-    src: url("/fonts/PTS55F-webfont.eot?#iefix") format("embedded-opentype"), url("/fonts/PTS55F-webfont.woff") format("woff"), url("/fonts/PTS55F-webfont.ttf") format("truetype"), url("/fonts/PTS55F-webfont.svg#pt_sansregular") format("svg");
-}
+@import "fonts";
 
 // reset
 * {
@@ -34,8 +26,8 @@ a {
     width: $pane_width;
     height: $pane_height;
     background-color: $cl_background; 
-    font-family: PTSans;
-    font-size: 14px;
+    font-family: 'Open Sans';
+    font-size: $base_font_size;
     cursor: default;
     border: solid 2px $cl_chrome;
 }
@@ -50,7 +42,7 @@ a {
         text-align: center;
         background-color: $cl_chrome;
         color: $cl_text_white;
-        font-size: 120%;
+        font-size: 110%;
     }
         .b-app__header__menu {
             display: none; //temp
@@ -128,7 +120,7 @@ a {
             margin-top: 14px;
             width: 100%;
             height: 34px;
-            font-size: 120%;
+            font-size: 110%;
             border: solid 1px $cl_sep_dark;
             @include border-radius(5px);
             background: #fff;
@@ -234,6 +226,7 @@ a {
                 }
 
                 .b-chat__item__content__from {
+                    font-size: 90%;
                     .b-chat__item_incoming & {
                         color: $cl_text_light;
                     }
@@ -248,6 +241,7 @@ a {
                 right: 7px;
                 width: $timestamp_width;
                 color: $cl_text_light;
+                font-size: 90%;
                 white-space: nowrap;
                 .b-chat__item_incoming & {
                     text-align: right;

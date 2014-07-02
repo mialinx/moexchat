@@ -1,32 +1,65 @@
-#getmoex_chat_btn {
+#getmoex_chat_launcher {
   display: block;
   position: fixed;
-  right: 200px;
+  right: 100px;
   bottom: 0;
   cursor: pointer;
   border: none;
   outline: none;
-  width: 141px;
-  height: 31px;
+  -webkit-box-shadow: 0px 0px 3px 2px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 3px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 3px 2px rgba(0, 0, 0, 0.3);
+  width: 320px;
+  height: 30px;
   margin: 0px;
   padding: 0px; }
+  #getmoex_chat_launcher.active {
+    display: none; }
 
 #getmoex_chat {
-  display: none;
+  display: block !important;
   position: fixed;
-  bottom: 0px;
+  bottom: -475px;
   right: 100px;
   border: none;
   width: 320px;
   height: 475px;
   margin: 0px;
-  padding: 0px; }
+  padding: 0px;
+  background-color: #f7f7f7;
+  -webkit-transition-property: bottom;
+  -moz-transition-property: bottom;
+  -o-transition-property: bottom;
+  transition-property: bottom;
+  -webkit-transition-duration: 0.3s;
+  -moz-transition-duration: 0.3s;
+  -o-transition-duration: 0.3s;
+  transition-duration: 0.3s; }
+  #getmoex_chat.active {
+    -webkit-box-shadow: 0px 0px 3px 2px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0px 0px 3px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 0px 3px 2px rgba(0, 0, 0, 0.3);
+    bottom: 0px; }
 
 #getmoex_chat_close {
-  display: none;
+  display: block !important;
   position: fixed;
-  bottom: 450px;
+  bottom: -25px;
   right: 65px;
   cursor: pointer;
   margin: 0px;
-  padding: 0px; }
+  padding: 0px;
+  -webkit-transition-property: bottom;
+  -moz-transition-property: bottom;
+  -o-transition-property: bottom;
+  transition-property: bottom;
+  -webkit-transition-duration: 0.3s;
+  -moz-transition-duration: 0.3s;
+  -o-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0; }
+  #getmoex_chat_close.active {
+    bottom: 450px;
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+    opacity: 1; }
