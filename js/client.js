@@ -2,6 +2,7 @@
 
     var scriptTags = document.getElementsByTagName('script');
     var chatBaseUrl = scriptTags[scriptTags.length - 1].src.replace(/\/js\/client.js.*/, '/');
+    window.GETMOEX_chatBaseUrl = chatBaseUrl;
 
     function gebi (id) {
         return document.getElementById(id);
@@ -68,7 +69,6 @@
                 xhr.open('GET', url, true);
                 xhr.onload = function() {
                     var doc = chat.contentDocument || chat.contentWindow.document;
-                    doc.chatBaseUrl = chatBaseUrl;
                     doc.write(this.responseText);
                     doc.close();
                     loaded = true;
