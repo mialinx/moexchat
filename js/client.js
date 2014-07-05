@@ -40,7 +40,7 @@
 
     var clientHTML = 
         '<img src="' + chatBaseUrl + 'images/launcher.png" id="getmoex_chat_launcher">' + 
-        '<iframe src="" id="getmoex_chat" style="display: none"></iframe>' + 
+        '<iframe src="about:blank" id="getmoex_chat" style="display: none" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>' + 
         '<img src="' + chatBaseUrl + 'images/icon/close.png" id="getmoex_chat_close" style="display: none"/>' +
         '<link rel="stylesheet" href="' + chatBaseUrl + 'css/client.css">';
 
@@ -60,9 +60,23 @@
             addClass(closeBtn, 'active');
             addClass(chatBtn, 'active');
             if (!loaded) {
-                chat.src = chatBaseUrl + 'chat.html' +
-                           '#/?client_type=' + encodeURIComponent(window.GETMOEX_CLIENT || document.location.hostname);
-                loaded = true;
+                var url = chatBaseUrl + 'chat.html' +
+                    '#/?client_type=' + encodeURIComponent(window.GETMOEX_CLIENT || document.location.hostname);
+
+                var XHR = window.XDomainRequest || window.XMLHttpRequest;
+                var xhr = new XHR();
+                xhr.open('GET', url, true);
+                xhr.onload = function() {
+                    var doc = chat.contentDocument || chat.contentWindow.document;
+                    doc.chatBaseUrl = chatBaseUrl;
+                    doc.write(this.responseText);
+                    doc.close();
+                    loaded = true;
+                }
+                xhr.onerror = function() {
+                    console.log(this.status);
+                }
+                xhr.send('');
             }
         });
 

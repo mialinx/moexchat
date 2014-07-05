@@ -26,9 +26,10 @@ app.factory('Global', function () {
 });
 
 app.factory('Storage', function () {
-    var ls = window.localStorage;
+    var ls = window.localStorage || {};
     return {
         get: function (key) {
+            key = 'getmoex_' + key;
             try {
                 return angular.fromJson(ls[key]);
             }
@@ -37,9 +38,11 @@ app.factory('Storage', function () {
             }
         },
         set: function (key, val) {
+            key = 'getmoex_' + key;
             ls[key] = angular.toJson(val);
         },
         del: function (key) {
+            key = 'getmoex_' + key;
             delete ls[key];
         }
     }

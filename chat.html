@@ -7,11 +7,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="/css/app.css">
-
-    <script src="/js/angular.min.js"></script>
-    <script src="/js/pusher-2.2.min.js"></script>
-    <script src="/js/app.js"></script>
+    <!-- 
+        Этот HTML загружается в iframe, но в ДОМЕНЕ сайта-партнера 
+        поэтому нам необходимо указывать абсолютные URL к стилям и скриптам.
+        Когда будет развернуто в продакшен - можно просто зашить домен.
+        Пока локейшен откуда грузится статика передается извне (client.js)
+    -->
+    <script>
+        document.write('<link rel="stylesheet" href="' + document.chatBaseUrl + 'css/app.css">');
+        document.write('<script src="' + document.chatBaseUrl + 'js/angular.min.js"></scr'+'ipt>');
+        document.write('<script src="' + document.chatBaseUrl + 'js/pusher-2.2.min.js"></scr'+'ipt>');
+        document.write('<script src="' + document.chatBaseUrl + 'js/app.js"></scr'+'ipt>');
+    </script>
 </head>
 
 <body class="b-app" ng-controller="AppCtrl">

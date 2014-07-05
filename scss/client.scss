@@ -9,7 +9,7 @@
     cursor: pointer;
     border: none;
     outline: none;
-    @include single-box-shadow(rgba(0, 0, 0, 0.3), 0px, 0px, 3px, 2px);
+    @include single-box-shadow(rgba(0, 0, 0, 0.3), 0px, 0px, 2px, 1px);
     width: $pane_width;
     height: $header_height;
     margin: 0px;
@@ -33,7 +33,7 @@
     @include transition-property(bottom);
     @include transition-duration(0.3s);
     &.active {
-        @include single-box-shadow(rgba(0, 0, 0, 0.3), 0px, 0px, 3px, 2px);
+        @include single-box-shadow(rgba(0, 0, 0, 0.3), 0px, 0px, 2px, 1px);
         bottom: 0px;
     }
 }
