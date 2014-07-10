@@ -2,6 +2,7 @@
 @import "../images/icon/*.png";
 @import "vars";
 @import "fonts";
+@import "baron";
 
 // reset
 * {
@@ -164,7 +165,7 @@ a {
         bottom: $msgline_height;
     }
         .b-chat__messages__scrollable {
-            overflow-y: hidden;
+            overflow-y: scroll;
             height: 100%;
             width: 100%;
         }

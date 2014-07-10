@@ -4,6 +4,27 @@
 .icon-sprite, .b-app__header__menu, .b-app__header__title:after {
   background: url('/images/../images/icon-sf8105af48f.png') no-repeat; }
 
+/* CSS styles in this file are need for proper Baron work */
+.wrapper {
+  position: relative;
+  overflow: hidden; }
+
+.scroller {
+  overflow-y: scroll;
+  width: 100%;
+  height: 100%;
+  border: 0; }
+
+.scroller::-webkit-scrollbar {
+  width: 0; }
+
+.scroller__bar {
+  position: absolute;
+  right: 5;
+  z-index: 1;
+  width: 10px;
+  background: #999; }
+
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -162,7 +183,7 @@ a {
   bottom: 32px; }
 
 .b-chat__messages__scrollable {
-  overflow-y: hidden;
+  overflow-y: scroll;
   height: 100%;
   width: 100%; }
 

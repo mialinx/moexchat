@@ -198,6 +198,10 @@ app.directive('scrollBar', function ($timeout) {
 
         el.scrollTop = Math.max(el.scrollHeight - el.clientHeight, 0);
 
+        //var scrl = window.baron({
+        //    scroller: '.scroller'
+        //});
+
         if (attrs.updateOn) {
             $scope.$watch(attrs.updateOn, function () {
                 setTimeout(function () {
