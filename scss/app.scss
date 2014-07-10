@@ -164,20 +164,20 @@ a {
         bottom: $msgline_height;
     }
         .b-chat__messages__scrollable {
-            overflow-y: auto;
+            overflow-y: hidden;
             height: 100%;
             width: 100%;
         }
 
         .b-chat__item {
             position: relative;
-            margin: 9px 9px 0px;
+            margin: 0px 11px;
             min-height: $avatar_size;
         }
 
             .b-chat__item__avatar {
                 position: absolute;
-                top: 0px;
+                top: 24px;
                 left: 0px;
                 width: $avatar_size;
                 height: $avatar_size;
@@ -191,20 +191,21 @@ a {
             .b-chat__item__content {
                 top: 0px;
                 position: relative;
-                margin-left: $avatar_size + 7px;
+                margin-left: $avatar_size + 10px;
                 margin-right: $timestamp_width + 7px; 
             }
                 .b-chat__item__content__nickname {
                     font-size: 90%;
                     color: $cl_text_light;
                     text-align: left;
+                    margin-bottom: 7px;
                 }
 
-                .b-chat__item__content__text {
+                .b-chat__item__content__bubble {
                     position: relative;
-                    padding: 7px;
-                    cursor: text;
+                    padding: 10px;
                     @include border-radius(5px);
+                    margin-bottom: 7px;
                     &:after {
                         display: block;
                         content: '';
@@ -231,15 +232,25 @@ a {
                     }
                 }
 
+                .b-chat__item__content__text {
+                    cursor: text;
+                }
+
                 .b-chat__item__content__from {
                     font-size: 90%;
-                    color: $cl_text_light;
-                    text-align: right;
+                    .b-chat__item_incoming & {
+                        color: $cl_text_light;
+                        text-align: right;
+                    }
+                    .b-chat__item_outgoing & {
+                        color: $cl_text_blue;
+                        text-align: left;
+                    }
                 }
 
             .b-chat__item__ts {
                 position: absolute;
-                top: 0px;
+                top: 24px;
                 right: 0px;
                 width: $timestamp_width;
                 color: $cl_text_light;

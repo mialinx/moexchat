@@ -59,14 +59,30 @@
 
                 <div ng-repeat="message in messages">
 
-                    <div class="b-chat__item {{ message.my ? 'b-chat__item_outgoing' : 'b-chat__item_incoming' }}">
+                    <div class="b-chat__item b-chat__item_outgoing" ng-if="message.my">
                         <div class="b-chat__item__avatar">
                             <img ng-src="{{ message.anonymous_pic_url }}" title="{{ message.name }}" alt="{{ message.name }}"/>
                         </div>
                         <div class="b-chat__item__ts" ng-bind-html="message.timestamp | nicedate"></div>
                         <div class="b-chat__item__content">
-                            <div class="b-chat__item__content__nickname">{{ message.name }}</div>
-                            <div class="b-chat__item__content__text">{{ message.text }}</div>
+                            <div class="b-chat__item__content__nickname">{{ message.name || '&nbsp;' }}</div>
+                            <div class="b-chat__item__content__bubble">
+                                <div class="b-chat__item__content__text">{{ message.text }}</div>
+                                <div class="b-chat__item__content__from">{{ message.client_type }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="b-chat__item b-chat__item_incoming {{ message.name ? 'b-chat__item_hasnick' : '' }}" ng-if="!message.my">
+                        <div class="b-chat__item__avatar">
+                            <img ng-src="{{ message.anonymous_pic_url }}" title="{{ message.name }}" alt="{{ message.name }}"/>
+                        </div>
+                        <div class="b-chat__item__ts" ng-bind-html="message.timestamp | nicedate"></div>
+                        <div class="b-chat__item__content">
+                            <div class="b-chat__item__content__nickname">{{ message.name || '&nbsp;'}}</div>
+                            <div class="b-chat__item__content__bubble">
+                                <div class="b-chat__item__content__text">{{ message.text }}</div>
+                            </div>
                             <div class="b-chat__item__content__from">{{ message.client_type }}</div>
                         </div>
                     </div>
