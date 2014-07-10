@@ -26,7 +26,7 @@ a {
     width: $pane_width;
     height: $pane_height;
     background-color: $cl_background; 
-    font-family: 'Open Sans';
+    font-family: 'open_sansregular';
     font-size: $base_font_size;
     cursor: default;
     border: solid 2px $cl_chrome;
@@ -42,7 +42,7 @@ a {
         text-align: center;
         background-color: $cl_chrome;
         color: $cl_text_white;
-        font-size: 110%;
+        font-size: 120%;
     }
         .b-app__header__menu {
             display: none; //temp

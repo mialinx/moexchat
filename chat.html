@@ -14,10 +14,13 @@
         Пока локейшен откуда грузится статика передается извне (client.js)
     -->
     <script>
-        document.write('<link rel="stylesheet" href="' + window.top.GETMOEX_chatBaseUrl + 'css/app.css">');
-        document.write('<script src="' + window.top.GETMOEX_chatBaseUrl + 'js/angular.min.js"></scr'+'ipt>');
-        document.write('<script src="' + window.top.GETMOEX_chatBaseUrl + 'js/pusher-2.2.min.js"></scr'+'ipt>');
-        document.write('<script src="' + window.top.GETMOEX_chatBaseUrl + 'js/app.js"></scr'+'ipt>');
+        (function () {
+         var base = window.top.GETMOEX_chatBaseUrl || '/';
+        document.write('<link rel="stylesheet" href="' + base + 'css/app.css">');
+        document.write('<script src="' + base + 'js/angular.min.js"></scr'+'ipt>');
+        document.write('<script src="' + base + 'js/pusher-2.2.min.js"></scr'+'ipt>');
+        document.write('<script src="' + base + 'js/app.js"></scr'+'ipt>');
+        })();
     </script>
 </head>
 
