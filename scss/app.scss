@@ -190,18 +190,21 @@ a {
 
             .b-chat__item__content {
                 top: 0px;
-                cursor: text;
                 position: relative;
-                .b-chat__item_incoming & {
-                    margin-left: $avatar_size + 7px;
-                    margin-right: $timestamp_width + 7px; 
+                margin-left: $avatar_size + 7px;
+                margin-right: $timestamp_width + 7px; 
+            }
+                .b-chat__item__content__nickname {
+                    font-size: 90%;
+                    color: $cl_text_light;
+                    text-align: left;
                 }
-                .b-chat__item_outgoing & {
-                    margin-left: $timestamp_width + 7px;
-                    margin-right: $angle_width;
-                    @include border-radius(5px);
-                    background-color: $cl_chrome;
+
+                .b-chat__item__content__text {
+                    position: relative;
                     padding: 7px;
+                    cursor: text;
+                    @include border-radius(5px);
                     &:after {
                         display: block;
                         content: '';
@@ -209,47 +212,40 @@ a {
                         width: 0px;
                         height: 0px;
                         border: solid $angle_width;
-                        border-color: $cl_transp $cl_transp $cl_transp $cl_chrome;
-                        right: -$angle_width - $angle_width + 1px;
-                        bottom: 7px;
+                        left: -10px;
+                        top: 7px;
                     }
-                }
-            }
-
-                .b-chat__item__content__text {
                     .b-chat__item_incoming & {
                         color: $cl_text_dark; 
+                        background-color: $cl_background_dark;
+                        &:after {
+                            border-color: $cl_transp $cl_background_dark $cl_transp $cl_transp;
+                        }
                     }
                     .b-chat__item_outgoing & {
                         color: $cl_text_white;
+                        background-color: $cl_chrome;
+                        &:after {
+                            border-color: $cl_transp $cl_chrome $cl_transp $cl_transp;
+                        }
                     }
                 }
 
                 .b-chat__item__content__from {
                     font-size: 90%;
-                    .b-chat__item_incoming & {
-                        color: $cl_text_light;
-                    }
-                    .b-chat__item_outgoing & {
-                        color: #8fbbef;
-                    }
+                    color: $cl_text_light;
+                    text-align: right;
                 }
 
             .b-chat__item__ts {
                 position: absolute;
                 top: 0px;
-                right: 7px;
+                right: 0px;
                 width: $timestamp_width;
                 color: $cl_text_light;
                 font-size: 90%;
                 white-space: nowrap;
-                .b-chat__item_incoming & {
-                    text-align: right;
-                }
-                .b-chat__item_outgoing & {
-                    right: auto;
-                    left: 7px;
-                }
+                text-align: right;
             }
             
 

@@ -287,6 +287,7 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global) {
         var message = {
             text:               $scope.newMessage,
             nickname:           user.nickname,
+            name:               user.nickname,
             client_type:        user.session.client_type,
             anonymous:          true,
             anonymous_pic_url:  user.session.anonymous_pic_url,

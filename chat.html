@@ -59,20 +59,13 @@
 
                 <div ng-repeat="message in messages">
 
-                    <div ng-if="!message.my" class="b-chat__item b-chat__item_incoming">
+                    <div class="b-chat__item {{ message.my ? 'b-chat__item_outgoing' : 'b-chat__item_incoming' }}">
                         <div class="b-chat__item__avatar">
-                            <img ng-src="{{ message.anonymous_pic_url }}" title="{{ message.nickname }}" alt="{{ message.nickname }}"/>
+                            <img ng-src="{{ message.anonymous_pic_url }}" title="{{ message.name }}" alt="{{ message.name }}"/>
                         </div>
                         <div class="b-chat__item__ts" ng-bind-html="message.timestamp | nicedate"></div>
                         <div class="b-chat__item__content">
-                            <div class="b-chat__item__content__text">{{ message.text }}</div>
-                            <div class="b-chat__item__content__from">{{ message.client_type }}</div>
-                        </div>
-                    </div>
-
-                    <div ng-if="message.my" class="b-chat__item b-chat__item_outgoing">
-                        <div class="b-chat__item__ts" ng-bind-html="message.timestamp | nicedate"></div>
-                        <div class="b-chat__item__content">
+                            <div class="b-chat__item__content__nickname">{{ message.name }}</div>
                             <div class="b-chat__item__content__text">{{ message.text }}</div>
                             <div class="b-chat__item__content__from">{{ message.client_type }}</div>
                         </div>
