@@ -48,7 +48,7 @@ app.factory('Storage', function () {
     }
 });
 
-app.factory('Backend', function ($http, $q, Global) {
+app.factory('Backend', function ($http, $q, Global, Storage) {
 
     function fake(data) {
         var d = $q.defer();
@@ -57,6 +57,38 @@ app.factory('Backend', function ($http, $q, Global) {
         p.success = function(cb) { p.then(cb); return p};
         p.error = function(cb) { p.then(null, cb); return p};
         return p;
+    }
+
+    function handleErrors(httpPromise) {
+        var d = $q.defer();
+        httpPromise.then(function(rsp) {
+            if (rsp.status != 200) {
+                rsp.result = 'http_error';
+                d.reject(rsp);
+                return;
+            }
+            if ((rsp.data.result || '') != "ok" ) {
+                d.reject(rsp.data);
+                return;
+            }
+            d.resolve(rsp.data);
+        });
+        d.promise.then(null, function(data) {
+            try {
+                console.log(data);
+            } catch (e) {}
+            switch (data.result) {
+                case 'http_error':
+                    // TODO
+                    break;
+                case 'Incorrect access token':
+                    Global.user.session = null;
+                    Storage.del('session');
+                    window.location.reload();
+                    break;
+            }
+        });
+        return d.promise;
     }
 
     function callJSONP(method, data) {
@@ -70,7 +102,7 @@ app.factory('Backend', function ($http, $q, Global) {
             url += '=' + encodeURIComponent(data[key]);
             first = false;
         }
-        return $http.jsonp(url);
+        return handleErrors($http.jsonp(url));
     }
 
     return {
@@ -78,7 +110,10 @@ app.factory('Backend', function ($http, $q, Global) {
         initializeSession: function (clientType) {
             return callJSONP('initialize_session', { 
                 client_type: clientType 
-            }); 
+            }).then(function(session) {
+                Storage.set('session', session);
+                Global.user.session = session;
+            });
         }, 
 
         messagesFetch: function (lastMessageId) {
@@ -198,9 +233,13 @@ app.directive('scrollBar', function ($timeout) {
 
         el.scrollTop = Math.max(el.scrollHeight - el.clientHeight, 0);
 
-        //var scrl = window.baron({
-        //    scroller: '.scroller'
-        //});
+        var scrl = baron({
+            root:     $('.b-baron__wrapper'),
+            scroller: '.b-baron__scrollable',
+            bar:      '.b-baron__bar',
+            track:    '.b-baron__track',
+            barOnCls: 'b-baron_active'
+        });
 
         if (attrs.updateOn) {
             $scope.$watch(attrs.updateOn, function () {
@@ -212,6 +251,7 @@ app.directive('scrollBar', function ($timeout) {
                     else {
                         el.scrollTop = Math.max(el.scrollHeight - el.clientHeight, 0);
                     }
+                    scrl.update();
                 });
             });
         }
@@ -224,6 +264,7 @@ app.directive('scrollBar', function ($timeout) {
                         plOffset = el.scrollHeight - el.scrollTop;
                         $scope[attrs.progressiveLoad]();
                         $scope.$apply();
+                        scrl.update();
                     }, 250);
                 }
             });
@@ -241,12 +282,7 @@ app.controller('AppCtrl', function ($scope, $location, Storage, Backend, Global)
         || (user.session.expires && new Date() > new Date(user.session.expires_at || 0)))
     {
         var clientType = $location.search()['client_type'] || 'getmoex.ru';
-        Backend.initializeSession(clientType)
-            .success(function(session) {
-                if (session.result != "ok") return;
-                Storage.set('session', session);
-                user.session = session;
-            });
+        Backend.initializeSession(clientType);
     }
 
     $scope.user = Global.user = user;
@@ -273,13 +309,13 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global) {
         }
         $scope.messagesLoading = true;
         Backend.messagesFetch(lastMsgId)
-            .success(function (data) {
-                if (data.result != "ok") return;
+            .then(function (data) {
                 var page = data.messages || [];
                 page.reverse();
                 messages.unshift.apply(messages, page);
+                $scope.messagesLoading = false;
             })
-            .then(function () {
+            .catch(function () {
                 $scope.messagesLoading = false;
             });
     };
