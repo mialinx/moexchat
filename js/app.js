@@ -5,6 +5,7 @@ var CONFIG = {
          authTransport: 'jsonp',
          authEndpoint:  'http://auth.getmoex.ru/pusher/jauth'
     },
+    httpTimeout: 10 * 1000,
     apiBase: 'http://auth.getmoex.ru/api'
 };
 
@@ -48,11 +49,11 @@ app.factory('Storage', function () {
     }
 });
 
-app.factory('Backend', function ($http, $q, Global, Storage) {
+app.factory('Backend', function ($http, $q, Global, Storage, $timeout) {
 
     function fake(data) {
         var d = $q.defer();
-        setTimeout(function() { d.resolve(data) }, 300);
+        $timeout(function() { d.resolve(data) }, 300);
         var p = d.promise;
         p.success = function(cb) { p.then(cb); return p};
         p.error = function(cb) { p.then(null, cb); return p};
@@ -73,6 +74,10 @@ app.factory('Backend', function ($http, $q, Global, Storage) {
             }
             d.resolve(rsp.data);
         });
+        $timeout(function () {
+            d.reject({ result: 'http_timeout' });
+            return;
+        }, CONFIG.httpTimeout);
         d.promise.then(null, function(data) {
             try {
                 console.log(data);
