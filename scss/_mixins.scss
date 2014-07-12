@@ -1,0 +1,198 @@
+@mixin animation($animate...) {
+    $max: length($animate);
+    $animations: '';
+
+    @for $i from 1 through $max {
+        $animations: #{$animations + nth($animate, $i)};
+
+        @if $i < $max {
+            $animations: #{$animations + ", "};
+        }
+    }
+    -webkit-animation: $animations;
+    -moz-animation:    $animations;
+    -o-animation:      $animations;
+    animation:         $animations;
+}
+
+@mixin keyframes($animationName) {
+    @-webkit-keyframes #{$animationName} {
+        @content;
+    }
+    @-moz-keyframes #{$animationName} {
+        @content;
+    }
+    @-o-keyframes #{$animationName} {
+        @content;
+    }
+    @keyframes #{$animationName} {
+        @content;
+    }
+}
+
+@include keyframes(circle-loading) {
+    0% {
+        @include box-shadow(
+            rgba(0,0,0, 0.38) 0 -28px 0 0,
+            rgba(0,0,0, 0.02) 16px -22px 0 0,
+            rgba(0,0,0, 0.06) 26px -9px 0 0,
+            rgba(0,0,0, 0.10) 26px 9px 0 0,
+            rgba(0,0,0, 0.14) 16px 22px 0 0,
+            rgba(0,0,0, 0.18) 0 28px 0 0,
+            rgba(0,0,0, 0.22) -16px 22px 0 0,
+            rgba(0,0,0, 0.26) -26px 9px 0 0,
+            rgba(0,0,0, 0.30) -26px -9px 0 0,
+            rgba(0,0,0, 0.34) -16px -22px 0 0
+        );
+    }
+    10% {
+        @include box-shadow(
+            rgba(0,0,0, 0.34) 0 -28px 0 0,
+            rgba(0,0,0, 0.38) 16px -22px 0 0,
+            rgba(0,0,0, 0.02) 26px -9px 0 0,
+            rgba(0,0,0, 0.06) 26px 9px 0 0,
+            rgba(0,0,0, 0.10) 16px 22px 0 0,
+            rgba(0,0,0, 0.14) 0 28px 0 0,
+            rgba(0,0,0, 0.18) -16px 22px 0 0,
+            rgba(0,0,0, 0.22) -26px 9px 0 0,
+            rgba(0,0,0, 0.26) -26px -9px 0 0,
+            rgba(0,0,0, 0.30) -16px -22px 0 0
+        );
+    }
+    20% {
+        @include box-shadow(
+            rgba(0,0,0, 0.30) 0 -28px 0 0,
+            rgba(0,0,0, 0.34) 16px -22px 0 0,
+            rgba(0,0,0, 0.38) 26px -9px 0 0,
+            rgba(0,0,0, 0.02) 26px 9px 0 0,
+            rgba(0,0,0, 0.06) 16px 22px 0 0,
+            rgba(0,0,0, 0.10) 0 28px 0 0,
+            rgba(0,0,0, 0.14) -16px 22px 0 0,
+            rgba(0,0,0, 0.18) -26px 9px 0 0,
+            rgba(0,0,0, 0.22) -26px -9px 0 0,
+            rgba(0,0,0, 0.26) -16px -22px 0 0
+        );
+    }
+    30% {
+        @include box-shadow(
+            rgba(0,0,0, 0.26) 0 -28px 0 0,
+            rgba(0,0,0, 0.30) 16px -22px 0 0,
+            rgba(0,0,0, 0.34) 26px -9px 0 0,
+            rgba(0,0,0, 0.38) 26px 9px 0 0,
+            rgba(0,0,0, 0.02) 16px 22px 0 0,
+            rgba(0,0,0, 0.06) 0 28px 0 0,
+            rgba(0,0,0, 0.10) -16px 22px 0 0,
+            rgba(0,0,0, 0.14) -26px 9px 0 0,
+            rgba(0,0,0, 0.18) -26px -9px 0 0,
+            rgba(0,0,0, 0.22) -16px -22px 0 0
+        );
+    }
+    40% {
+        @include box-shadow(
+            rgba(0,0,0, 0.22) 0 -28px 0 0,
+            rgba(0,0,0, 0.26) 16px -22px 0 0,
+            rgba(0,0,0, 0.30) 26px -9px 0 0,
+            rgba(0,0,0, 0.34) 26px 9px 0 0,
+            rgba(0,0,0, 0.38) 16px 22px 0 0,
+            rgba(0,0,0, 0.02) 0 28px 0 0,
+            rgba(0,0,0, 0.06) -16px 22px 0 0,
+            rgba(0,0,0, 0.10) -26px 9px 0 0,
+            rgba(0,0,0, 0.14) -26px -9px 0 0,
+            rgba(0,0,0, 0.18) -16px -22px 0 0
+        );
+    }
+    50% {
+        @include box-shadow(
+            rgba(0,0,0, 0.18) 0 -28px 0 0,
+            rgba(0,0,0, 0.22) 16px -22px 0 0,
+            rgba(0,0,0, 0.26) 26px -9px 0 0,
+            rgba(0,0,0, 0.30) 26px 9px 0 0,
+            rgba(0,0,0, 0.34) 16px 22px 0 0,
+            rgba(0,0,0, 0.38) 0 28px 0 0,
+            rgba(0,0,0, 0.02) -16px 22px 0 0,
+            rgba(0,0,0, 0.06) -26px 9px 0 0,
+            rgba(0,0,0, 0.10) -26px -9px 0 0,
+            rgba(0,0,0, 0.14) -16px -22px 0 0
+        );
+    }
+    60% {
+        @include box-shadow(
+            rgba(0,0,0, 0.14) 0 -28px 0 0,
+            rgba(0,0,0, 0.18) 16px -22px 0 0,
+            rgba(0,0,0, 0.22) 26px -9px 0 0,
+            rgba(0,0,0, 0.26) 26px 9px 0 0,
+            rgba(0,0,0, 0.30) 16px 22px 0 0,
+            rgba(0,0,0, 0.34) 0 28px 0 0,
+            rgba(0,0,0, 0.38) -16px 22px 0 0,
+            rgba(0,0,0, 0.02) -26px 9px 0 0,
+            rgba(0,0,0, 0.06) -26px -9px 0 0,
+            rgba(0,0,0, 0.10) -16px -22px 0 0
+        );
+    }
+    70% {
+        @include box-shadow(
+            rgba(0,0,0, 0.10) 0 -28px 0 0,
+            rgba(0,0,0, 0.14) 16px -22px 0 0,
+            rgba(0,0,0, 0.18) 26px -9px 0 0,
+            rgba(0,0,0, 0.22) 26px 9px 0 0,
+            rgba(0,0,0, 0.26) 16px 22px 0 0,
+            rgba(0,0,0, 0.30) 0 28px 0 0,
+            rgba(0,0,0, 0.34) -16px 22px 0 0,
+            rgba(0,0,0, 0.38) -26px 9px 0 0,
+            rgba(0,0,0, 0.02) -26px -9px 0 0,
+            rgba(0,0,0, 0.06) -16px -22px 0 0
+        );
+    }
+    80% {
+        @include box-shadow(
+            rgba(0,0,0, 0.06) 0 -28px 0 0,
+            rgba(0,0,0, 0.10) 16px -22px 0 0,
+            rgba(0,0,0, 0.14) 26px -9px 0 0,
+            rgba(0,0,0, 0.18) 26px 9px 0 0,
+            rgba(0,0,0, 0.22) 16px 22px 0 0,
+            rgba(0,0,0, 0.26) 0 28px 0 0,
+            rgba(0,0,0, 0.30) -16px 22px 0 0,
+            rgba(0,0,0, 0.34) -26px 9px 0 0,
+            rgba(0,0,0, 0.38) -26px -9px 0 0,
+            rgba(0,0,0, 0.02) -16px -22px 0 0
+        );
+    }
+    90% {
+        @include box-shadow(
+            rgba(0,0,0, 0.02) 0 -28px 0 0,
+            rgba(0,0,0, 0.06) 16px -22px 0 0,
+            rgba(0,0,0, 0.10) 26px -9px 0 0,
+            rgba(0,0,0, 0.14) 26px 9px 0 0,
+            rgba(0,0,0, 0.18) 16px 22px 0 0,
+            rgba(0,0,0, 0.22) 0 28px 0 0,
+            rgba(0,0,0, 0.26) -16px 22px 0 0,
+            rgba(0,0,0, 0.30) -26px 9px 0 0,
+            rgba(0,0,0, 0.34) -26px -9px 0 0,
+            rgba(0,0,0, 0.38) -16px -22px 0 0
+        );
+    }
+    100% {
+        @include box-shadow(
+            rgba(0,0,0, 0.38) 0 -28px 0 0,
+            rgba(0,0,0, 0.02) 16px -22px 0 0,
+            rgba(0,0,0, 0.06) 26px -9px 0 0,
+            rgba(0,0,0, 0.10) 26px 9px 0 0,
+            rgba(0,0,0, 0.14) 16px 22px 0 0,
+            rgba(0,0,0, 0.18) 0 28px 0 0,
+            rgba(0,0,0, 0.22) -16px 22px 0 0,
+            rgba(0,0,0, 0.26) -26px 9px 0 0,
+            rgba(0,0,0, 0.30) -26px -9px 0 0,
+            rgba(0,0,0, 0.34) -16px -22px 0 0
+        );
+    }
+}
+
+
+@mixin b-circle-loader {
+    width: 10px;
+    height: 10px;
+    position: relative;
+    @include border-radius(5px);
+    @include animation(circle-loading 1.2s infinite);
+}
+
