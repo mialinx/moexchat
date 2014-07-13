@@ -81,7 +81,7 @@
             removeClass(container, 'hidden');
             addClass(launcher,  'hidden');
             if (!loaded) {
-                var url = chatBaseUrl + 'chat.html' +
+                var url = chatBaseUrl + 'chat.html?r=' + Math.random() + 
                     '#/?client_type=' + encodeURIComponent(window.GETMOEX_CLIENT || document.location.hostname);
 
                 var XHR = window.XDomainRequest || window.XMLHttpRequest;
