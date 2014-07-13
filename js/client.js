@@ -1,10 +1,14 @@
 (function() {
-
+    
+    var chatMinWidth = 320;
+    var chatMinHeigh = 475;
     var scriptTags = document.getElementsByTagName('script');
     var chatBaseUrl = scriptTags[scriptTags.length - 1].src.replace(/\/js\/client.js.*/, '/');
+    var localStorage = window.localStorage || {};
+
     window.GETMOEX_chatBaseUrl = chatBaseUrl;
 
-    function gebi (id) {
+    function gebi (id) { // old school
         return document.getElementById(id);
     }
 
@@ -39,27 +43,43 @@
         }
     }
 
+    function removeListener(element, eventName, handler) {
+        if (element.removeEventListener) {
+            return element.removeEventListener(eventName, handler, false);
+        }
+        else {
+            return element.detachEvent("on"+eventName, handler);
+        }
+    }
+
     var clientHTML = 
         '<img src="' + chatBaseUrl + 'images/launcher.png" id="getmoex_chat_launcher">' + 
-        '<iframe src="about:blank" id="getmoex_chat" style="display: none" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>' + 
-        '<img src="' + chatBaseUrl + 'images/icon/close.png" id="getmoex_chat_close" style="display: none"/>' +
+        '<div id="getmoex_chat_container" style="display: none" class="hidden" >' + 
+            '<div id="getmoex_chat_handle"></div>' +
+            '<div id="getmoex_chat_close"></div>' +
+            '<div id="getmoex_chat_rfix"></div>' +
+            '<iframe src="about:blank" id="getmoex_chat" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>' + 
+        '</div>' + 
         '<link rel="stylesheet" href="' + chatBaseUrl + 'css/client.css">';
 
     // run!
     addOnLoadListener(document, function () {
+
         var d = document.createElement('div');
         d.innerHTML = clientHTML;
         document.body.appendChild(d);
 
-        var chatBtn = gebi('getmoex_chat_launcher');
+        var launcher = gebi('getmoex_chat_launcher');
+        var container = gebi('getmoex_chat_container');
         var closeBtn = gebi('getmoex_chat_close');
         var chat = gebi('getmoex_chat');
+        var handle = gebi('getmoex_chat_handle');
+        var rfix = gebi('getmoex_chat_rfix');
         var loaded = false;
 
-        addListener(chatBtn, 'click', function () {
-            addClass(chat, 'active');
-            addClass(closeBtn, 'active');
-            addClass(chatBtn, 'active');
+        addListener(launcher, 'click', function () {
+            removeClass(container, 'hidden');
+            addClass(launcher,  'hidden');
             if (!loaded) {
                 var url = chatBaseUrl + 'chat.html' +
                     '#/?client_type=' + encodeURIComponent(window.GETMOEX_CLIENT || document.location.hostname);
@@ -81,10 +101,53 @@
         });
 
         addListener(closeBtn, 'click', function () {
-            removeClass(chat, 'active');
-            removeClass(closeBtn, 'active');
-            removeClass(chatBtn, 'active');
+            addClass(container, 'hidden');
+            removeClass(launcher, 'hidden');
         });
+
+        // resize
+        var resizeInfo = null;
+        function startResize (ev) {
+            ev = ev || window.event;
+            resizeInfo = { 
+                clickOffsetX: ev.clientX - container.offsetLeft, 
+                clickOffsetY: ev.clientY - container.offsetTop,
+                brX: container.offsetLeft + container.clientWidth,
+                brY: container.offsetTop + container.clientHeight
+            };
+            addListener(document, 'mousemove', doResize);
+            addListener(document, 'mouseup', stopResize);
+            rfix.style.display = 'block';
+            addClass(container, 'resizing');
+            ev.preventDefault();
+            return false;
+        }
+        function doResize (ev) {
+            ev = ev || window.event;
+            var width = Math.max(resizeInfo.brX - (ev.clientX - resizeInfo.clickOffsetX), 320);
+            var height = Math.max(resizeInfo.brY - (ev.clientY - resizeInfo.clickOffsetY), 475);
+            container.style.width =  width + 'px';
+            container.style.height = height + 'px';
+            ev.preventDefault();
+            return false;
+        }
+        function stopResize (ev) {
+            ev = ev || window.event;
+            removeListener(document, 'mousemove', doResize);
+            removeListener(document, 'mouseup', arguments.callee);
+            rfix.style.display = 'none';
+            resizeInfo = null;
+            removeClass(container, 'resizing');
+            ev.preventDefault();
+            localStorage['getmoex_width'] = container.clientWidth;
+            localStorage['getmoex_height'] = container.clientHeight;
+            return false;
+        }
+        addListener(handle, 'mousedown', startResize);
+
+        // restore sizes
+        container.style.width  = Math.max(chatMinWidth, parseInt(localStorage['getmoex_width']) || 0) + 'px';
+        container.style.height = Math.max(chatMinHeigh, parseInt(localStorage['getmoex_height']) || 0) + 'px';
 
     });
 
