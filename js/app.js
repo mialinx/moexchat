@@ -277,7 +277,7 @@ app.directive('scrollBar', function ($timeout) {
     };
 });
 
-app.controller('AppCtrl', function ($scope, $location, Storage, Backend, Global) {
+app.controller('AppCtrl', function ($scope, Storage, Backend, Global) {
 
     var user = {};
     user.nickname = Storage.get('nickname');
@@ -286,7 +286,7 @@ app.controller('AppCtrl', function ($scope, $location, Storage, Backend, Global)
     if (!user.session || !user.session.token 
         || (user.session.expires && new Date() > new Date(user.session.expires_at || 0)))
     {
-        var clientType = $location.search()['client_type'] || 'getmoex.ru';
+        var clientType = window.GETMOEX_CLIENT || window.top.document.location.hostname || 'getmoex.ru';
         Backend.initializeSession(clientType);
     }
 
