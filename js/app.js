@@ -305,6 +305,17 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global) {
 
     $scope.messages = [];
 
+    function setSequenceFlags (messages) {
+        for (var i = 0; i < messages.length; i++) {
+            if (i == 0 || messages[i-1].name != messages[i].name) {
+                messages[i].firstInSeq = true;
+            }
+            if (i == messages.length - 1 || messages[i+1].name != messages[i].name) {
+                messages[i].lastInSeq = true;
+            }
+        }
+    }
+
     $scope.loadHistory = function () {
         var messages = $scope.messages;
         var lastMsgId;
@@ -318,6 +329,7 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global) {
                 var page = data.messages || [];
                 page.reverse();
                 messages.unshift.apply(messages, page);
+                setSequenceFlags(messages);
                 $scope.messagesLoading = false;
             })
             .catch(function () {
@@ -325,7 +337,26 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global) {
             });
     };
 
-    $scope.loadHistory();
+    //$scope.loadHistory();
+    $scope.randomHistory = function () {
+        var names = ['Nick', 'Mike', 'Joe'];
+        var cTypes = ['getmoex.ru', 'banki.ru', 'bash.im'];
+        var text = 'В современном мире высоких технологий, где любую информацию можно легко получить в интернете, умение эффективно общаться становится всё более ценным навыком. Люди, которые хорошо владеют навыками коммуникаций, быстрее доносят свою мысль до собеседников, в результате чего чаще бывают правильно понятыми и лучше понимают своего собеседника, могут быстрее придти к нужному соглашению и  презентовать себя с лучшей стороны. ';
+        for (var i = 0; i < 100; i++) {
+            var ni = Math.floor(Math.random() * names.length);
+            var ts = Math.floor(Math.random() * text.length/2);
+            $scope.messages.push({
+                name: names[ni],
+                text: text.substr(ts, ts + 70),
+                my:   ni == 0, 
+                anonymous_pic_url: '/images/av' + ((ni % 3) + 1) + '.png',
+                client_type = cTypes[ni],
+                timestamp: new Date()
+            });
+        }
+        setSequenceFlags($scope.messages);
+    };
+    $scope.randomHistory();
 
     $scope.sendMessage = function () {
         var user = Global.user;
@@ -342,6 +373,7 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global) {
         Pusher.channel.trigger('client-message', pusherMessage);
         var scopeMessage = angular.extend({}, message, { my: true });
         $scope.messages.push(scopeMessage);
+        setSequenceFlags($scope.messages);
         $scope.newMessage = '';
     };
 

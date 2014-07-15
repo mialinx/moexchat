@@ -554,7 +554,7 @@ a {
   padding: 7px;
   font-weight: bold;
   color: #9b9b9b;
-  background: inherit;
+  background: inherit !important;
   cursor: pointer; }
   .b-chat__msgline__btn:focus {
     border: none; }

@@ -292,7 +292,7 @@ a {
             padding: 7px;
             font-weight: bold;
             color: $cl_text_light;
-            background: inherit;
+            background: inherit !important;
             cursor: pointer;
             &:focus {
                 border: none;

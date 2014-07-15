@@ -68,7 +68,10 @@
 
                 <div ng-repeat="message in messages">
 
-                    <div class="b-chat__item b-chat__item_outgoing" ng-if="message.my">
+                    <div ng-if="message.my" 
+                         class="b-chat__item b-chat__item_outgoing 
+                                {{ messages.firstInSeq ? 'b-chat__item_first' : '' }}
+                                {{ messages.lastInSeq ? 'b-chat__item_last' : '' }}">
                         <div class="b-chat__item__avatar">
                             <img ng-src="{{ message.anonymous_pic_url }}" title="{{ message.name }}" alt="{{ message.name }}"/>
                         </div>
@@ -82,7 +85,10 @@
                         </div>
                     </div>
 
-                    <div class="b-chat__item b-chat__item_incoming {{ message.name ? 'b-chat__item_hasnick' : '' }}" ng-if="!message.my">
+                    <div ng-if="!message.my" 
+                        class="b-chat__item b-chat__item_incoming 
+                               {{ messages.firstInSeq ? 'b-chat__item_first' : '' }}
+                               {{ messages.lastInSeq ? 'b-chat__item_last' : '' }}">
                         <div class="b-chat__item__avatar">
                             <img ng-src="{{ message.anonymous_pic_url }}" title="{{ message.name }}" alt="{{ message.name }}"/>
                         </div>
