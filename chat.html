@@ -15,10 +15,11 @@
     -->
     <script>
         (function () {
-         var base = window.top.GETMOEX_chatBaseUrl || '/';
+         var base = window.top.GETMOEX.chatBaseUrl || '/';
         document.write('<link rel="stylesheet" href="' + base + 'css/app.css">');
         document.write('<script src="' + base + 'js/jquery.min.js"></scr'+'ipt>');
         document.write('<script src="' + base + 'js/baron.js"></scr'+'ipt>');
+        document.write('<script src="' + base + 'js/jquery.tooltipster.min.js"></scr'+'ipt>');
         document.write('<script src="' + base + 'js/angular.min.js"></scr'+'ipt>');
         document.write('<script src="' + base + 'js/pusher-2.2.min.js"></scr'+'ipt>');
         document.write('<script src="' + base + 'js/app.js"></scr'+'ipt>');
@@ -31,6 +32,12 @@
     <div class="b-app__header">
         <span class="b-app__header__menu"></span>
         <a class="b-app__header__title" href="http://www.getmoex.ru" target="_blank">Чат MOEX</a>
+        <div class="b-app__header__ricons">
+            <span class="b-app__header__people" title="участники комнаты"></span>
+            <span class="b-app__header__video" title="видео-чат"></span>
+            <span class="b-app__header__settings" title="настройки&nbsp;чата"></span>
+            <span class="b-app__header__close" tile="закрыть" ng-click="closeChat()"></span>
+        </div>
     </div>
 
     <div class="b-connection" ng-if="!user.session.token">
@@ -70,35 +77,39 @@
 
                     <div ng-if="message.my" 
                          class="b-chat__item b-chat__item_outgoing 
-                                {{ messages.firstInSeq ? 'b-chat__item_first' : '' }}
-                                {{ messages.lastInSeq ? 'b-chat__item_last' : '' }}">
+                                {{ message.firstInSeq ? 'b-chat__item_first' : '' }}
+                                {{ message.lastInSeq ? 'b-chat__item_last' : '' }}">
+                        <div class="b-chat__item__head">
+                            <div class="b-chat__item__head__name">{{ message.name || '&nbsp;' }}</div>
+                            <div class="b-chat__item__head__ts" ng-bind-html="message.timestamp | nicedate"></div>
+                        </div>
                         <div class="b-chat__item__avatar">
                             <img ng-src="{{ message.anonymous_pic_url }}" title="{{ message.name }}" alt="{{ message.name }}"/>
                         </div>
-                        <div class="b-chat__item__ts" ng-bind-html="message.timestamp | nicedate"></div>
                         <div class="b-chat__item__content">
-                            <div class="b-chat__item__content__nickname">{{ message.name || '&nbsp;' }}</div>
                             <div class="b-chat__item__content__bubble">
                                 <div class="b-chat__item__content__text">{{ message.text }}</div>
-                                <div class="b-chat__item__content__from">{{ message.client_type }}</div>
+                                <div class="b-chat__item__content__from" ng-bind-html="message.client_type | hyperlink"></div>
                             </div>
                         </div>
                     </div>
 
                     <div ng-if="!message.my" 
                         class="b-chat__item b-chat__item_incoming 
-                               {{ messages.firstInSeq ? 'b-chat__item_first' : '' }}
-                               {{ messages.lastInSeq ? 'b-chat__item_last' : '' }}">
+                               {{ message.firstInSeq ? 'b-chat__item_first' : '' }}
+                               {{ message.lastInSeq ? 'b-chat__item_last' : '' }}">
+                        <div class="b-chat__item__head">
+                            <div class="b-chat__item__head__name">{{ message.name || '&nbsp;' }}</div>
+                            <div class="b-chat__item__head__ts" ng-bind-html="message.timestamp | nicedate"></div>
+                        </div>
                         <div class="b-chat__item__avatar">
                             <img ng-src="{{ message.anonymous_pic_url }}" title="{{ message.name }}" alt="{{ message.name }}"/>
                         </div>
-                        <div class="b-chat__item__ts" ng-bind-html="message.timestamp | nicedate"></div>
                         <div class="b-chat__item__content">
-                            <div class="b-chat__item__content__nickname">{{ message.name || '&nbsp;'}}</div>
                             <div class="b-chat__item__content__bubble">
                                 <div class="b-chat__item__content__text">{{ message.text }}</div>
+                                <div class="b-chat__item__content__from" ng-bind-html="message.client_type | hyperlink"></div>
                             </div>
-                            <div class="b-chat__item__content__from">{{ message.client_type }}</div>
                         </div>
                     </div>
 

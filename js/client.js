@@ -6,8 +6,6 @@
     var chatBaseUrl = scriptTags[scriptTags.length - 1].src.replace(/\/js\/client.js.*/, '/');
     var localStorage = window.localStorage || {};
 
-    window.GETMOEX_chatBaseUrl = chatBaseUrl;
-
     function gebi (id) { // old school
         return document.getElementById(id);
     }
@@ -39,7 +37,7 @@
             return element.addEventListener(eventName, handler, false);
         }
         else {
-            return element.attachEvent("on"+eventName, handler);
+            return element.attachEvent("on" + eventName, handler);
         }
     }
 
@@ -48,15 +46,14 @@
             return element.removeEventListener(eventName, handler, false);
         }
         else {
-            return element.detachEvent("on"+eventName, handler);
+            return element.detachEvent("on" + eventName, handler);
         }
     }
 
     var clientHTML = 
-        '<img src="' + chatBaseUrl + 'images/launcher.png" id="getmoex_chat_launcher">' + 
+        '<img src="' + chatBaseUrl + 'images/launcher2.png" id="getmoex_chat_launcher" style="position: fixed; bottom: 0px; right: 100px;">' + 
         '<div id="getmoex_chat_container" style="display: none" class="hidden" >' + 
             '<div id="getmoex_chat_handle"></div>' +
-            '<div id="getmoex_chat_close"></div>' +
             '<div id="getmoex_chat_rfix"></div>' +
             '<iframe src="about:blank" id="getmoex_chat" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>' + 
         '</div>' + 
@@ -71,13 +68,12 @@
 
         var launcher = gebi('getmoex_chat_launcher');
         var container = gebi('getmoex_chat_container');
-        var closeBtn = gebi('getmoex_chat_close');
         var chat = gebi('getmoex_chat');
         var handle = gebi('getmoex_chat_handle');
         var rfix = gebi('getmoex_chat_rfix');
         var loaded = false;
 
-        addListener(launcher, 'click', function () {
+        function openChat() {
             removeClass(container, 'hidden');
             addClass(launcher,  'hidden');
             if (!loaded) {
@@ -96,12 +92,13 @@
                 }
                 xhr.send('');
             }
-        });
+        }
+        addListener(launcher, 'click', openChat);
 
-        addListener(closeBtn, 'click', function () {
+        function closeChat() {
             addClass(container, 'hidden');
             removeClass(launcher, 'hidden');
-        });
+        }
 
         // resize
         var resizeInfo = null;
@@ -147,6 +144,12 @@
         container.style.width  = Math.max(chatMinWidth, parseInt(localStorage['getmoex_width']) || 0) + 'px';
         container.style.height = Math.max(chatMinHeigh, parseInt(localStorage['getmoex_height']) || 0) + 'px';
 
+        // public API
+        window.GETMOEX = {
+            chatBaseUrl: chatBaseUrl,
+            openChat:    openChat,
+            closeChat:   closeChat
+        };
     });
 
 })();

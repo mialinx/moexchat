@@ -222,12 +222,26 @@ app.filter('nicedate', function(Utils, $sce) {
             res = time;
         }
         else if (Math.abs(now.getTime() - ts.getTime()) / 1000 < 7 * 24 * 3600) {
-            res = wDayNames[ts.getDay()] + '<br>' + time;
+            res = wDayNames[ts.getDay()] + ' ' + time;
         }
         else {
-            res = (ts.getDate() + 0) + ' ' + mNames[ts.getMonth()-1] + '<br>' + time;
+            res = (ts.getDate() + 0) + ' ' + mNames[ts.getMonth()-1] + ' ' + time;
         }
         return $sce.trustAsHtml(res);
+    }
+});
+
+app.filter('hyperlink', function ($sce) {
+    return function (ct) {
+        if (!ct) {
+            ct = '';
+        }
+        if (ct.match(/^(([\w_-]+\.)+\w{2,4})$/)) {
+            ct = '<a href="http://' + RegExp.$1 + '/" target="_blank">' + RegExp.$1 + '</a>'; 
+            return $sce.trustAsHtml(ct);
+        }
+        ct = ct.replace(/[^\w_ \.-]/g,'');
+        return $sce.trustAsHtml(ct);
     }
 });
 
@@ -286,11 +300,19 @@ app.controller('AppCtrl', function ($scope, Storage, Backend, Global) {
     if (!user.session || !user.session.token 
         || (user.session.expires && new Date() > new Date(user.session.expires_at || 0)))
     {
-        var clientType = window.GETMOEX_CLIENT || window.top.document.location.hostname || 'getmoex.ru';
+        var clientType = window.top.document.location.hostname || 'getmoex.ru';
         Backend.initializeSession(clientType);
     }
 
     $scope.user = Global.user = user;
+
+    $scope.closeChat = function () {
+        window.top.GETMOEX.closeChat();
+    },
+    // common fix-ups
+    $('*[title]').tooltipster({
+        theme: 'tooltipster-light'
+    });
 });
 
 app.controller('PresentCtrl', function ($scope, Storage, Global) {
@@ -337,8 +359,7 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global) {
             });
     };
 
-    //$scope.loadHistory();
-    $scope.randomHistory = function () {
+    function fakeHistory () {
         var names = ['Nick', 'Mike', 'Joe'];
         var cTypes = ['getmoex.ru', 'banki.ru', 'bash.im'];
         var text = 'В современном мире высоких технологий, где любую информацию можно легко получить в интернете, умение эффективно общаться становится всё более ценным навыком. Люди, которые хорошо владеют навыками коммуникаций, быстрее доносят свою мысль до собеседников, в результате чего чаще бывают правильно понятыми и лучше понимают своего собеседника, могут быстрее придти к нужному соглашению и  презентовать себя с лучшей стороны. ';
@@ -347,16 +368,18 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global) {
             var ts = Math.floor(Math.random() * text.length/2);
             $scope.messages.push({
                 name: names[ni],
-                text: text.substr(ts, ts + 70),
+                text: text.substr(ts, Math.round(Math.random()*70)),
                 my:   ni == 0, 
                 anonymous_pic_url: '/images/av' + ((ni % 3) + 1) + '.png',
-                client_type = cTypes[ni],
+                client_type: cTypes[ni],
                 timestamp: new Date()
             });
         }
         setSequenceFlags($scope.messages);
     };
-    $scope.randomHistory();
+
+    $scope.loadHistory();
+    //fakeHistory();
 
     $scope.sendMessage = function () {
         var user = Global.user;

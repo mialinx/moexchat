@@ -4,6 +4,7 @@
 @import "vars";
 @import "fonts";
 @import "baron";
+@import "tooltipster";
 
 // reset
 * {
@@ -49,6 +50,7 @@ a {
         color: $cl_text_white;
         font-size: 120%;
     }
+
         .b-app__header__menu {
             display: none; //temp
             position: absolute;
@@ -59,22 +61,57 @@ a {
             left: 9px;
             @include icon-sprite(menu);
         }
+
         .b-app__header__title {
             display: inline-block;
             line-height: $header_height;
             color: inherit;
             text-decoration: none !important;
             cursor: pointer;
-            &:after {
+            &:before {
                 content: '';
                 display: inline-block;
                 width: 20px;
                 height: 20px;
-                margin-left: 0.5em;
+                margin-right: 0.5em;
                 margin-bottom: -4px;
                 @include icon-sprite(logo);
             }
         }
+
+        .b-app__header__ricons {
+            display: block;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            height: $icon_size;
+        }
+
+            .b-app__header__icon {
+                display: inline-block;
+                width: $icon_size;
+                height: $icon_size;
+                margin: 3px;
+                cursor: pointer;
+            }
+            .b-app__header__people {
+                @extend .b-app__header__icon;
+                @include icon-sprite(people);
+            }
+            .b-app__header__video {
+                @extend .b-app__header__icon;
+                @include icon-sprite(video);
+            }
+            .b-app__header__settings {
+                @extend .b-app__header__icon;
+                @include icon-sprite(settings);
+            }
+            .b-app__header__close {
+                @extend .b-app__header__icon;
+                @include icon-sprite(close2);
+                right: 5px;
+            }
+
 
 .b-connection {
     position: absolute;
@@ -180,7 +217,36 @@ a {
             min-height: $avatar_size;
         }
 
+            .b-chat__item__head {
+                display: none;
+                position: relative;
+                width: 100%;
+                height: 24px;
+                text-align: center;
+                .b-chat__item_first & {
+                    display: block;
+                }
+            }
+
+                .b-chat__item__head__name {
+                    display: inline;
+                    position: absolute;
+                    left: $avatar_size + 10px;
+                    top: 0px;
+                    font-size: 90%;
+                    color: $cl_text_light;
+                }
+
+                .b-chat__item__head__ts {
+                    display: inline;
+                    width: $timestamp_width;
+                    color: $cl_text_light;
+                    font-size: 90%;
+                    white-space: nowrap;
+                }
+            
             .b-chat__item__avatar {
+                visibility: hidden;
                 position: absolute;
                 top: 24px;
                 left: 0px;
@@ -191,26 +257,32 @@ a {
                     width: $avatar_size;
                     height: $avatar_size;
                 }
+                .b-chat__item_first & {
+                    visibility: visible;
+                }
+                .b-chat__item_outgoing & {
+                    display: none;
+                }
             }
 
             .b-chat__item__content {
                 top: 0px;
                 position: relative;
                 margin-left: $avatar_size + 10px;
-                margin-right: $timestamp_width + 7px; 
-            }
-                .b-chat__item__content__nickname {
-                    font-size: 90%;
-                    color: $cl_text_light;
-                    text-align: left;
-                    margin-bottom: 7px;
+                margin-right: 10px; 
+                text-align: left;
+                .b-chat__item_outgoing & {
+                    text-align: right;
                 }
+            }
 
                 .b-chat__item__content__bubble {
+                    display: inline-block;
                     position: relative;
                     padding: 10px;
                     @include border-radius(5px);
                     margin-bottom: 7px;
+                    text-align: left;
                     &:after {
                         display: block;
                         content: '';
@@ -221,6 +293,7 @@ a {
                         left: -10px;
                         top: 7px;
                     }
+
                     .b-chat__item_incoming & {
                         color: $cl_text_dark; 
                         background-color: $cl_background_dark;
@@ -228,11 +301,16 @@ a {
                             border-color: $cl_transp $cl_background_dark $cl_transp $cl_transp;
                         }
                     }
+                    .b-chat__item_incoming.b-chat__item_last & {
+                        margin-bottom: 28px;
+                    }
                     .b-chat__item_outgoing & {
                         color: $cl_text_white;
                         background-color: $cl_chrome;
                         &:after {
-                            border-color: $cl_transp $cl_chrome $cl_transp $cl_transp;
+                            left: auto;
+                            right: -9px;
+                            border-color: $cl_transp $cl_transp $cl_transp $cl_chrome;
                         }
                     }
                 }
@@ -242,28 +320,27 @@ a {
                 }
 
                 .b-chat__item__content__from {
+                    display: none;
                     font-size: 90%;
                     .b-chat__item_incoming & {
-                        color: $cl_text_light;
-                        text-align: right;
+                        position: absolute;
+                        bottom: -23px;
+                        right: 0px;
+                        a {
+                            color: $cl_chrome;
+                        }
                     }
                     .b-chat__item_outgoing & {
                         color: $cl_text_blue;
-                        text-align: left;
+                        a {
+                            color: $cl_text_blue;
+                        }
+                    }
+                    .b-chat__item_last & {
+                        display: block;
                     }
                 }
 
-            .b-chat__item__ts {
-                position: absolute;
-                top: 24px;
-                right: 0px;
-                width: $timestamp_width;
-                color: $cl_text_light;
-                font-size: 90%;
-                white-space: nowrap;
-                text-align: right;
-            }
-            
 
     .b-chat__msgline {
         position: absolute;
