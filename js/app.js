@@ -16,9 +16,11 @@ app.factory('Pusher', function (Global) {
     pusherOptions.authEndpoint = pusherOptions.authEndpoint + '/' + Global.user.session.token;
     var pusher = new Pusher(CONFIG.pusherAppKey, pusherOptions);
     var channel = pusher.subscribe(Global.user.session.channel_name);
+    var presence = pusher.subscribe('presence-' + Global.user.session.channel_name);
     return {
         pusher: pusher,
-        channel: channel
+        channel: channel,
+        presence: presence
     };
 });
 
@@ -323,7 +325,7 @@ app.controller('PresentCtrl', function ($scope, Storage, Global) {
     };
 });
 
-app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global) {
+app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global, $log) {
 
     $scope.messages = [];
 
@@ -400,9 +402,17 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global) {
         $scope.newMessage = '';
     };
 
-    Pusher.channel.bind('client-message', function(msg) {
+    Pusher.channel.bind('client-message', function (msg) {
         $scope.messages.push(msg);
         $scope.$apply();
+    });
+
+    Pusher.presence.bind('pusher:member_added', function () {
+        $log.info('Member added', arguments);
+    });
+
+    Pusher.presence.bind('pusher:member_removed', function () {
+        $log.info('Member removed', arguments);
     });
 
 });

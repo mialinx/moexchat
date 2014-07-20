@@ -15,7 +15,7 @@
     -->
     <script>
         (function () {
-         var base = window.top.GETMOEX.chatBaseUrl || '/';
+         var base = (window.top.GETMOEX || {}).chatBaseUrl || '/';
         document.write('<link rel="stylesheet" href="' + base + 'css/app.css">');
         document.write('<script src="' + base + 'js/jquery.min.js"></scr'+'ipt>');
         document.write('<script src="' + base + 'js/baron.js"></scr'+'ipt>');
