@@ -2,8 +2,8 @@ var CONFIG = {
     messagesPerPage: 20,
     pusherAppKey: 'b139f2a300b26850df94',
     pusherOptions: {
-         authTransport: 'jsonp',
-         authEndpoint:  'http://auth.getmoex.ru/pusher/jauth'
+        authTransport: 'jsonp',
+        authEndpoint:  'http://auth.getmoex.ru/pusher/jauth'
     },
     httpTimeout: 10 * 1000,
     apiBase: 'http://auth.getmoex.ru/api'
@@ -204,7 +204,6 @@ app.factory('Utils', function() {
     };
 });
 
-
 app.filter('nicedate', function(Utils, $sce) {
     return function  (ts) {
         ts = Utils.parsedate(ts);
@@ -311,6 +310,7 @@ app.controller('AppCtrl', function ($scope, Storage, Backend, Global) {
     $scope.closeChat = function () {
         window.top.GETMOEX.closeChat();
     },
+
     // common fix-ups
     $('*[title]').tooltipster({
         theme: 'tooltipster-light'
