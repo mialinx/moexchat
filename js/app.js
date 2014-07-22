@@ -246,6 +246,15 @@ app.filter('hyperlink', function ($sce) {
     }
 });
 
+app.filter('splitlong', function ($sce) {
+    return function (txt, len) {
+        var re = new RegExp('(\\S{' + Number(len) + '})(\\S)', 'g');
+        return (txt || '').replace(re, function () { 
+            return RegExp.$1 + ' ' + RegExp.$2
+        });
+    };
+});
+
 app.directive('scrollBar', function ($timeout) {
     return function ($scope, element, attrs) {
         var plHndl, plOffset;

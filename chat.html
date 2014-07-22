@@ -90,7 +90,7 @@
                         </div>
                         <div class="b-chat__item__content">
                             <div class="b-chat__item__content__bubble">
-                                <div class="b-chat__item__content__text">{{ message.text }}</div>
+                                <div class="b-chat__item__content__text">{{ message.text | splitlong:20 }}</div>
                                 <div class="b-chat__item__content__from" ng-bind-html="message.client_type | hyperlink"></div>
                             </div>
                         </div>
@@ -109,7 +109,7 @@
                         </div>
                         <div class="b-chat__item__content">
                             <div class="b-chat__item__content__bubble">
-                                <div class="b-chat__item__content__text">{{ message.text }}</div>
+                                <div class="b-chat__item__content__text">{{ message.text | splitlong:20 }}</div>
                                 <div class="b-chat__item__content__from" ng-bind-html="message.client_type | hyperlink"></div>
                             </div>
                         </div>
