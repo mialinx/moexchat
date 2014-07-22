@@ -4,6 +4,9 @@
     var chatMinHeigh = 475;
     var scriptTags = document.getElementsByTagName('script');
     var chatBaseUrl = scriptTags[scriptTags.length - 1].src.replace(/\/js\/client.js.*/, '/');
+    if (window.location.search.match(/\bgetmoex_demo=1\b/)) {
+        chatBaseUrl = chatBaseUrl.replace(/\/\//, '//demo.');
+    }
     var localStorage = window.localStorage || {};
 
     function gebi (id) { // old school
