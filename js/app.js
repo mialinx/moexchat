@@ -409,6 +409,7 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global, $log) {
 
     Pusher.channel.bind('client-message', function (msg) {
         $scope.messages.push(msg);
+        setSequenceFlags($scope.messages);
         $scope.$apply();
     });
 
