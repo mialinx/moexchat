@@ -340,12 +340,8 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global, $log) {
 
     function setSequenceFlags (messages) {
         for (var i = 0; i < messages.length; i++) {
-            if (i == 0 || messages[i-1].name != messages[i].name) {
-                messages[i].firstInSeq = true;
-            }
-            if (i == messages.length - 1 || messages[i+1].name != messages[i].name) {
-                messages[i].lastInSeq = true;
-            }
+            messages[i].firstInSeq = (i == 0) || (messages[i-1].name != messages[i].name);
+            messages[i].lastInSeq = (i == messages.length - 1) || (messages[i+1].name != messages[i].name);
         }
     }
 
