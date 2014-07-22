@@ -223,10 +223,10 @@ app.filter('nicedate', function(Utils, $sce) {
             res = time;
         }
         else if (Math.abs(now.getTime() - ts.getTime()) / 1000 < 7 * 24 * 3600) {
-            res = wDayNames[ts.getDay()] + ' ' + time;
+            res = wDayNames[ts.getDay()] + '<br>' + time;
         }
         else {
-            res = (ts.getDate() + 0) + ' ' + mNames[ts.getMonth()-1] + ' ' + time;
+            res = (ts.getDate() + 0) + ' ' + mNames[ts.getMonth()-1] + '<br>' + time;
         }
         return $sce.trustAsHtml(res);
     }
@@ -244,6 +244,15 @@ app.filter('hyperlink', function ($sce) {
         ct = ct.replace(/[^\w_ \.-]/g,'');
         return $sce.trustAsHtml(ct);
     }
+});
+
+app.filter('splitlong', function ($sce) {
+    return function (txt, len) {
+        var re = new RegExp('(\\S{' + Number(len) + '})(\\S)', 'g');
+        return (txt || '').replace(re, function () { 
+            return RegExp.$1 + ' ' + RegExp.$2
+        });
+    };
 });
 
 app.directive('scrollBar', function ($timeout) {

@@ -231,20 +231,17 @@ a {
                 .b-chat__item__head__name {
                     display: inline;
                     position: absolute;
-                    left: $avatar_size + 10px;
                     top: 0px;
                     font-size: 90%;
                     color: $cl_text_light;
+                    .b-chat__item_incoming & {
+                        left: $avatar_size + 10px;
+                    }
+                    .b-chat__item_outgoing & {
+                        right: 10px;
+                    }
                 }
 
-                .b-chat__item__head__ts {
-                    display: inline;
-                    width: $timestamp_width;
-                    color: $cl_text_light;
-                    font-size: 90%;
-                    white-space: nowrap;
-                }
-            
             .b-chat__item__avatar {
                 visibility: hidden;
                 position: absolute;
@@ -265,14 +262,37 @@ a {
                 }
             }
 
+            .b-chat__item__ts {
+                display: block;
+                position: absolute;
+                top: 0px;
+                width: $timestamp_width;
+                color: $cl_text_light;
+                font-size: 90%;
+                white-space: nowrap;
+                .b-chat__item_incoming & {
+                    right: 0px;
+                }
+                .b-chat__item_outgoing & {
+                    left: 0px;
+                }
+                .b-chat__item_first & {
+                    top: 24px;
+                }
+            }
+
             .b-chat__item__content {
                 top: 0px;
                 position: relative;
-                margin-left: $avatar_size + 10px;
-                margin-right: 10px; 
-                text-align: left;
                 .b-chat__item_outgoing & {
                     text-align: right;
+                    margin-left: $timestamp_width + 10px;
+                    margin-right: 10px;
+                }
+                .b-chat__item_incoming & {
+                    text-align: left;
+                    margin-left: $avatar_size + 10px;
+                    margin-right: $timestamp_width + 10px;
                 }
             }
 

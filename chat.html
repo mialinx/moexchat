@@ -83,14 +83,14 @@
                                 {{ message.lastInSeq ? 'b-chat__item_last' : '' }}">
                         <div class="b-chat__item__head">
                             <div class="b-chat__item__head__name">{{ message.name || '&nbsp;' }}</div>
-                            <div class="b-chat__item__head__ts" ng-bind-html="message.timestamp | nicedate"></div>
                         </div>
                         <div class="b-chat__item__avatar">
                             <img ng-src="{{ message.anonymous_pic_url }}" title="{{ message.name }}" alt="{{ message.name }}"/>
                         </div>
+                        <div class="b-chat__item__ts" ng-bind-html="message.timestamp | nicedate"></div>
                         <div class="b-chat__item__content">
                             <div class="b-chat__item__content__bubble">
-                                <div class="b-chat__item__content__text">{{ message.text }}</div>
+                                <div class="b-chat__item__content__text">{{ message.text | splitlong:18 }}</div>
                                 <div class="b-chat__item__content__from" ng-bind-html="message.client_type | hyperlink"></div>
                             </div>
                         </div>
@@ -102,14 +102,14 @@
                                {{ message.lastInSeq ? 'b-chat__item_last' : '' }}">
                         <div class="b-chat__item__head">
                             <div class="b-chat__item__head__name">{{ message.name || '&nbsp;' }}</div>
-                            <div class="b-chat__item__head__ts" ng-bind-html="message.timestamp | nicedate"></div>
                         </div>
                         <div class="b-chat__item__avatar">
                             <img ng-src="{{ message.anonymous_pic_url }}" title="{{ message.name }}" alt="{{ message.name }}"/>
                         </div>
+                        <div class="b-chat__item__ts" ng-bind-html="message.timestamp | nicedate"></div>
                         <div class="b-chat__item__content">
                             <div class="b-chat__item__content__bubble">
-                                <div class="b-chat__item__content__text">{{ message.text }}</div>
+                                <div class="b-chat__item__content__text">{{ message.text | splitlong:18 }}</div>
                                 <div class="b-chat__item__content__from" ng-bind-html="message.client_type | hyperlink"></div>
                             </div>
                         </div>
