@@ -136,7 +136,8 @@ app.factory('Backend', function ($http, $q, Global, Storage, $timeout) {
 });
 
 app.factory('Utils', function() {
-    return {
+    var Utils;
+    Utils = {
         datediff: function (d1, d2) {
             if (d1 instanceof Date) {
                 d1 = Math.round(d1.getTime() / 1000);
@@ -199,36 +200,74 @@ app.factory('Utils', function() {
             else {
                 return w50;
             }
+        },
+
+        nidedate: function (ts) {
+            ts = Utils.parsedate(ts);
+            if (!ts) {
+                return ''
+            }
+            var wDayNames = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+            var mNames = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+            var now = new Date();
+            var time = (ts.getHours() > 9 ? ts.getHours() : '0' + ts.getHours()) + ':' +
+                       (ts.getMinutes() > 9 ? ts.getMinutes() : '0' + ts.getMinutes());
+            var res = '';
+            if (ts.getYear() == now.getYear() && 
+                ts.getMonth() == now.getMonth() &&
+                ts.getDate() == now.getDate())
+            {
+                res = time;
+            }
+            else if (Math.abs(now.getTime() - ts.getTime()) / 1000 < 7 * 24 * 3600) {
+                res = wDayNames[ts.getDay()] + '<br>' + time;
+            }
+            else {
+                res = (ts.getDate() + 0) + ' ' + mNames[ts.getMonth()-1] + '<br>' + time;
+            }
+            return res;
+        },
+
+        date: function (ts) {
+            ts = Utils.parsedate(ts);
+            if (!ts) {
+                return '';
+            }
+            var wDayNames = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+            var mNames = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+            var res = wDayNames[ts.getDay()] + ', ' + (ts.getDate() + 0) + ' ' + mNames[ts.getMonth() - 1];
+            return res;
+        },
+
+        time: function (ts) {
+            ts = Utils.parsedate(ts);
+            if (!ts) {
+                return $sce.trustAsHtml('');
+            }
+            var time = (ts.getHours() > 9 ? ts.getHours() : '0' + ts.getHours()) + ':' +
+                       (ts.getMinutes() > 9 ? ts.getMinutes() : '0' + ts.getMinutes());
+            return time;
         }
         
     };
+    return Utils;
 });
 
-app.filter('nicedate', function(Utils, $sce) {
+app.filter('nicedate', function (Utils, $sce) {
     return function  (ts) {
-        ts = Utils.parsedate(ts);
-        if (!ts) {
-            return '';
-        }
-        var wDayNames = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
-        var mNames = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
-        var now = new Date();
-        var time = (ts.getHours() > 9 ? ts.getHours() : '0' + ts.getHours()) + ':' +
-                   (ts.getMinutes() > 9 ? ts.getMinutes() : '0' + ts.getMinutes());
-        var res = '';
-        if (ts.getYear() == now.getYear() && 
-            ts.getMonth() == now.getMonth() &&
-            ts.getDate() == now.getDate())
-        {
-            res = time;
-        }
-        else if (Math.abs(now.getTime() - ts.getTime()) / 1000 < 7 * 24 * 3600) {
-            res = wDayNames[ts.getDay()] + '<br>' + time;
-        }
-        else {
-            res = (ts.getDate() + 0) + ' ' + mNames[ts.getMonth()-1] + '<br>' + time;
-        }
-        return $sce.trustAsHtml(res);
+        return $sce.trustAsHtml(Utils.nicedate(ts));
+    }
+});
+
+app.filter('date', function (Utils, $sce) {
+    return function  (ts) {
+        return $sce.trustAsHtml(Utils.date(ts));
+    }
+});
+
+app.filter('time', function (Utils, $sce) {
+    return function  (ts) {
+        return $sce.trustAsHtml(Utils.time(ts));
     }
 });
 
@@ -334,7 +373,7 @@ app.controller('PresentCtrl', function ($scope, Storage, Global) {
     };
 });
 
-app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global, $log) {
+app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global, Utils, $log) {
 
     $scope.messages = [];
 
@@ -342,6 +381,8 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global, $log) {
         for (var i = 0; i < messages.length; i++) {
             messages[i].firstInSeq = (i == 0) || (messages[i-1].name != messages[i].name);
             messages[i].lastInSeq = (i == messages.length - 1) || (messages[i+1].name != messages[i].name);
+            messages[i].date = messages[i].date || Utils.date(messages[i].timestamp);
+            messages[i].firstOfTheDay = (i == 0) || (messages[i-1].date != messages[i].date);
         }
     }
 

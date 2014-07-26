@@ -734,6 +734,21 @@ a {
   height: 100%;
   width: 100%; }
 
+.b-chat__messages__date {
+  display: block;
+  color: #9b9b9b;
+  font-size: 90%;
+  white-space: nowrap;
+  text-align: center;
+  position: relative;
+  margin: 0px 11px 20px 11px;
+  height: 20px;
+  line-height: 36px;
+  border-bottom: solid 1px #d0d0d0; }
+  .b-chat__messages__date span {
+    padding: 0px 10px;
+    background-color: #f7f7f7; }
+
 .b-chat__item {
   position: relative;
   margin: 0px 11px;
@@ -775,32 +790,15 @@ a {
   .b-chat__item_outgoing .b-chat__item__avatar {
     display: none; }
 
-.b-chat__item__ts {
-  display: block;
-  position: absolute;
-  top: 0px;
-  width: 42px;
-  color: #9b9b9b;
-  font-size: 90%;
-  white-space: nowrap; }
-  .b-chat__item_incoming .b-chat__item__ts {
-    right: 0px; }
-  .b-chat__item_outgoing .b-chat__item__ts {
-    left: 0px; }
-  .b-chat__item_first .b-chat__item__ts {
-    top: 24px; }
-
 .b-chat__item__content {
   top: 0px;
   position: relative; }
   .b-chat__item_outgoing .b-chat__item__content {
     text-align: right;
-    margin-left: 52px;
     margin-right: 10px; }
   .b-chat__item_incoming .b-chat__item__content {
     text-align: left;
-    margin-left: 50px;
-    margin-right: 52px; }
+    margin-left: 50px; }
 
 .b-chat__item__content__bubble {
   display: inline-block;
@@ -843,19 +841,28 @@ a {
 .b-chat__item__content__from {
   display: none;
   font-size: 90%;
-  white-space: nowrap; }
-  .b-chat__item_incoming .b-chat__item__content__from {
-    position: absolute;
-    bottom: -23px;
-    right: 0px; }
-    .b-chat__item_incoming .b-chat__item__content__from a {
-      color: #468ee5; }
-  .b-chat__item_outgoing .b-chat__item__content__from {
-    color: #95bff0; }
-    .b-chat__item_outgoing .b-chat__item__content__from a {
-      color: #95bff0; }
+  white-space: nowrap;
+  text-align: right;
+  height: 0px;
+  line-height: 46px;
+  margin-right: -10px;
+  margin-left: -10px;
+  color: #9b9b9b; }
+  .b-chat__item_incoming .b-chat__item__content__from a {
+    color: #468ee5; }
   .b-chat__item_last .b-chat__item__content__from {
     display: block; }
+
+.b-chat__item__content__time {
+  display: block;
+  font-size: 90%;
+  height: 1em; }
+  .b-chat__item_incoming .b-chat__item__content__time {
+    color: #9b9b9b;
+    text-align: right; }
+  .b-chat__item_outgoing .b-chat__item__content__time {
+    color: #95bff0;
+    text-align: left; }
 
 .b-chat__msgline {
   position: absolute;

@@ -211,6 +211,24 @@ a {
             width: 100%;
         }
 
+        .b-chat__messages__date {
+            display: block;
+            color: $cl_text_light;
+            font-size: 90%;
+            white-space: nowrap;
+            text-align: center;
+            position: relative;
+            margin: 0px 11px 20px 11px;
+            height: 20px;
+            line-height: 36px;
+            border-bottom: solid 1px $cl_sep_dark;
+            span {
+                padding: 0px 10px;
+                background-color: $cl_background;
+            }
+
+        }
+
         .b-chat__item {
             position: relative;
             margin: 0px 11px;
@@ -262,37 +280,16 @@ a {
                 }
             }
 
-            .b-chat__item__ts {
-                display: block;
-                position: absolute;
-                top: 0px;
-                width: $timestamp_width;
-                color: $cl_text_light;
-                font-size: 90%;
-                white-space: nowrap;
-                .b-chat__item_incoming & {
-                    right: 0px;
-                }
-                .b-chat__item_outgoing & {
-                    left: 0px;
-                }
-                .b-chat__item_first & {
-                    top: 24px;
-                }
-            }
-
             .b-chat__item__content {
                 top: 0px;
                 position: relative;
                 .b-chat__item_outgoing & {
                     text-align: right;
-                    margin-left: $timestamp_width + 10px;
                     margin-right: 10px;
                 }
                 .b-chat__item_incoming & {
                     text-align: left;
                     margin-left: $avatar_size + 10px;
-                    margin-right: $timestamp_width + 10px;
                 }
             }
 
@@ -340,25 +337,38 @@ a {
                 }
 
                 .b-chat__item__content__from {
+                    // это хитрожопое позиционирование не от кривых рук, а согласно требованиям.
+                    // подпись прибивается по правому краю, вне бабла, но задает минимальную ширину бабла.
                     display: none;
                     font-size: 90%;
                     white-space: nowrap;
+                    text-align: right;
+                    height: 0px;
+                    line-height: 46px;
+                    margin-right: -10px;
+                    margin-left: -10px;
+                    color: $cl_text_light;
                     .b-chat__item_incoming & {
-                        position: absolute;
-                        bottom: -23px;
-                        right: 0px;
                         a {
                             color: $cl_chrome;
                         }
                     }
-                    .b-chat__item_outgoing & {
-                        color: $cl_text_blue;
-                        a {
-                            color: $cl_text_blue;
-                        }
-                    }
                     .b-chat__item_last & {
                         display: block;
+                    }
+                }
+
+                .b-chat__item__content__time {
+                    display: block;
+                    font-size: 90%;
+                    height: 1em;
+                    .b-chat__item_incoming & {
+                        color: $cl_text_light;
+                        text-align: right;
+                    }
+                    .b-chat__item_outgoing & {
+                        color: $cl_text_blue;
+                        text-align: left;
                     }
                 }
 
