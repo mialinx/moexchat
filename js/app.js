@@ -383,6 +383,7 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global, Utils, $lo
             messages[i].lastInSeq = (i == messages.length - 1) || (messages[i+1].name != messages[i].name);
             messages[i].date = messages[i].date || Utils.date(messages[i].timestamp);
             messages[i].firstOfTheDay = (i == 0) || (messages[i-1].date != messages[i].date);
+            messages[i].fromLong = (messages[i].client_type || '').length >= (messages[i].text || '').length * 1.2;
         }
     }
 

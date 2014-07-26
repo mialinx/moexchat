@@ -343,18 +343,19 @@ a {
                     font-size: 90%;
                     white-space: nowrap;
                     text-align: right;
-                    height: 0px;
-                    line-height: 46px;
-                    margin-right: -10px;
-                    margin-left: -10px;
+                    position: absolute;
+                    right: 0px;
+                    bottom: -20px;
                     color: $cl_text_light;
-                    .b-chat__item_incoming & {
-                        a {
-                            color: $cl_chrome;
-                        }
+                    a {
+                        color: $cl_chrome;
                     }
                     .b-chat__item_last & {
                         display: block;
+                    }
+                    &.b-chat__item__content__from_long {
+                        right: auto;
+                        left: 0px;
                     }
                 }
 

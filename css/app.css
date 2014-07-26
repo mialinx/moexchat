@@ -843,15 +843,17 @@ a {
   font-size: 90%;
   white-space: nowrap;
   text-align: right;
-  height: 0px;
-  line-height: 46px;
-  margin-right: -10px;
-  margin-left: -10px;
+  position: absolute;
+  right: 0px;
+  bottom: -20px;
   color: #9b9b9b; }
-  .b-chat__item_incoming .b-chat__item__content__from a {
+  .b-chat__item__content__from a {
     color: #468ee5; }
   .b-chat__item_last .b-chat__item__content__from {
     display: block; }
+  .b-chat__item__content__from.b-chat__item__content__from_long {
+    right: auto;
+    left: 0px; }
 
 .b-chat__item__content__time {
   display: block;
