@@ -856,13 +856,12 @@ a {
 .b-chat__item__content__time {
   display: block;
   font-size: 90%;
-  height: 1em; }
+  height: 1em;
+  text-align: right; }
   .b-chat__item_incoming .b-chat__item__content__time {
-    color: #9b9b9b;
-    text-align: right; }
+    color: #9b9b9b; }
   .b-chat__item_outgoing .b-chat__item__content__time {
-    color: #95bff0;
-    text-align: left; }
+    color: #95bff0; }
 
 .b-chat__msgline {
   position: absolute;

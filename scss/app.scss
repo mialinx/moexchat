@@ -362,13 +362,12 @@ a {
                     display: block;
                     font-size: 90%;
                     height: 1em;
+                    text-align: right;
                     .b-chat__item_incoming & {
                         color: $cl_text_light;
-                        text-align: right;
                     }
                     .b-chat__item_outgoing & {
                         color: $cl_text_blue;
-                        text-align: left;
                     }
                 }
 
