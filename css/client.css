@@ -22,6 +22,7 @@
 #getmoex_chat_container {
   display: block !important;
   position: fixed;
+  z-index: 10000;
   right: 100px;
   width: 320px;
   height: 475px;
