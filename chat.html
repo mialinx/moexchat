@@ -50,7 +50,7 @@
 
         <div class="b-login__form">
 
-            <img ng-src="{{ user.session.anonymous_pic_url }}" class="b-login__avatar">
+            <img ng-src="{{ user.session.avatar_url || user.session.anonymous_pic_url }}" class="b-login__avatar">
 
             <div class="b-login__form__text">Пожалуйста, представьтесь</div>
             <input class="b-login__form__nick" type="text" ng-model="nickname" placeholder="Ваше имя">
@@ -87,7 +87,7 @@
                             <div class="b-chat__item__head__name">{{ message.name || '&nbsp;' }}</div>
                         </div>
                         <div class="b-chat__item__avatar">
-                            <img ng-src="{{ message.anonymous_pic_url }}" title="{{ message.name }}" alt="{{ message.name }}"/>
+                            <img ng-src="{{ message.avatar_url || message.anonymous_pic_url }}" title="{{ message.name }}" alt="{{ message.name }}"/>
                         </div>
                         <div class="b-chat__item__content">
                             <div class="b-chat__item__content__bubble">
