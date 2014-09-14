@@ -1,5 +1,5 @@
 .icon-sprite, #getmoex_chat_handle, #getmoex_chat_close {
-  background: url('/images/../images/icon-s2894715fac.png') no-repeat; }
+  background: url('/images/../images/icon-s4172e223cc.png') no-repeat; }
 
 #getmoex_chat_launcher {
   display: block;
@@ -25,6 +25,7 @@
   z-index: 10000;
   right: 100px;
   width: 320px;
+  min-width: 320px;
   height: 475px;
   margin: 0px;
   padding: 0px;
@@ -52,6 +53,9 @@
     bottom: -475px !important;
     width: 320px !important;
     height: 475px !important; }
+  #getmoex_chat_container.double {
+    min-width: 640px;
+    width: 640px; }
 
 #getmoex_chat {
   border: none;
@@ -81,7 +85,7 @@
   height: 22px;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);
   opacity: 0.85;
-  background-position: 0 -132px; }
+  background-position: 0 -169px; }
 
 #getmoex_chat_close {
   display: block !important;

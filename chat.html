@@ -22,16 +22,16 @@
         document.write('<script src="' + base + 'js/jquery.tooltipster.min.js"></scr'+'ipt>');
         document.write('<script src="' + base + 'js/angular.min.js"></scr'+'ipt>');
         document.write('<script src="' + base + 'js/pusher-2.2.min.js"></scr'+'ipt>');
-        document.write('<script src="' + base + 'js/app.js"></scr'+'ipt>');
+        document.write('<script src="' + base + 'js/app.js?v=3"></scr'+'ipt>');
         })();
     </script>
 </head>
 
-<body class="b-app {{ browserVersion }}" ng-controller="AppCtrl">
+<body class="b-app {{ browserVersion }} {{ user.session.token && rooms_shown ? 'b-app_wide' : '' }}" ng-controller="AppCtrl">
 
     <div class="b-app__header">
         <span class="b-app__header__menu"></span>
-        <a class="b-app__header__title" href="http://www.getmoex.ru" target="_blank">Чат MOEX</a>
+        <a class="b-app__header__title" href="http://www.istochnik.im/r={{ clientType }}" target="_blank">Чат MOEX</a>
         <div class="b-app__header__ricons">
             <!--
             <span class="b-app__header__people" title="участники комнаты"></span>
@@ -44,6 +44,41 @@
 
     <div class="b-connection" ng-if="!user.session.token">
         <div class="b-spinner"></div>
+    </div>
+
+    <div class="b-rooms" ng-controller="RoomsCtrl" ng-if="user.session.token && rooms_shown">
+        <div class="b-rooms__create_public">Создать публичный чат</div>
+        <div class="b-rooms__create_private">Создать приватный чат</div>
+        <div class="b-rooms__search">
+            Поиск
+            <div class="b-rooms__search__input">
+                <input type="text" ng-model="roomSearch.title" class="{{ roomSearch.title ? 'filled' : '' }}">
+            </div>
+        </div>
+        <div class="b-rooms__list b-baron__wrapper">
+            <div class="b-baron__track">
+                <div class="b-baron__bar"></div>
+            </div>
+
+            <div class="b-rooms__list__scrollable b-baron__scrollable" 
+                scroll-bar 
+                update-on="(rooms | filter:roomSearch).length"
+                update-direction="top"
+            >
+                <div class="b-rooms__item"  ng-repeat="room in rooms | filter:roomSearch">
+                    <div class="b-rooms__item__avatar">
+                        <img ng-src="{{ room.avatar }}">
+                    </div>
+                    <div class="b-rooms__item__content">
+                        <div class="b-rooms__item__content__title">{{ room.title }}</div>
+                        <div class="b-rooms__item__content__members">{{ room.members }} {{ room.members | decline:"участник,участника,участников" }}</div>
+                    </div>
+                    <div class="b-rooms__item__ts">
+                        {{ room.ts | date }}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="b-login" ng-controller="PresentCtrl" ng-if="user.session.token && !user.nickname">
@@ -72,8 +107,13 @@
                 <div class="b-baron__bar"></div>
             </div>
             
-            <div class="b-chat__messages__scrollable b-baron__scrollable" scroll-bar update-on="messages.length" 
-                progressive-load="loadHistory" progressive-load-margin="50">
+            <div class="b-chat__messages__scrollable b-baron__scrollable" 
+                scroll-bar 
+                update-on="messages.length" 
+                progressive-load="loadHistory" 
+                progressive-load-margin="50"
+                update-direction="bottom"
+            >
 
                 <div ng-repeat="message in messages">
 

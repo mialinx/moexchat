@@ -26,6 +26,7 @@
     z-index: 10000;
     right: $chat_right;
     width: $pane_width;
+    min-width: $pane_width;
     height: $pane_height;
     margin: 0px;
     padding: 0px;
@@ -43,6 +44,10 @@
         bottom: -$pane_height !important;
         width: $pane_width !important;
         height: $pane_height !important;
+    }
+    &.double {
+        min-width: $pane_width * 2;
+        width: $pane_width * 2;
     }
 }
 

@@ -294,15 +294,21 @@ app.filter('splitlong', function ($sce) {
     };
 });
 
+app.filter('decline', function (Utils, $sce) {
+    return function (num, text) {
+        text = (text || '').split(',');
+        text = Utils.decline(num, text[0], text[1], text[2]); 
+        return text;
+    }
+});
+
 app.directive('scrollBar', function ($timeout) {
     return function ($scope, element, attrs) {
         var plHndl, plOffset;
         var el = element[0];
 
-        el.scrollTop = Math.max(el.scrollHeight - el.clientHeight, 0);
-
         var scrl = baron({
-            root:     $('.b-baron__wrapper'),
+            root:     $(element).closest('.b-baron__wrapper'),
             scroller: '.b-baron__scrollable',
             bar:      '.b-baron__bar',
             track:    '.b-baron__track',
@@ -317,7 +323,14 @@ app.directive('scrollBar', function ($timeout) {
                         plOffset = undefined;
                     }
                     else {
-                        el.scrollTop = Math.max(el.scrollHeight - el.clientHeight, 0);
+                        switch (attrs.updateDirection) {
+                            case 'bottom':
+                                el.scrollTop = Math.max(el.scrollHeight - el.clientHeight, 0);
+                                break;
+                            case 'top':
+                                el.scrollTop = 0;
+                                break;
+                        }
                     }
                     scrl.update();
                 });
@@ -337,6 +350,7 @@ app.directive('scrollBar', function ($timeout) {
                 }
             });
         }
+
     };
 });
 
@@ -345,19 +359,22 @@ app.controller('AppCtrl', function ($scope, Storage, Backend, Global) {
     var user = {};
     user.nickname = Storage.get('nickname');
     user.session = Storage.get('session');
+    var clientType = window.top.document.location.hostname || 'getmoex.ru';
 
     if (!user.session || !user.session.token 
         || (user.session.expires && new Date() > new Date(user.session.expires_at || 0)))
     {
-        var clientType = window.top.document.location.hostname || 'getmoex.ru';
         Backend.initializeSession(clientType);
     }
 
     $scope.user = Global.user = user;
+    $scope.clientType = clientType;
 
     $scope.closeChat = function () {
         window.top.GETMOEX.closeChat();
-    },
+    };
+
+    $scope.rooms_shown = true;
 
     // common fix-ups
     $('*[title]').tooltipster({
@@ -465,3 +482,23 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global, Utils, $lo
 
 });
 
+app.controller('RoomsCtrl', function ($scope, $rootScope, Backend, Global, Utils, $log) {
+    $scope.rooms = [
+        { avatar: '/images/av1.png', title: 'Бла бла бла 1', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av2.png', title: 'Обсуждение особенностей национального колорита в контексте', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av3.png', title: 'Бла бла бла 3', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av1.png', title: 'Бла бла бла 4', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av2.png', title: 'Бла бла бла 5', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av3.png', title: 'Бла бла бла 6', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av1.png', title: 'Бла бла бла 7', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av2.png', title: 'Бла бла бла 8', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av3.png', title: 'Бла бла бла 9', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av1.png', title: 'Бла бла бла 1', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av1.png', title: 'Лолшто рума',   members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av1.png', title: 'Бла бла бла 7', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av2.png', title: 'Бла бла бла 8', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av3.png', title: 'Бла бла бла 9', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av1.png', title: 'Бла бла бла 1', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av1.png', title: 'Бла бла бла', members: Math.ceil(Math.random() * 100), ts: new Date() }
+    ];
+});

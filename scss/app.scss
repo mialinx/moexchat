@@ -164,7 +164,7 @@ a {
             height: 34px;
             font-size: 110%;
             border: solid 1px $cl_sep_dark;
-            @include border-radius(5px);
+            @include border-radius($radius);
             background: #fff;
             padding: 7px;
         }
@@ -179,7 +179,7 @@ a {
             .b-login__form__dologin {
                 float: right;
                 border: none;
-                @include border-radius(5px);
+                @include border-radius($radius);
                 background-color: $cl_accent;
                 color: $cl_text_white;
                 padding: 7px 14px;
@@ -190,6 +190,154 @@ a {
                 }
             }
 
+.b-rooms {
+    position: absolute;
+    top: $header_height;
+    left: 0px;
+    bottom: 0px;
+    z-index: 100;
+    width: $pane_width;
+}
+    .b-rooms__btn {
+        display: block;
+        height: 30px;
+        line-height: 29px;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+        &:hover {
+            text-decoration: none;
+        }
+        &:before {
+            content: '';
+            display: inline-block;
+            width: 10px;
+            height: 11px;
+            margin-right: 5px;
+        }
+    }
+    .b-rooms__create_public {
+        @extend .b-rooms__btn;
+        border-bottom: solid 1px $cl_sep_light;
+        color: $cl_chrome;
+        &:before {
+            @include icon-sprite(public_chat);
+        }
+    }
+    .b-rooms__create_private {
+        @extend .b-rooms__btn;
+        color: $cl_green;
+        &:before {
+            @include icon-sprite(private_chat);
+        }
+    }
+    .b-rooms__search {
+        position: relative;
+        height: 30px;
+        line-height: 29px;
+        margin: 0px 8px;
+        text-align: center;
+        @include border-radius($radius);
+        color: $cl_text_light;
+        background: $cl_text_white;
+        &:before {
+            content: '';
+            display: inline-block;
+            width: 13px;
+            height: 13px;
+            margin-bottom: -2px;
+            margin-right: 5px;
+            @include icon-sprite(search);
+        }
+    }
+        .b-rooms__search__input {
+            position: absolute;
+            top: 0px;
+            left: 8px;
+            right: 8px;
+            bottom: 0px;
+            input {
+                border: none;
+                outline: none;
+                width: 100%;
+                height: 100%;
+                background-color: $cl_transp;
+                &.filled, &:focus {
+                    background-color: $cl_text_white;
+                }
+            }
+        }
+
+    .b-rooms__list {
+        //margin-top: 20px;
+        position: absolute;
+        top: 110px;
+        left: 0px; 
+        right: 0px;
+        bottom: 0px;
+    }
+        .b-rooms__item {
+            position: relative;
+            height: 60px; 
+            width: 100%;
+            @include box-sizing(border-box);
+            border-bottom: solid 1px $cl_sep_light;
+            color: $cl_text_light;
+            &.b-rooms__item_active, &:hover {
+                background-color: $cl_chrome;
+                color: $cl_text_blue;
+                &:after {
+                    $angle_width2: $angle_width * 1.5;
+                    content: '';
+                    display: block;
+                    position: absolute;
+                    right: 0px;
+                    top: 50%;
+                    margin-top: -$angle_width2 / 2 - 3px;
+                    border: solid $angle_width2;
+                    border-color: $cl_transp $cl_background $cl_transp $cl_transp;
+                }
+            }
+        }
+            .b-rooms__item__avatar {
+                position: absolute;
+                top: 8px;
+                left: 8px;
+                width: $avatar_size;
+                height: $avatar_size;
+                img {
+                    width: $avatar_size;
+                    height: $avatar_size;
+                }
+            }
+            .b-rooms__item__content {
+                position: absolute;
+                left: $avatar_size + 2 * 8px;
+                right: $timestamp_width + 2 * 8px;
+                top: 8px;
+                bottom: 8px;
+            }
+                .b-rooms__item__content__title {
+                    overflow-x: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    font-weight: bold;
+                    color: $cl_text_dark;
+                    .b-rooms__item_active &, .b-rooms__item:hover & {
+                        color: $cl_text_white;
+                    }
+                }
+                .b-rooms__item__content__members {
+                    overflow-x: hidden;
+                    text-overflow: ellipsis;
+                }
+            .b-rooms__item__ts {
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                width: $timestamp_width;
+            }
+
 .b-chat {
     position: absolute;
     top: $header_height;
@@ -197,6 +345,9 @@ a {
     right: 0px;
     bottom: 0px;
     z-index: 100;
+    .b-app_wide & {
+        left: $pane_width;
+    }
 }
     .b-chat__messages {
         position: absolute;
@@ -297,7 +448,7 @@ a {
                     display: inline-block;
                     position: relative;
                     padding: 10px;
-                    @include border-radius(5px);
+                    @include border-radius($radius);
                     margin-bottom: 7px;
                     text-align: left;
                     &:after {
