@@ -1059,7 +1059,8 @@ a {
   position: absolute;
   padding: 7px;
   height: 100%;
-  width: 70%; }
+  width: 70%;
+  resize: none; }
 
 .b-chat__msgline__btn {
   border: none;

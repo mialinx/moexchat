@@ -354,6 +354,19 @@ app.directive('scrollBar', function ($timeout) {
     };
 });
 
+app.directive('adjustMsgLine', function () {
+    return function ($scope, element, attrs) {
+        var $messages = $('.b-chat__messages', element);
+        var $line = $('.b-chat__msgline', element);
+        var $ta = $('textarea', $line);
+        $ta.on('keyup', function () {
+            var sc = Math.min($ta[0].scrollHeight, 91);
+            $line.height(sc);
+            $messages.css('bottom',sc);
+        });
+    }
+});
+
 app.controller('AppCtrl', function ($scope, Storage, Backend, Global) {
 
     var user = {};

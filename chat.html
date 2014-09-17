@@ -111,7 +111,7 @@
             
     </div>
 
-    <div class="b-chat" ng-controller="ChatCtrl" ng-if="user.session.token && user.nickname">
+    <div class="b-chat" ng-controller="ChatCtrl" ng-if="user.session.token && user.nickname" adjust-msg-line>
 
         <div class="b-chat__messages b-baron__wrapper">
 
@@ -180,7 +180,7 @@
         </div>
 
         <form class="b-chat__msgline" ng-submit="sendMessage()" >
-            <input class="b-chat__msgline__input" type="text" autocomplete="off" ng-model="newMessage" placeholder="Ваше сообщение...">
+            <textarea class="b-chat__msgline__input" type="text" autocomplete="off" ng-model="newMessage" placeholder="Ваше сообщение..."></textarea>
             <button class="b-chat__msgline__btn" ng-disabled="!newMessage.length">Отправить</button>
         </form>
 
