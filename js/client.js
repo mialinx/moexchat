@@ -98,6 +98,15 @@
         }
         addListener(launcher, 'click', openChat);
 
+        function setWide(wide) {
+            if (wide) {
+                container.style.width = (container.clientWidth + 320) + 'px';
+            }
+            else {
+                container.style.width = (container.clientWidth - 320) + 'px';
+            }
+        }
+
         function closeChat() {
             addClass(container, 'hidden');
             removeClass(launcher, 'hidden');
@@ -150,6 +159,7 @@
         // public API
         window.GETMOEX = {
             chatBaseUrl: chatBaseUrl,
+            setWide:     setWide,
             openChat:    openChat,
             closeChat:   closeChat
         };

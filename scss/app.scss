@@ -52,13 +52,15 @@ a {
     }
 
         .b-app__header__menu {
-            display: none; //temp
             position: absolute;
             text-decoration: none;
             width: 20px;
             height: 20px;
             top: 5px;
-            left: 9px;
+            left: 28px;
+            // .b-app_wide & {
+            //     left: $pane_width + 28px;
+            // }
             @include icon-sprite(menu);
         }
 
@@ -189,6 +191,50 @@ a {
                     background-color: darken($cl_accent, 5%);
                 }
             }
+
+.b-settings {
+    position: absolute;
+    right: 14px;
+    top: $header_height - 3px;
+    width: 212px;
+    height: 246px;
+    z-index: 200;
+    background-color: $cl_text_white;
+    @include border-radius($radius);
+    text-align: center;
+    padding: 8px;
+
+    &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: -2 * $angle_width;
+        right: 20px;
+        border: solid $angle_width;
+        border-color: $cl_transp $cl_transp $cl_text_white $cl_transp;
+    }
+}
+    .b-settings__avatar {
+    }
+    .b-settings__form {
+        height: auto;
+        text-align: left;
+    }
+        .b-settings__form__label {
+            color: $cl_text_light;
+            display: block;
+            margin-top: 6px;
+            margin-bottom: 3px;
+        }
+        .b-settings__form__input {
+            width: 100%;
+            border-radius: 5px;
+            border: solid 1px $cl_text_light;
+            outline: none;
+            padding: 0px 8px;
+            height: 25px;
+        }
+
 
 .b-rooms {
     position: absolute;

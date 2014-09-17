@@ -572,13 +572,12 @@ a {
   font-size: 120%; }
 
 .b-app__header__menu {
-  display: none;
   position: absolute;
   text-decoration: none;
   width: 20px;
   height: 20px;
   top: 5px;
-  left: 9px;
+  left: 28px;
   background-position: 0 -110px; }
 
 .b-app__header__title {
@@ -713,6 +712,48 @@ a {
   cursor: pointer; }
   .b-login__form__dologin:hover {
     background-color: #62b541; }
+
+.b-settings {
+  position: absolute;
+  right: 14px;
+  top: 27px;
+  width: 212px;
+  height: 246px;
+  z-index: 200;
+  background-color: white;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  text-align: center;
+  padding: 8px; }
+  .b-settings:before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: -10px;
+    right: 20px;
+    border: solid 5px;
+    border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) white rgba(0, 0, 0, 0); }
+
+.b-settings__form {
+  height: auto;
+  text-align: left; }
+
+.b-settings__form__label {
+  color: #9b9b9b;
+  display: block;
+  margin-top: 6px;
+  margin-bottom: 3px; }
+
+.b-settings__form__input {
+  width: 100%;
+  border-radius: 5px;
+  border: solid 1px #9b9b9b;
+  outline: none;
+  padding: 0px 8px;
+  height: 25px; }
 
 .b-rooms {
   position: absolute;

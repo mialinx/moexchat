@@ -374,7 +374,21 @@ app.controller('AppCtrl', function ($scope, Storage, Backend, Global) {
         window.top.GETMOEX.closeChat();
     };
 
-    $scope.rooms_shown = true;
+    //$scope.rooms_shown = true;
+    $scope.toggleRooms = function () {
+        if ($scope.rooms_shown) {
+            window.top.GETMOEX.setWide(false);
+            $scope.rooms_shown = false;
+        }
+        else {
+            window.top.GETMOEX.setWide(true);
+            $scope.rooms_shown = true;
+        }
+    };
+
+    $scope.toggleSettings = function () {
+        $scope.settings_shown = !$scope.settings_shown;
+    };
 
     // common fix-ups
     $('*[title]').tooltipster({
@@ -485,7 +499,7 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global, Utils, $lo
 app.controller('RoomsCtrl', function ($scope, $rootScope, Backend, Global, Utils, $log) {
     $scope.rooms = [
         { avatar: '/images/av1.png', title: 'Бла бла бла 1', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av2.png', title: 'Обсуждение особенностей национального колорита в контексте', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av2.png', title: 'Обсуждение особенностей национального колорита в контексте', members: Math.ceil(Math.random() * 100), ts: new Date(), active: true },
         { avatar: '/images/av3.png', title: 'Бла бла бла 3', members: Math.ceil(Math.random() * 100), ts: new Date() },
         { avatar: '/images/av1.png', title: 'Бла бла бла 4', members: Math.ceil(Math.random() * 100), ts: new Date() },
         { avatar: '/images/av2.png', title: 'Бла бла бла 5', members: Math.ceil(Math.random() * 100), ts: new Date() },

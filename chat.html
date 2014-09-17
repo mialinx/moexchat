@@ -30,20 +30,32 @@
 <body class="b-app {{ browserVersion }} {{ user.session.token && rooms_shown ? 'b-app_wide' : '' }}" ng-controller="AppCtrl">
 
     <div class="b-app__header">
-        <span class="b-app__header__menu"></span>
+        <span class="b-app__header__menu" ng-click="toggleRooms()"></span>
         <a class="b-app__header__title" href="http://www.istochnik.im/r={{ clientType }}" target="_blank">Чат MOEX</a>
         <div class="b-app__header__ricons">
             <!--
             <span class="b-app__header__people" title="участники комнаты"></span>
             <span class="b-app__header__video" title="видео-чат"></span>
-            <span class="b-app__header__settings" title="настройки&nbsp;чата"></span>
             -->
+            <span class="b-app__header__settings" ng-click="toggleSettings()" title="настройки&nbsp;чата"></span>
             <span class="b-app__header__close" tile="закрыть" ng-click="closeChat()"></span>
         </div>
     </div>
 
     <div class="b-connection" ng-if="!user.session.token">
         <div class="b-spinner"></div>
+    </div>
+
+    <div class="b-settings" ng-if="user.session.token && settings_shown">
+        <img class="b-settings__avatar" ng-src="{{ user.session.avatar_url || user.session.anonymous_pic_url }}">
+        <form class="b-settings__form">
+            <label class="b-settings__form__label" for="user_name">Имя</label>
+            <input class="b-settings__form__input" type="text" ng-model="{{ user.nickname }}" id="user_name">
+            <label class="b-settings__form__label" for="user_phone">Телефон</label>
+            <input class="b-settings__form__input" type="text" ng-model="{{ user.phone }}" id="user_phone">
+            <label class="b-settings__form__label" for="user_phonecode">Проверочный код</label>
+            <input class="b-settings__form__input" type="text" ng-model="{{ user.phonecode }}" id="user_phonecode">
+        </form>
     </div>
 
     <div class="b-rooms" ng-controller="RoomsCtrl" ng-if="user.session.token && rooms_shown">
@@ -65,7 +77,9 @@
                 update-on="(rooms | filter:roomSearch).length"
                 update-direction="top"
             >
-                <div class="b-rooms__item"  ng-repeat="room in rooms | filter:roomSearch">
+            <div class="b-rooms__item {{ room.active ? 'b-rooms__item_active' : '' }}"  
+                ng-repeat="room in rooms | filter:roomSearch"
+            >
                     <div class="b-rooms__item__avatar">
                         <img ng-src="{{ room.avatar }}">
                     </div>
