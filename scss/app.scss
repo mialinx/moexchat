@@ -575,17 +575,20 @@ a {
         left: 0px;
         right: 0px;
         bottom: 0px;
-        height: $msgline_height;
         border-top: solid 1px $cl_sep_light;
+        height: auto;
+        background: $cl_text_white;
     }
         .b-chat__msgline__input {
             border: none;
             outline: none;
-            position: absolute;
-            padding: 7px;
-            height: 100%;
-            width: 70%;
+            margin: 7px 0px;
+            padding: 0px 7px;
+            height: $msgline_height - 7px * 2;
+            width: 80%;
             resize: none;
+            line-height: 1.5;
+            overflow-y: hidden;
         }
 
         .b-chat__msgline__btn {
@@ -593,12 +596,15 @@ a {
             position: absolute;
             top: 0px;
             right: 0px;
-            width: 30%;
-            height: 100%;
+            bottom: 0px;
+            width: 20%;
             padding: 7px;
             font-weight: bold;
             color: $cl_text_light;
-            background: inherit !important;
+            background: $cl_background !important;
+            margin: 0px;
+            border: 0px;
+            outline: none !important;
             cursor: pointer;
             &:focus {
                 border: none;

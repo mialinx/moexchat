@@ -141,7 +141,7 @@
                             <div class="b-chat__item__head__name">{{ message.name || '&nbsp;' }}</div>
                         </div>
                         <div class="b-chat__item__avatar">
-                            <img ng-src="{{ message.avatar_url || message.anonymous_pic_url }}" title="{{ message.name }}" alt="{{ message.name }}"/>
+                            <img ng-src="{{ message.avatar_url || message.anonymous_pic_url }}" title="{{ message.name }}" alt="{{ message.name }}" ng-click="insertNickname(message.name)"/>
                         </div>
                         <div class="b-chat__item__content">
                             <div class="b-chat__item__content__bubble">
@@ -180,7 +180,7 @@
         </div>
 
         <form class="b-chat__msgline" ng-submit="sendMessage()" >
-            <textarea class="b-chat__msgline__input" type="text" autocomplete="off" ng-model="newMessage" placeholder="Ваше сообщение..."></textarea>
+            <textarea class="b-chat__msgline__input" type="text" autocomplete="off" rows="1" autofocus ng-model="newMessage" placeholder="Ваше сообщение..."></textarea>
             <button class="b-chat__msgline__btn" ng-disabled="!newMessage.length">Отправить</button>
         </form>
 

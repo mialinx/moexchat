@@ -907,7 +907,7 @@ a {
   top: 0px;
   left: 0px;
   right: 0px;
-  bottom: 32px; }
+  bottom: 33px; }
 
 .b-chat__messages__scrollable {
   overflow-y: scroll;
@@ -1050,29 +1050,35 @@ a {
   left: 0px;
   right: 0px;
   bottom: 0px;
-  height: 32px;
-  border-top: solid 1px #ededed; }
+  border-top: solid 1px #ededed;
+  height: auto;
+  background: white; }
 
 .b-chat__msgline__input {
   border: none;
   outline: none;
-  position: absolute;
-  padding: 7px;
-  height: 100%;
-  width: 70%;
-  resize: none; }
+  margin: 7px 0px;
+  padding: 0px 7px;
+  height: 19px;
+  width: 80%;
+  resize: none;
+  line-height: 1.5;
+  overflow-y: hidden; }
 
 .b-chat__msgline__btn {
   border: none;
   position: absolute;
   top: 0px;
   right: 0px;
-  width: 30%;
-  height: 100%;
+  bottom: 0px;
+  width: 20%;
   padding: 7px;
   font-weight: bold;
   color: #9b9b9b;
-  background: inherit !important;
+  background: #f7f7f7 !important;
+  margin: 0px;
+  border: 0px;
+  outline: none !important;
   cursor: pointer; }
   .b-chat__msgline__btn:focus {
     border: none; }

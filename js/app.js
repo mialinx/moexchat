@@ -351,6 +351,9 @@ app.directive('scrollBar', function ($timeout) {
             });
         }
 
+        $scope.$on('layoutChange', function () {
+            scrl.update();
+        });
     };
 });
 
@@ -358,11 +361,22 @@ app.directive('adjustMsgLine', function () {
     return function ($scope, element, attrs) {
         var $messages = $('.b-chat__messages', element);
         var $line = $('.b-chat__msgline', element);
-        var $ta = $('textarea', $line);
-        $ta.on('keyup', function () {
-            var sc = Math.min($ta[0].scrollHeight, 91);
-            $line.height(sc);
-            $messages.css('bottom',sc);
+        var $ta = $('.b-chat__msgline__input', $line);
+        var messages = $messages[0];
+        var line = $line[0];
+        var ta = $ta[0];
+        var mh = 74;
+        $ta.on('keydown', function () {
+            var ph = line.clientHeight;
+            setTimeout(function() {
+                ta.style.height = 0 + 'px';
+                ta.style.height = Math.min(ta.scrollHeight, mh) + 'px';
+                var nh = line.clientHeight;
+                if (nh != ph) {
+                    messages.style.bottom = line.clientHeight + 'px';
+                    $scope.$broadcast('layoutChange');
+                }
+            });
         });
     }
 });
@@ -491,6 +505,14 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global, Utils, $lo
         $scope.messages.push(scopeMessage);
         setSequenceFlags($scope.messages);
         $scope.newMessage = '';
+    };
+
+    $scope.insertNickname = function(nickname) {
+        nickname = nickname + ', ';
+        var newMessage = typeof $scope.newMessage == 'string' ? $scope.newMessage : '';
+        if (newMessage.indexOf(nickname) != 0) {
+            $scope.newMessage = nickname + newMessage;
+        }
     };
 
     Pusher.channel.bind('client-message', function (msg) {
