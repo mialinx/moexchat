@@ -21,6 +21,7 @@
         document.write('<script src="' + base + 'js/baron.js"></scr'+'ipt>');
         document.write('<script src="' + base + 'js/jquery.tooltipster.min.js"></scr'+'ipt>');
         document.write('<script src="' + base + 'js/angular.min.js"></scr'+'ipt>');
+        document.write('<script src="' + base + 'js/angular-sanitize.min.js"></scr' + 'ipt>'); 
         document.write('<script src="' + base + 'js/pusher-2.2.min.js"></scr'+'ipt>');
         document.write('<script src="' + base + 'js/app.js?v=3"></scr'+'ipt>');
         })();
@@ -145,7 +146,8 @@
                         </div>
                         <div class="b-chat__item__content">
                             <div class="b-chat__item__content__bubble">
-                                <div class="b-chat__item__content__text">{{ message.text | splitlong:18 }}</div>
+                                <!-- <div class="b-chat__item__content__text">{{ message.text | splitlong:18 }}</div> -->
+                                <div class="b-chat__item__content__text" ng-bind-html="message.text | linky"></div>
                                 <div class="b-chat__item__content__time" ng-bind-html="message.timestamp | time"></div>
                                 <div class="b-chat__item__content__from {{ message.fromLong ? 'b-chat__item__content__from_long' : '' }}" ng-bind-html="message.client_type | hyperlink"></div>
                             </div>
@@ -161,7 +163,8 @@
                         </div>
                         <div class="b-chat__item__content">
                             <div class="b-chat__item__content__bubble">
-                                <div class="b-chat__item__content__text">{{ message.text | splitlong:18 }}</div>
+                                <!-- <div class="b-chat__item__content__text">{{ message.text | splitlong:18 }}</div> -->
+                                <div class="b-chat__item__content__text" ng-bind-html="message.text | linky"></div>
                                 <div class="b-chat__item__content__time" ng-bind-html="message.timestamp | time"></div>
                             </div>
                         </div>

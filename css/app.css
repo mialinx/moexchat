@@ -1017,6 +1017,10 @@ a {
 
 .b-chat__item__content__text {
   cursor: text; }
+  .b-chat__item__content__text a {
+    color: #468ee5; }
+    .b-chat__item_outgoing .b-chat__item__content__text a {
+      color: #95bff0; }
 
 .b-chat__item__content__from {
   display: none;

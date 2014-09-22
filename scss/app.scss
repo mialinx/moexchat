@@ -531,6 +531,12 @@ a {
 
                 .b-chat__item__content__text {
                     cursor: text;
+                    a {
+                        color: $cl_chrome;
+                        .b-chat__item_outgoing & {
+                            color: $cl_text_blue;
+                        }
+                    }
                 }
 
                 .b-chat__item__content__from {

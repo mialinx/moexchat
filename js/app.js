@@ -9,7 +9,7 @@ var CONFIG = {
     apiBase: 'http://auth.getmoex.ru/api'
 };
 
-var app = angular.module('GetmoexApp', []);
+var app = angular.module('GetmoexApp', ['ngSanitize']);
 
 app.factory('Pusher', function (Global) {
     var pusherOptions = angular.extend({}, CONFIG.pusherOptions);
