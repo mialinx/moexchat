@@ -123,6 +123,12 @@ app.factory('Backend', function ($http, $q, Global, Storage, $timeout) {
             });
         }, 
 
+        listChannels: function () {
+            return callJSONP('channels/list', {
+                token: Global.user.session.token
+            });
+        },
+
         messagesFetch: function (lastMessageId) {
             return callJSONP('messages/fetch', { 
                 channel: Global.user.session.channel_name,
@@ -532,6 +538,10 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global, Utils, $lo
 });
 
 app.controller('RoomsCtrl', function ($scope, $rootScope, Backend, Global, Utils, $log) {
+    Backend.listChannels().then(function() {
+        //$scope.channels = 
+        console.log('CHANNELS', arguments);
+    });
     $scope.rooms = [
         { avatar: '/images/av1.png', title: 'Бла бла бла 1', members: Math.ceil(Math.random() * 100), ts: new Date() },
         { avatar: '/images/av2.png', title: 'Обсуждение особенностей национального колорита в контексте', members: Math.ceil(Math.random() * 100), ts: new Date(), active: true },
@@ -548,6 +558,20 @@ app.controller('RoomsCtrl', function ($scope, $rootScope, Backend, Global, Utils
         { avatar: '/images/av2.png', title: 'Бла бла бла 8', members: Math.ceil(Math.random() * 100), ts: new Date() },
         { avatar: '/images/av3.png', title: 'Бла бла бла 9', members: Math.ceil(Math.random() * 100), ts: new Date() },
         { avatar: '/images/av1.png', title: 'Бла бла бла 1', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av1.png', title: 'Бла бла бла', members: Math.ceil(Math.random() * 100), ts: new Date() }
+        { avatar: '/images/av1.png', title: 'Бла бла бла',   members: Math.ceil(Math.random() * 100), ts: new Date() }
     ];
+
+    function createChannel(isPrivate) {
+        var title = prompt('Введите название ' + (isPrivate ? 'приватного' : 'публичного') + ' канала');
+        if (!title) return;
+        $scope.rooms.unshift({
+            avatar: '/images/av3.png',
+            title: title,
+            members: 42,
+            isPrivate: isPrivate,
+            ts: new Date
+        });
+    }
+    $scope.createPrivateChannel = function () { createChannel(true) };
+    $scope.createPublicChannel = function () { createChannel(false) };
 });
