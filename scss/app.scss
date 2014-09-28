@@ -243,6 +243,8 @@ a {
     bottom: 0px;
     z-index: 100;
     width: $pane_width;
+    @include box-sizing(border-box);
+    border-right: solid 1px $cl_sep_light;
 }
     .b-rooms__btn {
         display: block;
@@ -332,17 +334,6 @@ a {
             &.b-rooms__item_active, &:hover {
                 background-color: $cl_chrome;
                 color: $cl_text_blue;
-                &:after {
-                    $angle_width2: $angle_width * 1.5;
-                    content: '';
-                    display: block;
-                    position: absolute;
-                    right: 0px;
-                    top: 50%;
-                    margin-top: -$angle_width2 / 2 - 3px;
-                    border: solid $angle_width2;
-                    border-color: $cl_transp $cl_background $cl_transp $cl_transp;
-                }
             }
         }
             .b-rooms__item__avatar {
@@ -383,6 +374,33 @@ a {
                 right: 8px;
                 width: $timestamp_width;
             }
+            .b-rooms__item__unread {
+                position: absolute;
+                right: 8px;
+                bottom: 8px;
+                color: $cl_text_white;
+                background: $cl_chrome;
+                .b-rooms__item_active &,
+                .b-rooms__item:hover & {
+                    color: $cl_text_dark;
+                    background: $cl_background;
+                }
+                @include border-radius(10px);
+                padding: 0px 6px;
+            }
+
+// temporary hide btns
+.b-rooms_nobtn {
+    .b-rooms__btn {
+        display: none;
+    }
+    .b-rooms__search {
+        margin-top: 8px;
+    }
+    .b-rooms__list {
+        top: 46px;
+    }
+}
 
 .b-chat {
     position: absolute;
@@ -561,6 +579,16 @@ a {
                         left: 0px;
                     }
                 }
+                    .i-chat__item__content__from__ios {
+                        &:after {
+                            content: '';
+                            display: inline-block;
+                            width: 7px;
+                            height: 11px;
+                            margin-left: 3px;
+                            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAALCAYAAACzkJeoAAAARElEQVQY02NkYGAQYWBgEGLABO+YGBgYBBiwAwEGBgYGNRySakwMeMBASDLicS0DEwMDwz8k/gMk9j9mKIML2eNQ8BYAO8cFnQhgpGgAAAAASUVORK5CYII=');
+                        }
+                    }
 
                 .b-chat__item__content__time {
                     display: block;

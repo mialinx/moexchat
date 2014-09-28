@@ -761,7 +761,11 @@ a {
   left: 0px;
   bottom: 0px;
   z-index: 100;
-  width: 320px; }
+  width: 320px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  border-right: solid 1px #ededed; }
 
 .b-rooms__btn, .b-rooms__create_public, .b-rooms__create_private {
   display: block;
@@ -846,15 +850,6 @@ a {
   .b-rooms__item.b-rooms__item_active, .b-rooms__item:hover {
     background-color: #468ee5;
     color: #95bff0; }
-    .b-rooms__item.b-rooms__item_active:after, .b-rooms__item:hover:after {
-      content: '';
-      display: block;
-      position: absolute;
-      right: 0px;
-      top: 50%;
-      margin-top: -6.75px;
-      border: solid 7.5px;
-      border-color: rgba(0, 0, 0, 0) #f7f7f7 rgba(0, 0, 0, 0) rgba(0, 0, 0, 0); }
 
 .b-rooms__item__avatar {
   position: absolute;
@@ -891,6 +886,29 @@ a {
   top: 8px;
   right: 8px;
   width: 42px; }
+
+.b-rooms__item__unread {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  color: white;
+  background: #468ee5;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  padding: 0px 6px; }
+  .b-rooms__item_active .b-rooms__item__unread, .b-rooms__item:hover .b-rooms__item__unread {
+    color: #4a4a4a;
+    background: #f7f7f7; }
+
+.b-rooms_nobtn .b-rooms__btn, .b-rooms_nobtn .b-rooms__create_public, .b-rooms_nobtn .b-rooms__create_private {
+  display: none; }
+.b-rooms_nobtn .b-rooms__search {
+  margin-top: 8px; }
+.b-rooms_nobtn .b-rooms__list {
+  top: 46px; }
 
 .b-chat {
   position: absolute;
@@ -1038,6 +1056,14 @@ a {
   .b-chat__item__content__from.b-chat__item__content__from_long {
     right: auto;
     left: 0px; }
+
+.i-chat__item__content__from__ios:after {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 11px;
+  margin-left: 3px;
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAALCAYAAACzkJeoAAAARElEQVQY02NkYGAQYWBgEGLABO+YGBgYBBiwAwEGBgYGNRySakwMeMBASDLicS0DEwMDwz8k/gMk9j9mKIML2eNQ8BYAO8cFnQhgpGgAAAAASUVORK5CYII="); }
 
 .b-chat__item__content__time {
   display: block;

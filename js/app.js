@@ -51,7 +51,7 @@ app.factory('Storage', function () {
     }
 });
 
-app.factory('Backend', function ($http, $q, Global, Storage, $timeout) {
+app.factory('Backend', function ($http, $q, Global, Storage, $timeout, $log) {
 
     function fake(data) {
         var d = $q.defer();
@@ -81,9 +81,7 @@ app.factory('Backend', function ($http, $q, Global, Storage, $timeout) {
             return;
         }, CONFIG.httpTimeout);
         d.promise.then(null, function(data) {
-            try {
-                console.log(data);
-            } catch (e) {}
+            $log.log(data);
             switch (data.result) {
                 case 'http_error':
                     // TODO
@@ -286,6 +284,10 @@ app.filter('hyperlink', function ($sce) {
             ct = '<a href="http://' + RegExp.$1 + '/" target="_blank">' + RegExp.$1 + '</a>'; 
             return $sce.trustAsHtml(ct);
         }
+        if (ct.match(/(\s|$)ios(\s|$)/i)) {
+            ct = '<span class="i-chat__item__content__from__ios">отправлено из мобильного чата</span>';
+            return $sce.trustAsHtml(ct);
+        }
         ct = ct.replace(/[^\w_ \.-]/g,'');
         return $sce.trustAsHtml(ct);
     }
@@ -410,11 +412,11 @@ app.controller('AppCtrl', function ($scope, Storage, Backend, Global) {
     //$scope.rooms_shown = true;
     $scope.toggleRooms = function () {
         if ($scope.rooms_shown) {
-            window.top.GETMOEX.setWide(false);
+            window.top.GETMOEX && window.top.GETMOEX.setWide(false);
             $scope.rooms_shown = false;
         }
         else {
-            window.top.GETMOEX.setWide(true);
+            window.top.GETMOEX && window.top.GETMOEX.setWide(true);
             $scope.rooms_shown = true;
         }
     };
@@ -472,27 +474,7 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global, Utils, $lo
             });
     };
 
-    function fakeHistory () {
-        var names = ['Nick', 'Mike', 'Joe'];
-        var cTypes = ['getmoex.ru', 'banki.ru', 'bash.im'];
-        var text = 'В современном мире высоких технологий, где любую информацию можно легко получить в интернете, умение эффективно общаться становится всё более ценным навыком. Люди, которые хорошо владеют навыками коммуникаций, быстрее доносят свою мысль до собеседников, в результате чего чаще бывают правильно понятыми и лучше понимают своего собеседника, могут быстрее придти к нужному соглашению и  презентовать себя с лучшей стороны. ';
-        for (var i = 0; i < 100; i++) {
-            var ni = Math.floor(Math.random() * names.length);
-            var ts = Math.floor(Math.random() * text.length/2);
-            $scope.messages.push({
-                name: names[ni],
-                text: text.substr(ts, Math.round(Math.random()*70)),
-                my:   ni == 0, 
-                anonymous_pic_url: '/images/av' + ((ni % 3) + 1) + '.png',
-                client_type: cTypes[ni],
-                timestamp: new Date()
-            });
-        }
-        setSequenceFlags($scope.messages);
-    };
-
     $scope.loadHistory();
-    //fakeHistory();
 
     $scope.sendMessage = function () {
         var user = Global.user;
@@ -539,26 +521,25 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global, Utils, $lo
 
 app.controller('RoomsCtrl', function ($scope, $rootScope, Backend, Global, Utils, $log) {
     Backend.listChannels().then(function() {
-        //$scope.channels = 
-        console.log('CHANNELS', arguments);
+        $log.log('CHANNELS', arguments);
     });
     $scope.rooms = [
-        { avatar: '/images/av1.png', title: 'Бла бла бла 1', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av2.png', title: 'Обсуждение особенностей национального колорита в контексте', members: Math.ceil(Math.random() * 100), ts: new Date(), active: true },
-        { avatar: '/images/av3.png', title: 'Бла бла бла 3', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av1.png', title: 'Бла бла бла 4', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av2.png', title: 'Бла бла бла 5', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av3.png', title: 'Бла бла бла 6', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av1.png', title: 'Бла бла бла 7', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av2.png', title: 'Бла бла бла 8', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av3.png', title: 'Бла бла бла 9', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av1.png', title: 'Бла бла бла 1', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av1.png', title: 'Лолшто рума',   members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av1.png', title: 'Бла бла бла 7', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av2.png', title: 'Бла бла бла 8', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av3.png', title: 'Бла бла бла 9', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av1.png', title: 'Бла бла бла 1', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av1.png', title: 'Бла бла бла',   members: Math.ceil(Math.random() * 100), ts: new Date() }
+        { avatar: '/images/av1.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла 1', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av2.png', unread: Math.floor(Math.random() * 11), title: 'Обсуждение особенностей национального колорита в контексте', members: Math.ceil(Math.random() * 100), ts: new Date(), active: true },
+        { avatar: '/images/av3.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла 3', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av1.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла 4', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av2.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла 5', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av3.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла 6', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av1.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла 7', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av2.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла 8', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av3.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла 9', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av1.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла 1', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av1.png', unread: Math.floor(Math.random() * 11), title: 'Лолшто рума',   members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av1.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла 7', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av2.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла 8', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av3.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла 9', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av1.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла 1', members: Math.ceil(Math.random() * 100), ts: new Date() },
+        { avatar: '/images/av1.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла',   members: Math.ceil(Math.random() * 100), ts: new Date() }
     ];
 
     function createChannel(isPrivate) {
