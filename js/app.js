@@ -246,7 +246,7 @@ app.factory('Utils', function() {
         time: function (ts) {
             ts = Utils.parsedate(ts);
             if (!ts) {
-                return $sce.trustAsHtml('');
+                return '';
             }
             var time = (ts.getHours() > 9 ? ts.getHours() : '0' + ts.getHours()) + ':' +
                        (ts.getMinutes() > 9 ? ts.getMinutes() : '0' + ts.getMinutes());
@@ -409,15 +409,15 @@ app.controller('AppCtrl', function ($scope, Storage, Backend, Global) {
         window.top.GETMOEX.closeChat();
     };
 
-    //$scope.rooms_shown = true;
+    //$scope.channels_shown = true;
     $scope.toggleRooms = function () {
-        if ($scope.rooms_shown) {
+        if ($scope.channels_shown) {
             window.top.GETMOEX && window.top.GETMOEX.setWide(false);
-            $scope.rooms_shown = false;
+            $scope.channels_shown = false;
         }
         else {
             window.top.GETMOEX && window.top.GETMOEX.setWide(true);
-            $scope.rooms_shown = true;
+            $scope.channels_shown = true;
         }
     };
 
@@ -520,32 +520,19 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global, Utils, $lo
 });
 
 app.controller('RoomsCtrl', function ($scope, $rootScope, Backend, Global, Utils, $log) {
-    Backend.listChannels().then(function() {
-        $log.log('CHANNELS', arguments);
+    Backend.listChannels().then(function(data) {
+        if (data.result == 'ok') {
+            $scope.channels = data.channels;
+            $log.log('CHANNELS', data.channels);
+        }
+        else {
+            $scope.channels = [];
+        }
     });
-    $scope.rooms = [
-        { avatar: '/images/av1.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла 1', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av2.png', unread: Math.floor(Math.random() * 11), title: 'Обсуждение особенностей национального колорита в контексте', members: Math.ceil(Math.random() * 100), ts: new Date(), active: true },
-        { avatar: '/images/av3.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла 3', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av1.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла 4', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av2.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла 5', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av3.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла 6', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av1.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла 7', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av2.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла 8', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av3.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла 9', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av1.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла 1', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av1.png', unread: Math.floor(Math.random() * 11), title: 'Лолшто рума',   members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av1.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла 7', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av2.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла 8', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av3.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла 9', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av1.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла 1', members: Math.ceil(Math.random() * 100), ts: new Date() },
-        { avatar: '/images/av1.png', unread: Math.floor(Math.random() * 11), title: 'Бла бла бла',   members: Math.ceil(Math.random() * 100), ts: new Date() }
-    ];
-
     function createChannel(isPrivate) {
         var title = prompt('Введите название ' + (isPrivate ? 'приватного' : 'публичного') + ' канала');
         if (!title) return;
-        $scope.rooms.unshift({
+        $scope.channels.unshift({
             avatar: '/images/av3.png',
             title: title,
             members: 42,

@@ -28,7 +28,7 @@
     </script>
 </head>
 
-<body class="b-app {{ browserVersion }} {{ user.session.token && rooms_shown ? 'b-app_wide' : '' }}" ng-controller="AppCtrl">
+<body class="b-app {{ browserVersion }} {{ user.session.token && channels_shown ? 'b-app_wide' : '' }}" ng-controller="AppCtrl">
 
     <div class="b-app__header">
         <span class="b-app__header__menu" ng-click="toggleRooms()"></span>
@@ -59,37 +59,37 @@
         </form>
     </div>
 
-    <div class="b-rooms b-rooms_nobtn" ng-controller="RoomsCtrl" ng-if="user.session.token && rooms_shown">
-        <div class="b-rooms__create_public" ng-click="createPublicChannel()">Создать публичный чат</div>
-        <div class="b-rooms__create_private" ng-click="createPrivateChannel()">Создать приватный чат</div>
-        <div class="b-rooms__search">
+    <div class="b-channels b-channels_nobtn" ng-controller="RoomsCtrl" ng-if="user.session.token && channels_shown">
+        <div class="b-channels__create_public" ng-click="createPublicChannel()">Создать публичный чат</div>
+        <div class="b-channels__create_private" ng-click="createPrivateChannel()">Создать приватный чат</div>
+        <div class="b-channels__search">
             Поиск
-            <div class="b-rooms__search__input">
-                <input type="text" ng-model="roomSearch.title" class="{{ roomSearch.title ? 'filled' : '' }}">
+            <div class="b-channels__search__input">
+                <input type="text" ng-model="channelSearch.human_name" class="{{ channelSearch.human_name ? 'filled' : '' }}">
             </div>
         </div>
-        <div class="b-rooms__list b-baron__wrapper">
+        <div class="b-channels__list b-baron__wrapper">
             <div class="b-baron__track">
                 <div class="b-baron__bar"></div>
             </div>
 
-            <div class="b-rooms__list__scrollable b-baron__scrollable" 
+            <div class="b-channels__list__scrollable b-baron__scrollable" 
                 scroll-bar 
-                update-on="(rooms | filter:roomSearch).length"
+                update-on="(channels | filter:channelSearch).length"
                 update-direction="top"
             >
-            <div class="b-rooms__item {{ room.active ? 'b-rooms__item_active' : '' }}"  
-                ng-repeat="room in rooms | filter:roomSearch"
+            <div class="b-channels__item {{ channel.active ? 'b-channels__item_active' : '' }}"  
+                ng-repeat="channel in channels | filter:channelSearch"
             >
-                    <div class="b-rooms__item__avatar">
-                        <img ng-src="{{ room.avatar }}">
+                    <div class="b-channels__item__avatar">
+                        <img ng-src="{{ channel.avatar }}">
                     </div>
-                    <div class="b-rooms__item__content">
-                        <div class="b-rooms__item__content__title">{{ room.title }}</div>
-                        <div class="b-rooms__item__content__members">{{ room.members }} {{ room.members | decline:"участник,участника,участников" }}</div>
+                    <div class="b-channels__item__content">
+                        <div class="b-channels__item__content__title">{{ channel.human_name }}</div>
+                        <div class="b-channels__item__content__members">{{ channel.members_count }} {{ channel.members_count | decline:"участник,участника,участников" }}</div>
                     </div>
-                    <div class="b-rooms__item__ts">{{ room.ts | time }}</div>
-                    <div class="b-rooms__item__unread" ng-if="room.unread > 0">{{ room.unread }}</div>
+                    <div class="b-channels__item__ts">{{ channel.last_update | time }}</div>
+                    <div class="b-channels__item__unread" ng-if="channel.messages_count > 0">{{ channel.messages_count }}</div>
                 </div>
             </div>
         </div>
@@ -145,7 +145,7 @@
                         </div>
                         <div class="b-chat__item__content">
                             <div class="b-chat__item__content__bubble">
-                                <div class="b-chat__item__content__text" ng-bind-html="message.text | linky"></div>
+                                <div class="b-chat__item__content__text" ng-bind-html="message.text | linky:'_blank' "></div>
                                 <div class="b-chat__item__content__time" ng-bind-html="message.timestamp | time"></div>
                                 <div class="b-chat__item__content__from {{ message.fromLong ? 'b-chat__item__content__from_long' : '' }}" ng-bind-html="message.client_type | hyperlink"></div>
                             </div>
@@ -161,7 +161,7 @@
                         </div>
                         <div class="b-chat__item__content">
                             <div class="b-chat__item__content__bubble">
-                                <div class="b-chat__item__content__text" ng-bind-html="message.text | linky"></div>
+                                <div class="b-chat__item__content__text" ng-bind-html="message.text | linky:'_blank' "></div>
                                 <div class="b-chat__item__content__time" ng-bind-html="message.timestamp | time"></div>
                             </div>
                         </div>

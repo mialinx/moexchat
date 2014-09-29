@@ -1,6 +1,7 @@
 (function() {
     
-    var chatMinWidth = 320;
+    var paneMinWidth = 320;
+    var chatMinWidth = paneMinWidth;
     var chatMinHeigh = 475;
     var scriptTags = document.getElementsByTagName('script');
     var chatBaseUrl = scriptTags[scriptTags.length - 1].src.replace(/\/js\/client.js.*/, '/');
@@ -100,10 +101,12 @@
 
         function setWide(wide) {
             if (wide) {
-                container.style.width = (container.clientWidth + 320) + 'px';
+                container.style.width = (container.clientWidth + paneMinWidth) + 'px';
+                chatMinWidth = 2 * paneMinWidth;
             }
             else {
-                container.style.width = (container.clientWidth - 320) + 'px';
+                container.style.width = (container.clientWidth - paneMinWidth) + 'px';
+                chatMinWidth = paneMinWidth;
             }
         }
 
@@ -131,8 +134,8 @@
         }
         function doResize (ev) {
             ev = ev || window.event;
-            var width = Math.max(resizeInfo.brX - (ev.clientX - resizeInfo.clickOffsetX), 320);
-            var height = Math.max(resizeInfo.brY - (ev.clientY - resizeInfo.clickOffsetY), 475);
+            var width = Math.max(resizeInfo.brX - (ev.clientX - resizeInfo.clickOffsetX), chatMinWidth);
+            var height = Math.max(resizeInfo.brY - (ev.clientY - resizeInfo.clickOffsetY), chatMinHeigh);
             container.style.width =  width + 'px';
             container.style.height = height + 'px';
             ev.preventDefault();

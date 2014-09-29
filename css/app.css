@@ -1,7 +1,7 @@
 @import url(/fonts/opensans_regular_cyrillic/stylesheet.css);
 @import url(/fonts/opensans_light_cyrillic/stylesheet.css);
 @import url(/fonts/opensans_bold_cyrillic/stylesheet.css);
-.icon-sprite, .b-app__header__menu, .b-app__header__title:before, .b-app__header__people, .b-app__header__video, .b-app__header__settings, .b-app__header__close, .b-rooms__create_public:before, .b-rooms__create_private:before, .b-rooms__search:before {
+.icon-sprite, .b-app__header__menu, .b-app__header__title:before, .b-app__header__people, .b-app__header__video, .b-app__header__settings, .b-app__header__close, .b-channels__create_public:before, .b-channels__create_private:before, .b-channels__search:before {
   background: url('/images/../images/icon-s4172e223cc.png') no-repeat; }
 
 @-webkit-keyframes circle-loading {
@@ -755,7 +755,7 @@ a {
   padding: 0px 8px;
   height: 25px; }
 
-.b-rooms {
+.b-channels {
   position: absolute;
   top: 30px;
   left: 0px;
@@ -767,34 +767,34 @@ a {
   box-sizing: border-box;
   border-right: solid 1px #ededed; }
 
-.b-rooms__btn, .b-rooms__create_public, .b-rooms__create_private {
+.b-channels__btn, .b-channels__create_public, .b-channels__create_private {
   display: block;
   height: 30px;
   line-height: 29px;
   text-align: center;
   text-decoration: none;
   cursor: pointer; }
-  .b-rooms__btn:hover, .b-rooms__create_public:hover, .b-rooms__create_private:hover {
+  .b-channels__btn:hover, .b-channels__create_public:hover, .b-channels__create_private:hover {
     text-decoration: none; }
-  .b-rooms__btn:before, .b-rooms__create_public:before, .b-rooms__create_private:before {
+  .b-channels__btn:before, .b-channels__create_public:before, .b-channels__create_private:before {
     content: '';
     display: inline-block;
     width: 10px;
     height: 11px;
     margin-right: 5px; }
 
-.b-rooms__create_public {
+.b-channels__create_public {
   border-bottom: solid 1px #ededed;
   color: #468ee5; }
-  .b-rooms__create_public:before {
+  .b-channels__create_public:before {
     background-position: 0 -70px; }
 
-.b-rooms__create_private {
+.b-channels__create_private {
   color: #6ad000; }
-  .b-rooms__create_private:before {
+  .b-channels__create_private:before {
     background-position: 0 -129px; }
 
-.b-rooms__search {
+.b-channels__search {
   position: relative;
   height: 30px;
   line-height: 29px;
@@ -807,7 +807,7 @@ a {
   border-radius: 5px;
   color: #9b9b9b;
   background: white; }
-  .b-rooms__search:before {
+  .b-channels__search:before {
     content: '';
     display: inline-block;
     width: 13px;
@@ -816,29 +816,29 @@ a {
     margin-right: 5px;
     background-position: 0 -45px; }
 
-.b-rooms__search__input {
+.b-channels__search__input {
   position: absolute;
   top: 0px;
   left: 8px;
   right: 8px;
   bottom: 0px; }
-  .b-rooms__search__input input {
+  .b-channels__search__input input {
     border: none;
     outline: none;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0); }
-    .b-rooms__search__input input.filled, .b-rooms__search__input input:focus {
+    .b-channels__search__input input.filled, .b-channels__search__input input:focus {
       background-color: white; }
 
-.b-rooms__list {
+.b-channels__list {
   position: absolute;
   top: 110px;
   left: 0px;
   right: 0px;
   bottom: 0px; }
 
-.b-rooms__item {
+.b-channels__item {
   position: relative;
   height: 60px;
   width: 100%;
@@ -847,47 +847,47 @@ a {
   box-sizing: border-box;
   border-bottom: solid 1px #ededed;
   color: #9b9b9b; }
-  .b-rooms__item.b-rooms__item_active, .b-rooms__item:hover {
+  .b-channels__item.b-channels__item_active, .b-channels__item:hover {
     background-color: #468ee5;
     color: #95bff0; }
 
-.b-rooms__item__avatar {
+.b-channels__item__avatar {
   position: absolute;
   top: 8px;
   left: 8px;
   width: 40px;
   height: 40px; }
-  .b-rooms__item__avatar img {
+  .b-channels__item__avatar img {
     width: 40px;
     height: 40px; }
 
-.b-rooms__item__content {
+.b-channels__item__content {
   position: absolute;
   left: 56px;
   right: 58px;
   top: 8px;
   bottom: 8px; }
 
-.b-rooms__item__content__title {
+.b-channels__item__content__title {
   overflow-x: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   font-weight: bold;
   color: #4a4a4a; }
-  .b-rooms__item_active .b-rooms__item__content__title, .b-rooms__item:hover .b-rooms__item__content__title {
+  .b-channels__item_active .b-channels__item__content__title, .b-channels__item:hover .b-channels__item__content__title {
     color: white; }
 
-.b-rooms__item__content__members {
+.b-channels__item__content__members {
   overflow-x: hidden;
   text-overflow: ellipsis; }
 
-.b-rooms__item__ts {
+.b-channels__item__ts {
   position: absolute;
   top: 8px;
   right: 8px;
   width: 42px; }
 
-.b-rooms__item__unread {
+.b-channels__item__unread {
   position: absolute;
   right: 8px;
   bottom: 8px;
@@ -899,15 +899,15 @@ a {
   -o-border-radius: 10px;
   border-radius: 10px;
   padding: 0px 6px; }
-  .b-rooms__item_active .b-rooms__item__unread, .b-rooms__item:hover .b-rooms__item__unread {
+  .b-channels__item_active .b-channels__item__unread, .b-channels__item:hover .b-channels__item__unread {
     color: #4a4a4a;
     background: #f7f7f7; }
 
-.b-rooms_nobtn .b-rooms__btn, .b-rooms_nobtn .b-rooms__create_public, .b-rooms_nobtn .b-rooms__create_private {
+.b-channels_nobtn .b-channels__btn, .b-channels_nobtn .b-channels__create_public, .b-channels_nobtn .b-channels__create_private {
   display: none; }
-.b-rooms_nobtn .b-rooms__search {
+.b-channels_nobtn .b-channels__search {
   margin-top: 8px; }
-.b-rooms_nobtn .b-rooms__list {
+.b-channels_nobtn .b-channels__list {
   top: 46px; }
 
 .b-chat {
@@ -929,6 +929,7 @@ a {
 
 .b-chat__messages__scrollable {
   overflow-y: scroll;
+  overflow-x: hidden;
   height: 100%;
   width: 100%; }
 
@@ -1008,7 +1009,9 @@ a {
   -o-border-radius: 5px;
   border-radius: 5px;
   margin-bottom: 7px;
-  text-align: left; }
+  text-align: left;
+  -ms-word-break: break-all;
+  word-break: break-word; }
   .b-chat__item__content__bubble:after {
     display: block;
     content: '';
@@ -1090,7 +1093,7 @@ a {
   margin: 7px 0px;
   padding: 0px 7px;
   height: 19px;
-  width: 80%;
+  width: 72%;
   resize: none;
   line-height: 1.5;
   overflow-y: hidden; }
@@ -1101,7 +1104,7 @@ a {
   top: 0px;
   right: 0px;
   bottom: 0px;
-  width: 20%;
+  width: 28%;
   padding: 7px;
   font-weight: bold;
   color: #9b9b9b;
