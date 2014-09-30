@@ -63,6 +63,16 @@ a {
             // }
             @include icon-sprite(menu);
         }
+            .b-app__header__menu__unread {
+                position: absolute;
+                left: 25px;
+                bottom: 1px;
+                color: $cl_chrome;
+                background: $cl_background;
+                @include border-radius(10px);
+                font-size: 90%;
+                padding: 0px 6px;
+            }
 
         .b-app__header__title {
             display: inline-block;

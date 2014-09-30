@@ -31,7 +31,7 @@
 <body class="b-app {{ browserVersion }} {{ user.session.token && channels_shown ? 'b-app_wide' : '' }}" ng-controller="AppCtrl">
 
     <div class="b-app__header">
-        <span class="b-app__header__menu" ng-click="toggleRooms()"></span>
+        <span class="b-app__header__menu" ng-click="toggleRooms()"><span class="b-app__header__menu__unread" ng-if="totalChannelMessages">{{ totalChannelMessages }}</span></span>
         <a class="b-app__header__title" href="http://www.istochnik.im/r={{ clientType }}" target="_blank">Источник чат</a>
         <div class="b-app__header__ricons">
             <!--
@@ -89,7 +89,7 @@
                         <div class="b-channels__item__content__members">{{ channel.members_count }} {{ channel.members_count | decline:"участник,участника,участников" }}</div>
                     </div>
                     <div class="b-channels__item__ts">{{ channel.last_update | time }}</div>
-                    <div class="b-channels__item__unread" ng-if="channel.messages_count > 0">{{ channel.messages_count }}</div>
+                    <div class="b-channels__item__unread" ng-if="channel.messages_count > 2">{{ channel.messages_count }}</div>
                 </div>
             </div>
         </div>

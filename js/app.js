@@ -11,21 +11,17 @@ var CONFIG = {
 
 var app = angular.module('GetmoexApp', ['ngSanitize']);
 
-app.factory('Pusher', function (Global) {
+app.factory('Pusher', function ($rootScope) {
     var pusherOptions = angular.extend({}, CONFIG.pusherOptions);
-    pusherOptions.authEndpoint = pusherOptions.authEndpoint + '/' + Global.user.session.token;
+    pusherOptions.authEndpoint = pusherOptions.authEndpoint + '/' + $rootScope.user.session.token;
     var pusher = new Pusher(CONFIG.pusherAppKey, pusherOptions);
-    var channel = pusher.subscribe(Global.user.session.channel_name);
-    var presence = pusher.subscribe('presence-' + Global.user.session.channel_name);
+    var channel = pusher.subscribe($rootScope.user.session.channel_name);
+    var presence = pusher.subscribe('presence-' + $rootScope.user.session.channel_name);
     return {
         pusher: pusher,
         channel: channel,
         presence: presence
     };
-});
-
-app.factory('Global', function () {
-    return { };
 });
 
 app.factory('Storage', function () {
@@ -51,7 +47,7 @@ app.factory('Storage', function () {
     }
 });
 
-app.factory('Backend', function ($http, $q, Global, Storage, $timeout, $log) {
+app.factory('Backend', function ($http, $q, $rootScope, Storage, $timeout, $log) {
 
     function fake(data) {
         var d = $q.defer();
@@ -87,7 +83,7 @@ app.factory('Backend', function ($http, $q, Global, Storage, $timeout, $log) {
                     // TODO
                     break;
                 case 'Incorrect access token':
-                    Global.user.session = null;
+                    $rootScope.user.session = null;
                     Storage.del('session');
                     window.location.reload();
                     break;
@@ -117,22 +113,22 @@ app.factory('Backend', function ($http, $q, Global, Storage, $timeout, $log) {
                 client_type: clientType 
             }).then(function(session) {
                 Storage.set('session', session);
-                Global.user.session = session;
+                $rootScope.user.session = session;
             });
         }, 
 
         listChannels: function () {
             return callJSONP('channels/list', {
-                token: Global.user.session.token
+                token: $rootScope.user.session.token
             });
         },
 
         messagesFetch: function (lastMessageId) {
             return callJSONP('messages/fetch', { 
-                channel: Global.user.session.channel_name,
+                channel: $rootScope.user.session.channel_name,
                 per_page: CONFIG.messagesPerPage, 
                 last_message_id: lastMessageId,
-                token: Global.user.session.token
+                token: $rootScope.user.session.token
             });
         }
 
@@ -389,7 +385,7 @@ app.directive('adjustMsgLine', function () {
     }
 });
 
-app.controller('AppCtrl', function ($scope, Storage, Backend, Global) {
+app.controller('AppCtrl', function ($scope, Storage, Backend, $rootScope) {
 
     var user = {};
     user.nickname = Storage.get('nickname');
@@ -402,7 +398,7 @@ app.controller('AppCtrl', function ($scope, Storage, Backend, Global) {
         Backend.initializeSession(clientType);
     }
 
-    $scope.user = Global.user = user;
+    $rootScope.user = user;
     $scope.clientType = clientType;
 
     $scope.closeChat = function () {
@@ -425,21 +421,40 @@ app.controller('AppCtrl', function ($scope, Storage, Backend, Global) {
         $scope.settings_shown = !$scope.settings_shown;
     };
 
+    $scope.totalChannelMessages = 0;
+    $rootScope.channels = [];
+    $rootScope.$watchCollection("channels", function () {
+        var total = 0;
+        for (var i = 0; i < $rootScope.channels.length; i++){
+              total = total + ($rootScope.channels[i].messages_count || 0);
+        }
+        $scope.totalChannelMessages = total;
+    });
+
+    Backend.listChannels().then(function (data) {
+        if (data.result == 'ok') {
+            $rootScope.channels = data.channels;
+        }
+        else {
+            $rootScope.channels = [];
+        }
+    });
+
     // common fix-ups
     $('*[title]').tooltipster({
         theme: 'tooltipster-light'
     });
 });
 
-app.controller('PresentCtrl', function ($scope, Storage, Global) {
+app.controller('PresentCtrl', function ($scope, Storage, $rootScope) {
     $scope.setNickname = function() {
         var nickname = $scope.nickname;
-        Global.user.nickname = nickname;
+        $rootScope.user.nickname = nickname;
         Storage.set('nickname', nickname);
     };
 });
 
-app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global, Utils, $log) {
+app.controller('ChatCtrl', function ($scope, Pusher, Backend, $rootScope, Utils, $log) {
 
     $scope.messages = [];
 
@@ -477,7 +492,7 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global, Utils, $lo
     $scope.loadHistory();
 
     $scope.sendMessage = function () {
-        var user = Global.user;
+        var user = $rootScope.user;
         var message = {
             text:               $scope.newMessage,
             nickname:           user.nickname,
@@ -519,14 +534,13 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, Global, Utils, $lo
 
 });
 
-app.controller('RoomsCtrl', function ($scope, $rootScope, Backend, Global, Utils, $log) {
+app.controller('RoomsCtrl', function ($scope, $rootScope, Backend, $rootScope, Utils, $log) {
     Backend.listChannels().then(function(data) {
         if (data.result == 'ok') {
-            $scope.channels = data.channels;
-            $log.log('CHANNELS', data.channels);
+            $rootScope.channels = data.channels;
         }
         else {
-            $scope.channels = [];
+            $rootScope.channels = [];
         }
     });
     function createChannel(isPrivate) {

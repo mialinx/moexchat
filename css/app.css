@@ -580,6 +580,20 @@ a {
   left: 28px;
   background-position: 0 -110px; }
 
+.b-app__header__menu__unread {
+  position: absolute;
+  left: 25px;
+  bottom: 1px;
+  color: #468ee5;
+  background: #f7f7f7;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  font-size: 90%;
+  padding: 0px 6px; }
+
 .b-app__header__title {
   display: inline-block;
   line-height: 30px;
