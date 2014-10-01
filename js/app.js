@@ -11,17 +11,24 @@ var CONFIG = {
 
 var app = angular.module('GetmoexApp', ['ngSanitize']);
 
+// TODO: JOIN PUSHER WHILE currentChannelName changes
 app.factory('Pusher', function ($rootScope) {
     var pusherOptions = angular.extend({}, CONFIG.pusherOptions);
     pusherOptions.authEndpoint = pusherOptions.authEndpoint + '/' + $rootScope.user.session.token;
-    var pusher = new Pusher(CONFIG.pusherAppKey, pusherOptions);
-    var channel = pusher.subscribe($rootScope.user.session.channel_name);
-    var presence = pusher.subscribe('presence-' + $rootScope.user.session.channel_name);
+
     return {
-        pusher: pusher,
-        channel: channel,
-        presence: presence
-    };
+        connect: function (channelName) {
+            var pusher = new Pusher(CONFIG.pusherAppKey, pusherOptions);
+            var channel = pusher.subscribe(channelName);
+            var presence = pusher.subscribe('presence-' + channelName);
+            return {
+                channelName: channelName,
+                pusher: pusher,
+                channel: channel,
+                presence: presence
+            };
+        }
+    }
 });
 
 app.factory('Storage', function () {
@@ -77,7 +84,7 @@ app.factory('Backend', function ($http, $q, $rootScope, Storage, $timeout, $log)
             return;
         }, CONFIG.httpTimeout);
         d.promise.then(null, function(data) {
-            $log.log(data);
+            $log.log('Backend error', data);
             switch (data.result) {
                 case 'http_error':
                     // TODO
@@ -111,21 +118,29 @@ app.factory('Backend', function ($http, $q, $rootScope, Storage, $timeout, $log)
         initializeSession: function (clientType) {
             return callJSONP('initialize_session', { 
                 client_type: clientType 
-            }).then(function(session) {
-                Storage.set('session', session);
-                $rootScope.user.session = session;
             });
         }, 
 
-        listChannels: function () {
+        listChannels: function (withPrivate) {
             return callJSONP('channels/list', {
                 token: $rootScope.user.session.token
-            });
+            })
+                .then(function (data) {
+                    if (data.channels && data.channels.length && !withPrivate) {
+                        // remove private channels 
+                        for (var i = data.channels.length - 1; i >= 0; i--) {
+                            if (data.channels[i].is_private) {
+                                data.channels.splice(i, 1);
+                            }
+                        }
+                    }
+                    return data;
+                });
         },
 
-        messagesFetch: function (lastMessageId) {
+        messagesFetch: function (channel, lastMessageId) {
             return callJSONP('messages/fetch', { 
-                channel: $rootScope.user.session.channel_name,
+                channel: channel,
                 per_page: CONFIG.messagesPerPage, 
                 last_message_id: lastMessageId,
                 token: $rootScope.user.session.token
@@ -385,44 +400,31 @@ app.directive('adjustMsgLine', function () {
     }
 });
 
+
 app.controller('AppCtrl', function ($scope, Storage, Backend, $rootScope) {
 
-    var user = {};
-    user.nickname = Storage.get('nickname');
-    user.session = Storage.get('session');
-    var clientType = window.top.document.location.hostname || 'getmoex.ru';
+    // Init global variables
 
-    if (!user.session || !user.session.token 
-        || (user.session.expires && new Date() > new Date(user.session.expires_at || 0)))
+    $rootScope.user = {};
+    $rootScope.user.nickname = Storage.get('nickname');
+    $rootScope.user.session = Storage.get('session') || {};
+
+    $scope.clientType = window.top.document.location.hostname || 'getmoex.ru';
+
+    if (!$rootScope.user.session.token 
+        || ($rootScope.user.session.expires && new Date() > new Date($rootScope.user.session.expires_at || 0)))
     {
-        Backend.initializeSession(clientType);
+        Backend.initializeSession($scope.clientType).then(function(session) {
+            Storage.set('session', session);
+            $rootScope.user.session = session;
+            $rootScope.currentChannelName = session.channel_name;
+        });
     }
 
-    $rootScope.user = user;
-    $scope.clientType = clientType;
-
-    $scope.closeChat = function () {
-        window.top.GETMOEX.closeChat();
-    };
-
-    //$scope.channels_shown = true;
-    $scope.toggleRooms = function () {
-        if ($scope.channels_shown) {
-            window.top.GETMOEX && window.top.GETMOEX.setWide(false);
-            $scope.channels_shown = false;
-        }
-        else {
-            window.top.GETMOEX && window.top.GETMOEX.setWide(true);
-            $scope.channels_shown = true;
-        }
-    };
-
-    $scope.toggleSettings = function () {
-        $scope.settings_shown = !$scope.settings_shown;
-    };
+    $rootScope.currentChannelName = $rootScope.user.session.channel_name;
+    $rootScope.channels = [];
 
     $scope.totalChannelMessages = 0;
-    $rootScope.channels = [];
     $rootScope.$watchCollection("channels", function () {
         var total = 0;
         for (var i = 0; i < $rootScope.channels.length; i++){
@@ -431,6 +433,7 @@ app.controller('AppCtrl', function ($scope, Storage, Backend, $rootScope) {
         $scope.totalChannelMessages = total;
     });
 
+    // TODO: init totalChannelMessages other way
     Backend.listChannels().then(function (data) {
         if (data.result == 'ok') {
             $rootScope.channels = data.channels;
@@ -439,6 +442,26 @@ app.controller('AppCtrl', function ($scope, Storage, Backend, $rootScope) {
             $rootScope.channels = [];
         }
     });
+
+    // buttons handler
+    $scope.closeChat = function () {
+        window.top.GETMOEX.closeChat();
+    };
+
+    $scope.toggleChannels = function () {
+        if ($scope.channelsShown) {
+            window.top.GETMOEX && window.top.GETMOEX.setWide(false);
+            $scope.channelsShown = false;
+        }
+        else {
+            window.top.GETMOEX && window.top.GETMOEX.setWide(true);
+            $scope.channelsShown = true;
+        }
+    };
+
+    $scope.toggleSettings = function () {
+        $scope.settingsShown = !$scope.settingsShown;
+    };
 
     // common fix-ups
     $('*[title]').tooltipster({
@@ -457,6 +480,28 @@ app.controller('PresentCtrl', function ($scope, Storage, $rootScope) {
 app.controller('ChatCtrl', function ($scope, Pusher, Backend, $rootScope, Utils, $log) {
 
     $scope.messages = [];
+    var pusher = null;
+
+    function connectPusher () {
+        if (pusher && pusher.channelName == $rootScope.currentChannelName) {
+            return;
+        }
+        $log.log('Connecting to Pusher ' + $rootScope.currentChannelName);
+        pusher = Pusher.connect($rootScope.currentChannelName);
+        pusher.channel.bind('client-message', function (msg) {
+            $scope.messages.push(msg);
+            setSequenceFlags($scope.messages);
+            $scope.$apply();
+        });
+        pusher.presence.bind('pusher:member_added', function () {
+            $log.info('Member added', arguments);
+        });
+        pusher.presence.bind('pusher:member_removed', function () {
+            $log.info('Member removed', arguments);
+        });
+    }
+    connectPusher();
+    $rootScope.$watch('currentChannelName', connectPusher);
 
     function setSequenceFlags (messages) {
         for (var i = 0; i < messages.length; i++) {
@@ -476,7 +521,7 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, $rootScope, Utils,
             if (lastMsgId) break;
         }
         $scope.messagesLoading = true;
-        Backend.messagesFetch(lastMsgId)
+        Backend.messagesFetch($rootScope.currentChannelName, lastMsgId)
             .then(function (data) {
                 var page = data.messages || [];
                 page.reverse();
@@ -491,6 +536,11 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, $rootScope, Utils,
 
     $scope.loadHistory();
 
+    $rootScope.$watch("currentChannelName", function () {
+        $scope.messages = [];
+        $scope.loadHistory();
+    });
+
     $scope.sendMessage = function () {
         var user = $rootScope.user;
         var message = {
@@ -503,7 +553,7 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, $rootScope, Utils,
             timestamp:          new Date()
         };
         var pusherMessage = angular.extend({}, message, { token: user.session.token });
-        Pusher.channel.trigger('client-message', pusherMessage);
+        pusher.channel.trigger('client-message', pusherMessage);
         var scopeMessage = angular.extend({}, message, { my: true });
         $scope.messages.push(scopeMessage);
         setSequenceFlags($scope.messages);
@@ -518,23 +568,9 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, $rootScope, Utils,
         }
     };
 
-    Pusher.channel.bind('client-message', function (msg) {
-        $scope.messages.push(msg);
-        setSequenceFlags($scope.messages);
-        $scope.$apply();
-    });
-
-    Pusher.presence.bind('pusher:member_added', function () {
-        $log.info('Member added', arguments);
-    });
-
-    Pusher.presence.bind('pusher:member_removed', function () {
-        $log.info('Member removed', arguments);
-    });
-
 });
 
-app.controller('RoomsCtrl', function ($scope, $rootScope, Backend, $rootScope, Utils, $log) {
+app.controller('ChannelsCtrl', function ($scope, $rootScope, Backend, $rootScope, Utils, $log) {
     Backend.listChannels().then(function(data) {
         if (data.result == 'ok') {
             $rootScope.channels = data.channels;
@@ -543,6 +579,11 @@ app.controller('RoomsCtrl', function ($scope, $rootScope, Backend, $rootScope, U
             $rootScope.channels = [];
         }
     });
+
+    $scope.joinChannel = function (name) {
+        $rootScope.currentChannelName = name;
+    };
+
     function createChannel(isPrivate) {
         var title = prompt('Введите название ' + (isPrivate ? 'приватного' : 'публичного') + ' канала');
         if (!title) return;
@@ -554,6 +595,7 @@ app.controller('RoomsCtrl', function ($scope, $rootScope, Backend, $rootScope, U
             ts: new Date
         });
     }
+
     $scope.createPrivateChannel = function () { createChannel(true) };
     $scope.createPublicChannel = function () { createChannel(false) };
 });
