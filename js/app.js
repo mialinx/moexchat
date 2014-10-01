@@ -448,6 +448,7 @@ app.controller('AppCtrl', function ($scope, Storage, Backend, $rootScope) {
         window.top.GETMOEX.closeChat();
     };
 
+    $scope.channelsShown = true;
     $scope.toggleChannels = function () {
         if ($scope.channelsShown) {
             window.top.GETMOEX && window.top.GETMOEX.setWide(false);
