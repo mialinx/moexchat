@@ -155,6 +155,26 @@
         }
         addListener(handle, 'mousedown', startResize);
 
+        // stop wheel event to main window
+        function cancelWheel(e) {
+          e = e || window.event;
+          e.preventDefault ? e.preventDefault() : (e.returnValue = false);
+        }
+        if (container.addEventListener) {
+            if ('onwheel' in document) {
+                container.addEventListener ("wheel", cancelWheel, false);
+            } 
+            else if ('onmousewheel' in document) {
+                container.addEventListener ("mousewheel", cancelWheel, false);
+            } 
+            else {
+                container.addEventListener ("MozMousePixelScroll", cancelWheel, false);
+            }
+        } 
+        else {
+            container.attachEvent ("onmousewheel", cancelWheel);
+        }
+
         // restore sizes
         container.style.width  = Math.max(chatMinWidth, parseInt(localStorage['getmoex_width']) || 0) + 'px';
         container.style.height = Math.max(chatMinHeigh, parseInt(localStorage['getmoex_height']) || 0) + 'px';

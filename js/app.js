@@ -11,7 +11,6 @@ var CONFIG = {
 
 var app = angular.module('GetmoexApp', ['ngSanitize']);
 
-// TODO: JOIN PUSHER WHILE currentChannelName changes
 app.factory('Pusher', function ($rootScope) {
     var pusherOptions = angular.extend({}, CONFIG.pusherOptions);
     pusherOptions.authEndpoint = pusherOptions.authEndpoint + '/' + $rootScope.user.session.token;
@@ -129,7 +128,7 @@ app.factory('Backend', function ($http, $q, $rootScope, Storage, $timeout, $log)
                     if (data.channels && data.channels.length && !withPrivate) {
                         // remove private channels 
                         for (var i = data.channels.length - 1; i >= 0; i--) {
-                            if (data.channels[i].is_private) {
+                            if (data.channels[i].is_private && 0) {
                                 data.channels.splice(i, 1);
                             }
                         }
@@ -150,7 +149,7 @@ app.factory('Backend', function ($http, $q, $rootScope, Storage, $timeout, $log)
     };
 });
 
-app.factory('Utils', function() {
+app.factory('Utils', function($log) {
     var Utils;
     Utils = {
         datediff: function (d1, d2) {
@@ -188,7 +187,9 @@ app.factory('Utils', function() {
                 ts = new Date(matches[1] * 1000);
             }
             else if (matches = ts.match(/^\s*(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2}):(\d{2})(?:\.(\d{3}))?(Z|[+-]\d{2}:\d{2})?\s*$/)) { // iso time
-                ts = new Date(matches[1], matches[2], matches[3], matches[4], matches[5], matches[6], matches[7]);
+                ts = new Date();
+                ts.setUTCFullYear(matches[1], matches[2]-1, matches[3]);
+                ts.setUTCHours(matches[4], matches[5], matches[6]);
                 // TODO: support timezones
             }
             else {
@@ -238,7 +239,7 @@ app.factory('Utils', function() {
                 res = wDayNames[ts.getDay()] + '<br>' + time;
             }
             else {
-                res = (ts.getDate() + 0) + ' ' + mNames[ts.getMonth()-1] + '<br>' + time;
+                res = (ts.getDate() + 0) + ' ' + mNames[ts.getMonth()] + '<br>' + time;
             }
             return res;
         },
@@ -250,7 +251,7 @@ app.factory('Utils', function() {
             }
             var wDayNames = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
             var mNames = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
-            var res = wDayNames[ts.getDay()] + ', ' + (ts.getDate() + 0) + ' ' + mNames[ts.getMonth() - 1];
+            var res = wDayNames[ts.getDay()] + ', ' + (ts.getDate() + 0) + ' ' + mNames[ts.getMonth()];
             return res;
         },
 
@@ -296,7 +297,7 @@ app.filter('hyperlink', function ($sce) {
             return $sce.trustAsHtml(ct);
         }
         if (ct.match(/(\s|$)ios(\s|$)/i)) {
-            ct = '<span class="i-chat__item__content__from__ios">отправлено из мобильного чата</span>';
+            ct = '<span class="i-chat__item__content__from__ios">отправлено с iPhone</span>';
             return $sce.trustAsHtml(ct);
         }
         ct = ct.replace(/[^\w_ \.-]/g,'');
@@ -487,6 +488,9 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, $rootScope, Utils,
         if (pusher && pusher.channelName == $rootScope.currentChannelName) {
             return;
         }
+        if (pusher) {
+            pusher.pusher.disconnect();
+        }
         $log.log('Connecting to Pusher ' + $rootScope.currentChannelName);
         pusher = Pusher.connect($rootScope.currentChannelName);
         pusher.channel.bind('client-message', function (msg) {
@@ -553,12 +557,19 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, $rootScope, Utils,
             anonymous_pic_url:  user.session.anonymous_pic_url,
             timestamp:          new Date()
         };
+
         var pusherMessage = angular.extend({}, message, { token: user.session.token });
         pusher.channel.trigger('client-message', pusherMessage);
         var scopeMessage = angular.extend({}, message, { my: true });
         $scope.messages.push(scopeMessage);
         setSequenceFlags($scope.messages);
         $scope.newMessage = '';
+    };
+
+    $scope.sendMessageIfEnter = function ($event) {
+        if ($event.which == 13 && !$event.shiftKey) { // plain Enter
+            $scope.sendMessage();
+        }
     };
 
     $scope.insertNickname = function(nickname) {
