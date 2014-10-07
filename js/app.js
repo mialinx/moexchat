@@ -346,11 +346,12 @@ app.controller('AppCtrl', function ($scope, Storage, Backend, Global) {
     user.nickname = Storage.get('nickname');
     user.session = Storage.get('session');
 
+    $scope.clientType = window.top.document.location.hostname || 'getmoex.ru';
+
     if (!user.session || !user.session.token 
         || (user.session.expires && new Date() > new Date(user.session.expires_at || 0)))
     {
-        var clientType = window.top.document.location.hostname || 'getmoex.ru';
-        Backend.initializeSession(clientType);
+        Backend.initializeSession($scope.clientType);
     }
 
     $scope.user = Global.user = user;
