@@ -575,7 +575,7 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, $rootScope, Utils,
             timestamp:          new Date()
         };
         var pusherMessage = angular.extend({}, message, { token: user.session.token });
-        //pusher.channel.trigger('client-message', pusherMessage);
+        pusher.channel.trigger('client-message', pusherMessage);
         var scopeMessage = angular.extend({}, message, { my: true });
         $scope.messages.push(scopeMessage);
         setSequenceFlags($scope.messages);
