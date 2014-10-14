@@ -82,6 +82,8 @@ app.factory('Storage', function () {
 
 app.factory('Backend', function ($http, $q, $rootScope, Storage, $timeout, $log) {
 
+    var callbacks = window.CALLBACKS = {};
+
     function fake(data) {
         var d = $q.defer();
         $timeout(function() { d.resolve(data) }, 300);
@@ -124,6 +126,13 @@ app.factory('Backend', function ($http, $q, $rootScope, Storage, $timeout, $log)
         });
         return d.promise;
     }
+
+    //function requestJSONP(url) {
+    //    var s = document.createElement('script');
+    //    s.url = url;
+    //    s.async = true;
+    //    s.charset = 'utf-8';
+    //}
 
     function callJSONP(method, data) {
         var url = CONFIG.apiBase + '/v1/jsonp/' + method;
@@ -466,17 +475,15 @@ app.controller('AppCtrl', function ($scope, Storage, Backend, PubSub, Utils, $ro
         window.top.GETMOEX.closeChat();
     };
 
-    $scope.channelsShown = true;
+    // toggle sidebar (if has token)
+    $scope.channelsShownWish = true;
     $scope.toggleChannels = function () {
-        if ($scope.channelsShown) {
-            window.top.GETMOEX && window.top.GETMOEX.setWide(false);
-            $scope.channelsShown = false;
-        }
-        else {
-            window.top.GETMOEX && window.top.GETMOEX.setWide(true);
-            $scope.channelsShown = true;
-        }
+        $scope.channelsShownWish = !$scope.channelsShownWish;
     };
+    $scope.$watch('channelsShownWish && user.nickname', function (newVal) {
+        $scope.channelsShown = newVal;
+        window.top.GETMOEX && window.top.GETMOEX.setWide(newVal);
+    });
 
     $scope.toggleSettings = function () {
         $scope.settingsShown = !$scope.settingsShown;

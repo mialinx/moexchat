@@ -28,10 +28,12 @@
     </script>
 </head>
 
-<body class="b-app {{ browserVersion }} {{ user.session.token && channelsShown ? 'b-app_wide' : '' }}" ng-controller="AppCtrl">
+<body class="b-app {{ browserVersion }} {{ channelsShown ? 'b-app_wide' : '' }}" ng-controller="AppCtrl">
 
     <div class="b-app__header">
-        <span class="b-app__header__menu" ng-click="toggleChannels()"><span class="b-app__header__menu__unread" ng-if="totalUnreadMessagesCount">{{ totalUnreadMessagesCount }}</span></span>
+        <span class="b-app__header__menu" ng-if="user.session.token && user.nickname" ng-click="toggleChannels()">
+            <span class="b-app__header__menu__unread" ng-if="totalUnreadMessagesCount">{{ totalUnreadMessagesCount }}</span>
+        </span>
         <a class="b-app__header__title" href="http://www.istochnik.im/r={{ clientType }}" target="_blank">Источник чат</a>
         <div class="b-app__header__ricons">
             <!--
@@ -49,7 +51,7 @@
         <div class="b-spinner"></div>
     </div>
 
-    <div class="b-settings" ng-if="user.session.token && settingsShown">
+    <div class="b-settings" ng-if="settingsShown">
         <img class="b-settings__avatar" ng-src="{{ user.session.avatar_url || user.session.anonymous_pic_url }}">
         <form class="b-settings__form">
             <label class="b-settings__form__label" for="user_name">Имя</label>
@@ -61,7 +63,7 @@
         </form>
     </div>
 
-    <div class="b-channels b-channels_nobtn" ng-controller="ChannelsCtrl" ng-if="user.session.token && channelsShown">
+    <div class="b-channels b-channels_nobtn" ng-controller="ChannelsCtrl" ng-if="channelsShown">
         <div class="b-channels__create_public" ng-click="createPublicChannel()">Создать публичный чат</div>
         <div class="b-channels__create_private" ng-click="createPrivateChannel()">Создать приватный чат</div>
         <div class="b-channels__search">

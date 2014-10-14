@@ -87,6 +87,7 @@
                 xhr.open('GET', url, true);
                 xhr.onload = function() {
                     var doc = chat.contentDocument || chat.contentWindow.document;
+                    doc.charset = 'utf-8';
                     doc.write(this.responseText);
                     doc.close();
                     loaded = true;
