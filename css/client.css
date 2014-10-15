@@ -22,7 +22,8 @@
   padding: 0px;
   background-color: #468ee5;
   font-family: 'open_sansregular';
-  font-size: 15.6px; }
+  font-size: 15.6px;
+  color: white; }
   #getmoex_chat_launcher.hidden {
     display: none !important; }
   #getmoex_chat_launcher:before {

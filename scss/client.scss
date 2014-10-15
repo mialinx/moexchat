@@ -20,6 +20,7 @@
     background-color: $cl_chrome;
     font-family: 'open_sansregular';
     font-size: $base_font_size * 1.2;
+    color: $cl_text_white;
     &.hidden {
         display: none !important;
     }
