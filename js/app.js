@@ -450,7 +450,6 @@ app.directive('adjustMsgLine', function ($log) {
 app.controller('AppCtrl', function ($scope, Storage, Backend, PubSub, Utils, $rootScope) {
 
     // Init global variables
-
     $rootScope.user = {};
     $rootScope.user.nickname = Storage.get('nickname');
     $rootScope.user.session = Storage.get('session') || {};
