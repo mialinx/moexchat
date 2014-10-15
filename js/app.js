@@ -173,7 +173,9 @@ app.factory('Utils', function() {
                 ts = new Date(matches[1] * 1000);
             }
             else if (matches = ts.match(/^\s*(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2}):(\d{2})(?:\.(\d{3}))?(Z|[+-]\d{2}:\d{2})?\s*$/)) { // iso time
-                ts = new Date(matches[1], matches[2], matches[3], matches[4], matches[5], matches[6], matches[7]);
+                ts = new Date();
+                ts.setUTCFullYear(matches[1], matches[2]-1, matches[3]);
+                ts.setUTCHours(matches[4], matches[5], matches[6]);
                 // TODO: support timezones
             }
             else {
@@ -223,7 +225,7 @@ app.factory('Utils', function() {
                 res = wDayNames[ts.getDay()] + '<br>' + time;
             }
             else {
-                res = (ts.getDate() + 0) + ' ' + mNames[ts.getMonth()-1] + '<br>' + time;
+                res = (ts.getDate() + 0) + ' ' + mNames[ts.getMonth()] + '<br>' + time;
             }
             return res;
         },
@@ -235,14 +237,14 @@ app.factory('Utils', function() {
             }
             var wDayNames = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
             var mNames = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
-            var res = wDayNames[ts.getDay()] + ', ' + (ts.getDate() + 0) + ' ' + mNames[ts.getMonth() - 1];
+            var res = wDayNames[ts.getDay()] + ', ' + (ts.getDate() + 0) + ' ' + mNames[ts.getMonth()];
             return res;
         },
 
         time: function (ts) {
             ts = Utils.parsedate(ts);
             if (!ts) {
-                return $sce.trustAsHtml('');
+                return '';
             }
             var time = (ts.getHours() > 9 ? ts.getHours() : '0' + ts.getHours()) + ':' +
                        (ts.getMinutes() > 9 ? ts.getMinutes() : '0' + ts.getMinutes());
