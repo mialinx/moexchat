@@ -2,7 +2,7 @@
 @import url(/fonts/opensans_light_cyrillic/stylesheet.css);
 @import url(/fonts/opensans_bold_cyrillic/stylesheet.css);
 .icon-sprite, .b-app__header__menu, .b-app__header__title:before, .b-app__header__people, .b-app__header__video, .b-app__header__settings, .b-app__header__close, .b-channels__create_public:before, .b-channels__create_private:before, .b-channels__search:before {
-  background: url('/images/../images/icon-s4172e223cc.png') no-repeat; }
+  background: url('/images/../images/icon-sd42576a316.png') no-repeat; }
 
 @-webkit-keyframes circle-loading {
   0% {
@@ -566,19 +566,52 @@ a {
   left: 0px;
   right: 0px;
   height: 30px;
-  text-align: center;
   background-color: #468ee5;
   color: white;
   font-size: 120%; }
 
+.b-app__header__wide {
+  display: none;
+  text-align: center;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  width: 320px; }
+  .b-app_wide .b-app__header__wide {
+    display: block; }
+
+.b-app__header__teaser {
+  display: none;
+  line-height: 30px;
+  color: inherit;
+  cursor: pointer; }
+  .b-app_wide .b-app__header__teaser {
+    display: inline-block; }
+
+.b-app__header__main {
+  display: block;
+  text-align: center;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  bottom: 0px;
+  height: 14px; }
+  .b-app_wide .b-app__header__main {
+    left: 320px; }
+
 .b-app__header__menu {
   position: absolute;
   text-decoration: none;
-  width: 20px;
-  height: 20px;
-  top: 5px;
+  width: 18px;
+  height: 15px;
+  top: 8px;
   left: 28px;
-  background-position: 0 -110px; }
+  cursor: pointer;
+  background-position: 0 -165px; }
+  .b-app_wide .b-app__header__menu {
+    left: 0px; }
 
 .b-app__header__menu__unread {
   position: absolute;
@@ -603,20 +636,14 @@ a {
   .b-app__header__title:before {
     content: '';
     display: inline-block;
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     margin-right: 0.5em;
-    margin-bottom: -4px;
-    background-position: 0 0; }
-
-.b-app__header__ricons {
-  display: block;
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  height: 14px; }
+    margin-bottom: -5px;
+    background-position: 0 -25px; }
 
 .b-app__header__icon, .b-app__header__people, .b-app__header__video, .b-app__header__settings, .b-app__header__close {
+  position: absolute;
   display: inline-block;
   width: 14px;
   height: 14px;
@@ -624,17 +651,18 @@ a {
   cursor: pointer; }
 
 .b-app__header__people {
-  background-position: 0 -82px; }
+  background-position: 0 -84px; }
 
 .b-app__header__video {
-  background-position: 0 -141px; }
+  background-position: 0 -124px; }
 
 .b-app__header__settings {
-  background-position: 0 -96px; }
+  background-position: 0 -98px; }
 
 .b-app__header__close {
-  background-position: 0 -155px;
-  right: 5px; }
+  background-position: 0 -138px;
+  right: 4px;
+  top: 4px; }
 
 .b-connection {
   position: absolute;
@@ -801,12 +829,12 @@ a {
   border-bottom: solid 1px #ededed;
   color: #468ee5; }
   .b-channels__create_public:before {
-    background-position: 0 -70px; }
+    background-position: 0 -72px; }
 
 .b-channels__create_private {
   color: #6ad000; }
   .b-channels__create_private:before {
-    background-position: 0 -129px; }
+    background-position: 0 -112px; }
 
 .b-channels__search {
   position: relative;
@@ -828,7 +856,7 @@ a {
     height: 13px;
     margin-bottom: -2px;
     margin-right: 5px;
-    background-position: 0 -45px; }
+    background-position: 0 -47px; }
 
 .b-channels__search__input {
   position: absolute;

@@ -55,8 +55,8 @@
     }
 
     var clientHTML = 
-        '<img src="' + chatBaseUrl + 'images/launcher2.png" id="getmoex_chat_launcher" style="position: fixed; bottom: 0px; right: 100px;">' + 
-        '<div id="getmoex_chat_container" style="display: none" class="hidden" >' + 
+        '<div id="getmoex_chat_launcher" style="display:none">Источник чат</div>' + 
+        '<div id="getmoex_chat_container" class="hidden" style="display:none">' + 
             '<div id="getmoex_chat_handle"></div>' +
             '<div id="getmoex_chat_rfix"></div>' +
             '<iframe src="about:blank" id="getmoex_chat" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>' + 
@@ -81,7 +81,7 @@
             removeClass(container, 'hidden');
             addClass(launcher,  'hidden');
             if (!loaded) {
-                var url = chatBaseUrl + 'chat.html?r=' + Math.random();
+                var url = chatBaseUrl + 'app.html?r=' + Math.random();
                 var XHR = window.XDomainRequest || window.XMLHttpRequest;
                 var xhr = new XHR();
                 xhr.open('GET', url, true);

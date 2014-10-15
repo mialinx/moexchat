@@ -1,23 +1,38 @@
+@import url(/fonts/opensans_regular_cyrillic/stylesheet.css);
+@import url(/fonts/opensans_light_cyrillic/stylesheet.css);
+@import url(/fonts/opensans_bold_cyrillic/stylesheet.css);
 .icon-sprite, #getmoex_chat_handle, #getmoex_chat_close {
-  background: url('/images/../images/icon-s4172e223cc.png') no-repeat; }
+  background: url('/images/../images/icon-sd42576a316.png') no-repeat; }
 
 #getmoex_chat_launcher {
-  display: block;
+  display: block !important;
   position: fixed;
   right: 100px;
   bottom: 0;
   cursor: pointer;
-  border: none;
+  border: solid 1px #468ee5;
   outline: none;
   -webkit-box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.3);
   box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.3);
   width: 320px;
   height: 30px;
+  line-height: 32px;
   margin: 0px;
-  padding: 0px; }
+  padding: 0px;
+  background-color: #468ee5;
+  font-family: 'open_sansregular';
+  font-size: 15.6px; }
   #getmoex_chat_launcher.hidden {
-    display: none; }
+    display: none !important; }
+  #getmoex_chat_launcher:before {
+    content: '';
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    background-image: url("/images/icon/logo.png");
+    margin-right: 0.5em;
+    margin-bottom: -5px; }
 
 #getmoex_chat_container {
   display: block !important;
@@ -75,17 +90,17 @@
 
 #getmoex_chat_handle {
   position: absolute;
-  top: 6px;
-  left: 6px;
+  top: 9px;
+  left: 9px;
   width: 30px;
   height: 30px;
   z-index: 200;
   cursor: nw-resize;
-  width: 22px;
-  height: 22px;
+  width: 13px;
+  height: 13px;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);
   opacity: 0.85;
-  background-position: 0 -169px; }
+  background-position: 0 -152px; }
 
 #getmoex_chat_close {
   display: block !important;
@@ -97,7 +112,7 @@
   cursor: pointer;
   margin: 0px;
   padding: 0px;
-  background-position: 0 -20px;
+  background-position: 0 0;
   -webkit-transition-property: bottom;
   -moz-transition-property: bottom;
   -o-transition-property: bottom;
