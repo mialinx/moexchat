@@ -337,7 +337,7 @@ app.filter('time', function (Utils, $sce) {
     }
 });
 
-app.filter('hyperlink', function ($sce) {
+app.filter('hyperlink', function ($rootScope, $sce) {
     return function (ct) {
         if (!ct) {
             ct = '';
@@ -347,7 +347,8 @@ app.filter('hyperlink', function ($sce) {
             return $sce.trustAsHtml(ct);
         }
         if (ct.match(/(\s|$)ios(\s|$)/i)) {
-            ct = '<span class="i-chat__item__content__from__ios">отправлено с iPhone</span>';
+            ct = '<a href="http://www.istochnik.im/?r=' + encodeURIComponent($rootScope.clientType) + '" ' +
+                 'target="_blank" class="i-chat__item__content__from__ios">отправлено с iPhone</a>';
             return $sce.trustAsHtml(ct);
         }
         ct = ct.replace(/[^\w_ \.-]/g,'');
@@ -578,6 +579,9 @@ app.controller('ChatCtrl', function ($scope, Pusher, Backend, $rootScope, Utils,
     };
 
     function sendMessage () {
+        if (!($scope.newMessage || '').match(/\S/)) {
+            return;
+        }
         var user = $rootScope.user;
         var message = {
             text:               $scope.newMessage,

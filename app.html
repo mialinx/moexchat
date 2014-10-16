@@ -32,13 +32,13 @@
 
     <div class="b-app__header">
         <div class="b-app__header__wide">
-            <a href="http://www.istochnik.im/r={{ clientType }}" target="_blank" class="b-app__header__teaser">Попробуйте бесплатно</a>
+            <a href="http://www.istochnik.im/?r={{ clientType }}" target="_blank" class="b-app__header__teaser">Попробуйте бесплатно</a>
         </div>
         <div class="b-app__header__main">
             <span class="b-app__header__menu" ng-if="user.session.token && user.nickname" ng-click="toggleChannels()" title="{{ channelsShown ? 'Скрыть список каналов' : 'Показать список каналов' }}">
                 <span class="b-app__header__menu__unread" ng-if="totalUnreadMessagesCount">{{ totalUnreadMessagesCount }}</span>
             </span>
-            <a class="b-app__header__title" href="http://www.istochnik.im/r={{ clientType }}" target="_blank">{{ title }}</a>
+            <a class="b-app__header__title" href="http://www.istochnik.im/?r={{ clientType }}" target="_blank">{{ title }}</a>
             <!--
             <span class="b-app__header__people" title="участники комнаты"></span>
             <span class="b-app__header__video" title="видео-чат"></span>
@@ -189,7 +189,7 @@
 
         <form class="b-chat__msgline" ng-submit="sendMessage()" >
             <textarea class="b-chat__msgline__input" type="text" autocomplete="off" rows="1" autofocus ng-model="newMessage" placeholder="Ваше сообщение..." ng-keypress="sendMessageIfEnter($event)"></textarea>
-            <button class="b-chat__msgline__btn" ng-disabled="!newMessage.length" title="Enter">Отправить</button>
+            <button class="b-chat__msgline__btn" ng-disabled="!newMessage.match(/\S/)" title="Enter">Отправить</button>
         </form>
 
     </div>

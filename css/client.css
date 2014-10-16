@@ -24,7 +24,11 @@
   font-family: 'open_sansregular';
   font-size: 15.6px;
   color: white;
-  text-align: center; }
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 1px 8px; }
   #getmoex_chat_launcher.hidden {
     display: none !important; }
   #getmoex_chat_launcher:before {

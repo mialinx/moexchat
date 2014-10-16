@@ -635,7 +635,8 @@ a {
   cursor: pointer;
   max-width: 70%;
   overflow-x: hidden;
-  text-overflow: ellipsis; }
+  text-overflow: ellipsis;
+  white-space: nowrap; }
   .b-app__header__title:before {
     content: '';
     display: inline-block;

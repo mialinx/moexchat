@@ -80,7 +80,7 @@
     }
 
     var clientHTML = 
-        '<div id="getmoex_chat_launcher" style="display:none">Источник чат</div>' + 
+        '<div id="getmoex_chat_launcher" style="display:none">Источник Чат</div>' + 
         '<div id="getmoex_chat_container" class="hidden" style="display:none">' + 
             '<div id="getmoex_chat_handle"></div>' +
             '<div id="getmoex_chat_rfix"></div>' +
