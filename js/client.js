@@ -86,7 +86,7 @@
             '<div id="getmoex_chat_rfix"></div>' +
             '<iframe src="about:blank" id="getmoex_chat" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>' + 
         '</div>' + 
-        '<link rel="stylesheet" href="' + chatBaseUrl + 'css/client.css">';
+        '<link rel="stylesheet" href="' + chatBaseUrl + 'css/client.css?v=5">';
 
     // run!
     addOnLoadListener(document, function () {
