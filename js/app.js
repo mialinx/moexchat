@@ -35,13 +35,14 @@ app.factory('PubSub', function () {
     var queues = {};
     var queueLimit = 2;
     return {
-        publish: function (name, ev) {
+        publish: function (name) {
+            var args = Array.prototype.slice.call(arguments, 1);
             var callbacks = listeners[name] = listeners[name] || [];
             for (var i = 0; i < callbacks.length; i++) {
-                callbacks[i](ev);
+                callbacks[i].apply(null, args);
             }
             var queue = queues[name] = queues[name] || [];
-            queue.push(ev);
+            queue.push(args);
             if (queue.length > queueLimit) {
                 queue.splice(0, queueLimit - queue.length);
             }
@@ -51,7 +52,7 @@ app.factory('PubSub', function () {
             listeners[name].push(callback);
             var queue = queues[name] = queues[name] || [];
             for (var i = 0; i < queue.length; i++) {
-                callback(queue[i]);
+                callback.apply(null, queue[i]);
             }
         }
     }
@@ -150,11 +151,17 @@ app.factory('Backend', function ($http, $q, $rootScope, Storage, $timeout, $log)
 
     return {
 
-        initializeSession: function (clientType) {
-            return callJSONP('initialize_session', { 
-                client_type: clientType 
-            });
+        initializeSession: function (clientType, token) {
+            var data = { client_type: clientType };
+            if (token) data.token = token;
+            return callJSONP('initialize_session', data);
         }, 
+
+        widgetInit: function (clientType) {
+            return callJSONP('widget_init', {
+                client_type: clientType
+            });
+        },
 
         listChannels: function (withPrivate) {
             return callJSONP('channels/list', {
@@ -453,25 +460,26 @@ app.controller('AppCtrl', function ($scope, Storage, Backend, PubSub, Utils, $ro
     $rootScope.user = {};
     $rootScope.user.nickname = Storage.get('nickname');
     $rootScope.user.session = Storage.get('session') || {};
-
     $rootScope.clientType = window.top.document.location.hostname || 'getmoex.ru';
 
-    if (!$rootScope.user.session.token 
-        || ($rootScope.user.session.expires && new Date() > new Date($rootScope.user.session.expires_at || 0)))
-    {
-        Backend.initializeSession($rootScope.clientType).then(function(session) {
-            Storage.set('session', session);
-            $rootScope.user.session = session;
-            PubSub.publish('SwitchChannel', session.channel_name);
-        });
-    }
-    else {
-        PubSub.publish('SwitchChannel', $rootScope.user.session.channel_name);
-    }
+    // init session
+    var token = $rootScope.user.session.token && new Date() < new Date($rootScope.user.session.expires_at || 0)
+              ? $rootScope.user.session.token
+              : undefined;
+    Backend.initializeSession($rootScope.clientType, token).then(function(session) {
+        Storage.set('session', session);
+        $rootScope.user.session = session;
+        PubSub.publish('SwitchChannel', session.channel_name, (session.widget_title || session.human_name));
+    });
+
+    PubSub.subscribe('SwitchChannel', function (name, humanName) {
+        $scope.title = humanName;
+        window.top.GETMOEX && window.top.GETMOEX.setTitle(humanName);
+    });
 
     // buttons handler
     $scope.closeChat = function () {
-        window.top.GETMOEX.closeChat();
+        window.top.GETMOEX && window.top.GETMOEX.closeChat();
     };
 
     // toggle sidebar (if has token)
@@ -674,7 +682,11 @@ app.controller('ChannelsCtrl', function ($scope, $rootScope, Backend, Storage, U
         // TODO: need backend api
     }
 
-    $scope.joinChannel = function (name) { PubSub.publish('SwitchChannel', name) };
+    $scope.joinChannel = function (name) { 
+        var channel = getChannel(name);
+        if (!channel) return;
+        PubSub.publish('SwitchChannel', channel.name, channel.human_name);
+    };
     $scope.createPrivateChannel = function () { createChannel(true) };
     $scope.createPublicChannel = function () { createChannel(false) };
 

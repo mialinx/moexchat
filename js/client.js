@@ -54,6 +54,31 @@
         }
     }
 
+    function loadJSONP (url, success, fail) {
+        var s = document.createElement('script');
+        var callbacks = window.GETMOEX.callbacks;
+        var idx = (callbacks.idx || 0) + 1;
+        var to;
+        function onSuccess(data) {
+            success(data);
+            delete callbacks[idx];
+            document.body.removeChild(s);
+            clearTimeout(to);
+        }
+        function onError() {
+            fail();
+            delete callbacks[idx];
+            document.body.removeChild(s);
+        }
+        callbacks[idx] = onSuccess;
+        s.charset = 'utf-8';
+        s.async = true;
+        s.src = url + (url.indexOf('?') > -1 ? '&callback=' : '?callback=') + encodeURIComponent('GETMOEX.callbacks[' + idx +']');
+        s.onerror = onError;
+        to = setTimeout(onError, 3000);
+        document.body.appendChild(s);
+    }
+
     var clientHTML = 
         '<div id="getmoex_chat_launcher" style="display:none">Источник чат</div>' + 
         '<div id="getmoex_chat_container" class="hidden" style="display:none">' + 
@@ -114,6 +139,10 @@
         function closeChat() {
             addClass(container, 'hidden');
             removeClass(launcher, 'hidden');
+        }
+
+        function setTitle(title) {
+            launcher.innerHTML = title;
         }
 
         // resize
@@ -182,11 +211,20 @@
 
         // public API
         window.GETMOEX = {
+            callbacks:   {},
             chatBaseUrl: chatBaseUrl,
             setWide:     setWide,
             openChat:    openChat,
-            closeChat:   closeChat
+            closeChat:   closeChat,
+            setTitle:    setTitle
         };
+
+        // load title
+        loadJSONP(
+            "http://auth.getmoex.ru/api/v1/jsonp/widget_init?client_type=" + encodeURIComponent(document.location.hostname),
+            function(data) { console.log(data); launcher.innerHTML = (data.widget_title || data.human_name) },
+            function() { launcher.innerHTML = 'Источник чат' }
+        );
     });
 
 })();

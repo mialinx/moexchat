@@ -116,6 +116,9 @@ a {
                 color: inherit;
                 text-decoration: none !important;
                 cursor: pointer;
+                max-width: 70%;
+                overflow-x: hidden;
+                text-overflow: ellipsis;
                 &:before {
                     content: '';
                     display: inline-block;

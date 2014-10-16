@@ -632,7 +632,10 @@ a {
   line-height: 30px;
   color: inherit;
   text-decoration: none !important;
-  cursor: pointer; }
+  cursor: pointer;
+  max-width: 70%;
+  overflow-x: hidden;
+  text-overflow: ellipsis; }
   .b-app__header__title:before {
     content: '';
     display: inline-block;
